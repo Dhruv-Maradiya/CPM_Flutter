@@ -59,7 +59,7 @@ class _RegisterState extends State<Register> {
                                   fontSize: 30, fontWeight: FontWeight.bold)),
                           SizedBox(
 
-
+                          ),
                         Row(
                           children: [
                             Padding(
