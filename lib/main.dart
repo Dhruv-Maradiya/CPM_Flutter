@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:untitled4/core/constants/string_constants.dart';
-import 'package:untitled4/views/sign_in_as_student/sign_in_as_student_screen.dart';
+import 'package:cpm/core/constants/string_constants.dart';
+import 'package:cpm/views/sign_in_as_student/sign_in_as_student_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
