@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:untitled4/core/constants/pallets.dart';
+import 'package:cpm/core/constants/pallets.dart';
 
 class SignInAsStudentScreenWidget extends StatefulWidget {
   const SignInAsStudentScreenWidget({Key? key}) : super(key: key);
