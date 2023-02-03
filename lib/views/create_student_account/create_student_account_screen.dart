@@ -1,3 +1,4 @@
+import 'package:cpm/views/create_student_account/widget/create_student_account_screen_widget.dart';
 import 'package:flutter/material.dart';
 
 class CreateStudentAccountScreen extends StatelessWidget {
@@ -5,6 +6,6 @@ class CreateStudentAccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const CreateStudentAccountScreenWidget();
   }
 }
