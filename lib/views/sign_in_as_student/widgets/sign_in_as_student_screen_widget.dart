@@ -1,3 +1,11 @@
+import 'dart:convert';
+
+import 'package:cpm/rest/model/base_model.dart';
+import 'package:cpm/rest/rest_client.dart';
+import 'package:cpm/rest/rest_constants.dart';
+import 'package:cpm/views/create_student_account/create_student_account_screen.dart';
+import 'package:cpm/views/sign_in_as_faculty/sign_in_as_faculty_screen.dart';
+import 'package:cpm/views/sign_in_as_student/models/sign_in_student_model.dart';
 import 'package:flutter/material.dart';
 import 'package:cpm/core/constants/pallets.dart';
 
@@ -193,11 +201,7 @@ class _SignInAsStudentScreenWidgetState
                           MaterialButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                        content: Text(
-                                  'Signing In...',
-                                )));
+                                _signInWithEmailAndPassword(context);
                               }
                             },
                             color: Pallets.primaryColor,
@@ -230,7 +234,15 @@ class _SignInAsStudentScreenWidgetState
                                 ),
                               ),
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const CreateStudentAccountScreen(),
+                                      ),
+                                      (_) => false);
+                                },
                                 child: const Text(
                                   "Create Account",
                                   style: TextStyle(
@@ -257,7 +269,14 @@ class _SignInAsStudentScreenWidgetState
                                 ),
                               ),
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SignInAsFacultyScreen()),
+                                      (_) => false);
+                                },
                                 child: const Text(
                                   "Sign in",
                                   style: TextStyle(
@@ -288,5 +307,28 @@ class _SignInAsStudentScreenWidgetState
         ),
       ),
     );
+  }
+
+  void _signInWithEmailAndPassword(BuildContext context) async {
+    try {
+      ApiRequest request = ApiRequest(url: RestConstants.studentSignIn, data: {
+        "enrollmentNo": _enrollmentNo.text,
+        "password": _password.text,
+      });
+      final res = await request.post();
+      if (res.success) {
+        final data = StudentSignInModel.fromJson(res.data).data;
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Successfully signed in"),
+        ));
+      } else {
+        final ApiErrorModel apiErrorModel = ApiErrorModel.fromJson(res.error);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(apiErrorModel.message),
+        ));
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

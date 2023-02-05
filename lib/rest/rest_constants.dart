@@ -1,6 +1,7 @@
 class RestConstants {
-  static String apiAccessURLLocal = "http://localhost:3000/api";
-  static String baseURL = "https://mypredict11.com/";
+  static String baseURL = "http://193.168.195.86:3002/api";
+  // static String baseURL = "http://192.168.1.15:3002/api";
+  // static String baseURL = "https://mypredict11.com";
 
   /// Auth related API's urls
   static String studentSignIn = "$baseURL/v1/student/login";

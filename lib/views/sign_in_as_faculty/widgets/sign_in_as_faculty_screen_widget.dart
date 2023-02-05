@@ -1,8 +1,13 @@
 import 'package:cpm/core/constants/pallets.dart';
+import 'package:cpm/rest/model/base_model.dart';
+import 'package:cpm/rest/rest_client.dart';
+import 'package:cpm/rest/rest_constants.dart';
+import 'package:cpm/views/sign_in_as_faculty/models/sign_in_as_faculty_model.dart';
+import 'package:cpm/views/sign_in_as_student/sign_in_as_student_screen.dart';
 import 'package:flutter/material.dart';
 
 class SignInAsFacultyScreenWidget extends StatefulWidget {
-  SignInAsFacultyScreenWidget({Key? key}) : super(key: key);
+  const SignInAsFacultyScreenWidget({Key? key}) : super(key: key);
 
   @override
   State<SignInAsFacultyScreenWidget> createState() =>
@@ -90,6 +95,8 @@ class _SignInAsFacultyScreenWidgetState
                             cursorColor: Pallets.primaryColor,
                             decoration: InputDecoration(
                               hintText: 'Type Here...',
+                              filled: true,
+                              fillColor: Pallets.textFieldBgColor,
                               counterText: '',
                               suffixIcon: Image.asset(
                                 'assets/images/id_card.png',
@@ -148,6 +155,8 @@ class _SignInAsFacultyScreenWidgetState
                             obscureText: isObscure,
                             decoration: InputDecoration(
                               hintText: 'Type Here...',
+                              filled: true,
+                              fillColor: Pallets.textFieldBgColor,
                               suffixIcon: InkWell(
                                 onTap: () {
                                   setState(() {
@@ -189,11 +198,7 @@ class _SignInAsFacultyScreenWidgetState
                           MaterialButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                        content: Text(
-                                  'Signing In...',
-                                )));
+                                _signInWithEmailAndPassword(context);
                               }
                             },
                             color: Pallets.primaryColor,
@@ -226,7 +231,14 @@ class _SignInAsFacultyScreenWidgetState
                                 ),
                               ),
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SignInAsStudentScreen()),
+                                      (_) => false);
+                                },
                                 child: const Text(
                                   "Sign in",
                                   style: TextStyle(
@@ -257,5 +269,28 @@ class _SignInAsFacultyScreenWidgetState
         ),
       ),
     );
+  }
+
+  void _signInWithEmailAndPassword(BuildContext context) async {
+    try {
+      ApiRequest request = ApiRequest(url: RestConstants.facultySignIn, data: {
+        "employeeId": _employeeId.text,
+        "password": _password.text,
+      });
+      final res = await request.post();
+      if (res.success) {
+        final data = FacultySignInModel.fromJson(res.data).data;
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Successfully signed in"),
+        ));
+      } else {
+        final ApiErrorModel apiErrorModel = ApiErrorModel.fromJson(res.error);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(apiErrorModel.message),
+        ));
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

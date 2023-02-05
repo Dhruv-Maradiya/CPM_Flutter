@@ -1,4 +1,5 @@
 import 'package:cpm/core/constants/pallets.dart';
+import 'package:cpm/views/sign_in_as_student/sign_in_as_student_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cpm/core/extensions/valid_email.dart';
 
@@ -132,80 +133,77 @@ class _CreateStudentAccountScreenWidgetState
                               height: 15,
                             ),
                             // MOBILE NUMBER
-                            Stack(
-                              children: [
-                                TextFormField(
-                                  controller: _phone,
-                                  decoration: InputDecoration(
-                                    hintText: "Mobile Number",
-                                    focusColor: Pallets.scaffoldBgColor,
-                                    disabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: const BorderSide(
-                                          color: Pallets.primaryColor,
-                                        )),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: const BorderSide(
-                                          color: Pallets.primaryColor,
-                                        )),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: const BorderSide(
-                                          color: Pallets.primaryColor,
-                                        )),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        color: Pallets.primaryColor,
-                                      ),
-                                    ),
-                                    filled: true,
-                                    prefix: const SizedBox(width: 58),
-                                    fillColor: Pallets.textFieldBgColor,
+
+                            TextFormField(
+                              controller: _phone,
+                              decoration: InputDecoration(
+                                hintText: "Mobile Number",
+                                contentPadding: EdgeInsets.zero,
+                                prefixIcon: Container(
+                                  margin: const EdgeInsets.only(
+                                    right: 10,
                                   ),
-                                  keyboardType: TextInputType.phone,
-                                  textInputAction: TextInputAction.next,
-                                  cursorColor: Pallets.primaryColor,
-                                  validator: (value) {
-                                    bool isValid = true;
-                                    String msg = 'Enter Valid Mobile Number.';
-
-                                    if (value!.isEmpty) {
-                                      isValid = false;
-                                    }
-                                    RegExp regExp = RegExp(r'[0-9]{10}$');
-                                    if (!regExp.hasMatch(value)) {
-                                      isValid = false;
-                                    }
-
-                                    return isValid ? null : msg;
-                                  },
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Pallets.primaryColor,
+                                  ),
+                                  height: 58,
+                                  width: 58,
+                                  child: const Text(
+                                    "+91",
+                                    style: TextStyle(
+                                      color: Color.fromRGBO(255, 255, 255, 1),
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 18,
+                                    ),
+                                  ),
                                 ),
-                                Positioned(
-                                    left: 0,
-                                    top: 0,
-                                    bottom: 0,
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Pallets.primaryColor,
-                                      ),
-                                      // height: 58,
-                                      width: 58,
-                                      child: const Text(
-                                        "+91",
-                                        style: TextStyle(
-                                          color:
-                                              Color.fromRGBO(255, 255, 255, 1),
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 18,
-                                        ),
-                                      ),
+                                focusColor: Pallets.scaffoldBgColor,
+                                disabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: Pallets.primaryColor,
                                     )),
-                              ],
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: Pallets.primaryColor,
+                                    )),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: Pallets.primaryColor,
+                                    )),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    color: Pallets.primaryColor,
+                                  ),
+                                ),
+                                filled: true,
+                                // prefix: const SizedBox(width: 58),
+                                fillColor: Pallets.textFieldBgColor,
+                              ),
+                              keyboardType: TextInputType.phone,
+                              textInputAction: TextInputAction.next,
+                              cursorColor: Pallets.primaryColor,
+                              validator: (value) {
+                                bool isValid = true;
+                                String msg = 'Enter Valid Mobile Number.';
+
+                                if (value!.isEmpty) {
+                                  isValid = false;
+                                }
+                                RegExp regExp = RegExp(r'[0-9]{10}$');
+                                if (!regExp.hasMatch(value)) {
+                                  isValid = false;
+                                }
+
+                                return isValid ? null : msg;
+                              },
                             ),
+
                             // NAME
                             const SizedBox(
                               height: 10,
@@ -659,7 +657,15 @@ class _CreateStudentAccountScreenWidgetState
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SignInAsStudentScreen(),
+                                        ),
+                                        (_) => false);
+                                  },
                                   child: const Text(
                                     "Sign in",
                                     style: TextStyle(
