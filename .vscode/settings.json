@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["autocorrect"]
+  "cSpell.words": ["autocorrect"],
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

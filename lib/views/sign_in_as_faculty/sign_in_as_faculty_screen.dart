@@ -6,6 +6,6 @@ class SignInAsFacultyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SignInAsFacultyScreenWidget();
+    return SignInAsFacultyScreenWidget();
   }
 }

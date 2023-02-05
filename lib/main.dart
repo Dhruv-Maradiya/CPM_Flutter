@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       darkTheme: ThemeData.light(),
       title: StringConstants.appName,
-      home: const CreateStudentAccountScreen(),
+      home: const SignInAsStudentScreen(),
     );
   }
 }
