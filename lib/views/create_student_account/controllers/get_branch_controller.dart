@@ -1,26 +1,22 @@
-import 'package:cpm/rest/model/base_model.dart';
-import 'package:cpm/rest/rest_client.dart';
-import 'package:cpm/rest/rest_constants.dart';
-import 'package:cpm/views/create_student_account/models/get_branches_model.dart';
+import 'package:cpm/views/create_student_account/providers/get_branches_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/state_manager.dart';
+import 'package:cpm/views/create_student_account/models/get_branches_model.dart'
+    as branch_model;
 
-class GetBranch extends GetxController {
-  Future<GetBranchesModel?> getBranches(BuildContext context) async {
-    ApiRequest request = ApiRequest(url: RestConstants.branchFindMany);
-    ApiResponseModel response = await request.get();
+class GetBranchController extends GetxController {
+  RxBool isLoading = false.obs;
+  RxList<branch_model.Data> branches = (List<branch_model.Data>.of([])).obs;
 
-    if (response.success) {
-      return GetBranchesModel.fromJson(response.data);
-    } else {
-      final ApiErrorModel apiErrorModel =
-          ApiErrorModel.fromJson(response.error);
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(apiErrorModel.message),
-      ));
+  void getBranches(BuildContext context) async {
+    isLoading.value = true;
+    try {
+      final response = (await GetBranchProvider().getBranches(context))!.data;
 
-      return null;
+      branches.addAll(response);
+    } catch (e) {
+      isLoading.value = false;
+      print(e);
     }
   }
 }

@@ -1,7 +1,11 @@
 import 'package:cpm/core/constants/pallets.dart';
+import 'package:cpm/views/create_student_account/controllers/create_student_account_controller.dart';
+import 'package:cpm/views/create_student_account/controllers/get_branch_controller.dart';
 import 'package:cpm/views/sign_in_as_student/sign_in_as_student_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cpm/core/extensions/valid_email.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/instance_manager.dart';
 
 class CreateStudentAccountScreenWidget extends StatefulWidget {
   const CreateStudentAccountScreenWidget({Key? key}) : super(key: key);
@@ -13,16 +17,18 @@ class CreateStudentAccountScreenWidget extends StatefulWidget {
 
 class _CreateStudentAccountScreenWidgetState
     extends State<CreateStudentAccountScreenWidget> {
-  bool isObscure = true;
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _enrollmentNo = TextEditingController();
-  final TextEditingController _name = TextEditingController();
-  final TextEditingController _email = TextEditingController();
-  final TextEditingController _password = TextEditingController();
-  final TextEditingController _confirmPassword = TextEditingController();
-  final TextEditingController _phone = TextEditingController();
-  final TextEditingController _sem = TextEditingController();
-  final TextEditingController _branch = TextEditingController();
+
+  final CreateStudentAccountController _createStudentAccountController =
+      Get.put(CreateStudentAccountController());
+  final GetBranchController _getBranchController =
+      Get.put(GetBranchController());
+
+  @override
+  void initState() {
+    super.initState();
+    _getBranchController.getBranches(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +103,8 @@ class _CreateStudentAccountScreenWidgetState
                                 return isValid ? null : msg;
                               },
                               maxLength: 12,
-                              controller: _enrollmentNo,
+                              controller:
+                                  _createStudentAccountController.enrollmentNo,
                               decoration: InputDecoration(
                                 counterText: "",
                                 hintText: "Enrollment No.",
@@ -135,7 +142,7 @@ class _CreateStudentAccountScreenWidgetState
                             // MOBILE NUMBER
 
                             TextFormField(
-                              controller: _phone,
+                              controller: _createStudentAccountController.phone,
                               decoration: InputDecoration(
                                 hintText: "Mobile Number",
                                 contentPadding: EdgeInsets.zero,
@@ -219,7 +226,7 @@ class _CreateStudentAccountScreenWidgetState
                               height: 5,
                             ),
                             TextFormField(
-                              controller: _name,
+                              controller: _createStudentAccountController.name,
                               decoration: InputDecoration(
                                 hintText: "Name",
                                 focusColor: Pallets.scaffoldBgColor,
@@ -285,7 +292,7 @@ class _CreateStudentAccountScreenWidgetState
                               height: 5,
                             ),
                             TextFormField(
-                              controller: _email,
+                              controller: _createStudentAccountController.email,
                               decoration: InputDecoration(
                                 hintText: "Email",
                                 focusColor: Pallets.scaffoldBgColor,
@@ -355,7 +362,9 @@ class _CreateStudentAccountScreenWidgetState
                                         height: 5,
                                       ),
                                       TextFormField(
-                                        controller: _branch,
+                                        controller:
+                                            _createStudentAccountController
+                                                .branch,
                                         decoration: InputDecoration(
                                           hintText: "Branch",
                                           focusColor: Pallets.scaffoldBgColor,
@@ -424,7 +433,8 @@ class _CreateStudentAccountScreenWidgetState
                                         height: 5,
                                       ),
                                       TextFormField(
-                                        controller: _sem,
+                                        controller:
+                                            _createStudentAccountController.sem,
                                         decoration: InputDecoration(
                                           hintText: "Sem",
                                           focusColor: Pallets.scaffoldBgColor,
@@ -489,69 +499,75 @@ class _CreateStudentAccountScreenWidgetState
                             const SizedBox(
                               height: 5,
                             ),
-                            TextFormField(
-                              controller: _password,
-                              decoration: InputDecoration(
-                                hintText: "Password",
-                                focusColor: Pallets.scaffoldBgColor,
-                                disabledBorder: OutlineInputBorder(
+                            Obx(
+                              () => TextFormField(
+                                controller:
+                                    _createStudentAccountController.password,
+                                decoration: InputDecoration(
+                                  hintText: "Password",
+                                  focusColor: Pallets.scaffoldBgColor,
+                                  disabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: Pallets.primaryColor,
+                                      )),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: Pallets.primaryColor,
+                                      )),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: Pallets.primaryColor,
+                                      )),
+                                  border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: const BorderSide(
                                       color: Pallets.primaryColor,
-                                    )),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
+                                    ),
+                                  ),
+                                  filled: true,
+                                  fillColor: Pallets.textFieldBgColor,
+                                  suffixIcon: InkWell(
+                                    onTap: () {
+                                      _createStudentAccountController
+                                              .isObscure.value =
+                                          !_createStudentAccountController
+                                              .isObscure.value;
+                                    },
+                                    child: Icon(
+                                      _createStudentAccountController
+                                              .isObscure.value
+                                          ? Icons.lock_outline
+                                          : Icons.lock_open_outlined,
                                       color: Pallets.primaryColor,
-                                    )),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      color: Pallets.primaryColor,
-                                    )),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                    color: Pallets.primaryColor,
+                                    ),
                                   ),
                                 ),
-                                filled: true,
-                                fillColor: Pallets.textFieldBgColor,
-                                suffixIcon: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      isObscure = !isObscure;
-                                    });
-                                  },
-                                  child: Icon(
-                                    isObscure
-                                        ? Icons.lock_outline
-                                        : Icons.lock_open_outlined,
-                                    color: Pallets.primaryColor,
-                                  ),
-                                ),
+                                obscureText: _createStudentAccountController
+                                    .isObscure.value,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                cursorColor: Pallets.primaryColor,
+                                validator: (value) {
+                                  bool isValid = true;
+                                  String msg = 'Enter Valid Password.';
+
+                                  if (value!.isEmpty) {
+                                    isValid = false;
+                                  }
+                                  RegExp regExp = RegExp(
+                                      r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$');
+                                  if (!regExp.hasMatch(value)) {
+                                    isValid = false;
+                                    msg =
+                                        "Password must contain at least one uppercase and lowercase letter, one number and one special character.";
+                                  }
+
+                                  return isValid ? null : msg;
+                                },
                               ),
-                              obscureText: isObscure,
-                              keyboardType: TextInputType.text,
-                              textInputAction: TextInputAction.next,
-                              cursorColor: Pallets.primaryColor,
-                              validator: (value) {
-                                bool isValid = true;
-                                String msg = 'Enter Valid Password.';
-
-                                if (value!.isEmpty) {
-                                  isValid = false;
-                                }
-                                RegExp regExp = RegExp(
-                                    r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$');
-                                if (!regExp.hasMatch(value)) {
-                                  isValid = false;
-                                  msg =
-                                      "Password must contain at least one uppercase and lowercase letter, one number and one special character.";
-                                }
-
-                                return isValid ? null : msg;
-                              },
                             ),
                             // CONFIRM PASSWORD
                             const SizedBox(
@@ -568,7 +584,8 @@ class _CreateStudentAccountScreenWidgetState
                               height: 5,
                             ),
                             TextFormField(
-                                controller: _confirmPassword,
+                                controller: _createStudentAccountController
+                                    .confirmPassword,
                                 decoration: InputDecoration(
                                   hintText: "Confirm Password",
                                   focusColor: Pallets.scaffoldBgColor,
@@ -609,7 +626,9 @@ class _CreateStudentAccountScreenWidgetState
                                     isValid = false;
                                   }
                                   // ignore: unrelated_type_equality_checks
-                                  if (_password.value.text != value) {
+                                  if (_createStudentAccountController
+                                          .password.value.text !=
+                                      value) {
                                     isValid = false;
                                   }
 

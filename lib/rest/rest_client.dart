@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 class ApiRequest {
   final String url;
   final dynamic data;
-  final dynamic queryParameters;
+  final Map<String, dynamic>? queryParameters;
 
   ApiRequest({
     required this.url,
@@ -53,15 +53,17 @@ class ApiRequest {
     }
   }
 
-  Future<ApiResponseModel> get() async {
+  Future<ApiResponseModel?> get() async {
     try {
-      var resp = await _dio().post(
+      var resp = await _dio().get(
         url,
         queryParameters: queryParameters,
       );
       return ApiResponseModel(success: true, data: resp.data);
     } on DioError catch (e) {
       return ApiResponseModel(success: false, error: e.response?.data);
+    } catch (e) {
+      return null;
     }
   }
 

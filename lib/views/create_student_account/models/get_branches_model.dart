@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final getBranches = getBranchesFromJson(jsonString);
-
 import 'dart:convert';
 
 GetBranchesModel getBranchesFromJson(String str) =>
@@ -14,11 +10,11 @@ class GetBranchesModel {
     required this.data,
   });
 
-  List<Datum> data;
+  List<Data> data;
 
   factory GetBranchesModel.fromJson(Map<String, dynamic> json) =>
       GetBranchesModel(
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: List<Data>.from(json["data"].map((x) => Data.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -26,8 +22,8 @@ class GetBranchesModel {
       };
 }
 
-class Datum {
-  Datum({
+class Data {
+  Data({
     required this.id,
     required this.name,
     required this.displayName,
@@ -41,7 +37,7 @@ class Datum {
   DateTime createdAt;
   DateTime updatedAt;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
         name: json["name"],
         displayName: json["displayName"],
