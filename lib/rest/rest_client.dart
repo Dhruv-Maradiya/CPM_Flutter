@@ -6,10 +6,12 @@ import 'package:dio/dio.dart';
 class ApiRequest {
   final String url;
   final dynamic data;
+  final dynamic queryParameters;
 
   ApiRequest({
     required this.url,
-    required this.data,
+    this.data,
+    this.queryParameters,
   });
 
   // Future<void> _getLocalTimeZoneRegion() async {
@@ -44,6 +46,18 @@ class ApiRequest {
       var resp = await _dio().post(
         url,
         data: data,
+      );
+      return ApiResponseModel(success: true, data: resp.data);
+    } on DioError catch (e) {
+      return ApiResponseModel(success: false, error: e.response?.data);
+    }
+  }
+
+  Future<ApiResponseModel> get() async {
+    try {
+      var resp = await _dio().post(
+        url,
+        queryParameters: queryParameters,
       );
       return ApiResponseModel(success: true, data: resp.data);
     } on DioError catch (e) {

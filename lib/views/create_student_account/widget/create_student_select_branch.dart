@@ -1,9 +1,6 @@
+import 'package:cpm/views/create_student_account/controllers/get_branch_controller.dart';
 import 'package:flutter/material.dart';
 
-// const list = [
-//   {'id': 1, 'name': 'Computer Engineering', "displayName": "CE"},
-//   {'id': 2, 'name': 'Information Technology', "displayName": "IT"}
-// ];
 List<Branch> list = <Branch>[
   Branch(
     1,
@@ -30,55 +27,44 @@ class Branch {
   Branch(this.id, this.name, this.displayName);
 }
 
-class DropdownButtonApp extends StatelessWidget {
-  const DropdownButtonApp({super.key});
+class SelectBranchDropDown extends StatefulWidget {
+  const SelectBranchDropDown({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('DropdownButton Sample')),
-        body: const Center(
-          child: DropdownButtonExample(),
-        ),
-      ),
-    );
-  }
+  State<SelectBranchDropDown> createState() => _SelectBranchDropDownState();
 }
 
-class DropdownButtonExample extends StatefulWidget {
-  const DropdownButtonExample({super.key});
-
-  @override
-  State<DropdownButtonExample> createState() => _DropdownButtonExampleState();
-}
-
-class _DropdownButtonExampleState extends State<DropdownButtonExample> {
+class _SelectBranchDropDownState extends State<SelectBranchDropDown> {
   String dropdownValue = list.first.id.toString();
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: dropdownValue,
-      icon: const Icon(Icons.arrow_downward),
-      elevation: 16,
-      style: const TextStyle(color: Colors.deepPurple),
-      underline: Container(
-        height: 2,
-        color: Colors.deepPurpleAccent,
-      ),
-      onChanged: (String? value) {
-        // This is called when the user selects an item.
-        setState(() {
-          dropdownValue = value!;
-        });
-      },
-      items: list.map<DropdownMenuItem<String>>((Branch value) {
-        return DropdownMenuItem<String>(
-          value: value.id.toString(),
-          child: Text(value.displayName),
+    return FutureBuilder(
+      future: GetBranch().getBranches(context),
+      builder: (context, snapshot) {
+        return DropdownButton<String>(
+          value: dropdownValue,
+          icon: const Icon(Icons.arrow_downward),
+          elevation: 16,
+          style: const TextStyle(color: Colors.deepPurple),
+          underline: Container(
+            height: 2,
+            color: Colors.deepPurpleAccent,
+          ),
+          onChanged: (String? value) {
+            // This is called when the user selects an item.
+            setState(() {
+              dropdownValue = value!;
+            });
+          },
+          items: list.map<DropdownMenuItem<String>>((Branch value) {
+            return DropdownMenuItem<String>(
+              value: value.id.toString(),
+              child: Text(value.displayName),
+            );
+          }).toList(),
         );
-      }).toList(),
+      },
     );
   }
 }

@@ -30,15 +30,19 @@ class StudentSignInModel {
 class Data {
   Data({
     required this.token,
+    required this.userId,
   });
 
   String token;
+  int userId;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         token: json["token"],
+        userId: json["userId"],
       );
 
   Map<String, dynamic> toJson() => {
         "token": token,
+        "userId": userId,
       };
 }

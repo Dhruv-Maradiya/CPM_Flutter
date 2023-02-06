@@ -1,28 +1,18 @@
-import 'dart:convert';
-
-import 'package:cpm/rest/model/base_model.dart';
-import 'package:cpm/rest/rest_client.dart';
-import 'package:cpm/rest/rest_constants.dart';
 import 'package:cpm/views/create_student_account/create_student_account_screen.dart';
 import 'package:cpm/views/sign_in_as_faculty/sign_in_as_faculty_screen.dart';
-import 'package:cpm/views/sign_in_as_student/models/sign_in_student_model.dart';
+import 'package:cpm/views/sign_in_as_student/controllers/sign_in_as_student_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:cpm/core/constants/pallets.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/instance_manager.dart';
 
-class SignInAsStudentScreenWidget extends StatefulWidget {
-  const SignInAsStudentScreenWidget({Key? key}) : super(key: key);
+class SignInAsStudentScreenWidget extends StatelessWidget {
+  final SignInAsStudentController signInAsStudentController =
+      Get.put(SignInAsStudentController());
 
-  @override
-  State<SignInAsStudentScreenWidget> createState() =>
-      _SignInAsStudentScreenWidgetState();
-}
-
-class _SignInAsStudentScreenWidgetState
-    extends State<SignInAsStudentScreenWidget> {
-  bool isObscure = true;
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _enrollmentNo = TextEditingController();
-  final TextEditingController _password = TextEditingController();
+
+  SignInAsStudentScreenWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +74,7 @@ class _SignInAsStudentScreenWidgetState
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.number,
                             cursorColor: Pallets.primaryColor,
-                            controller: _enrollmentNo,
+                            controller: signInAsStudentController.enrollmentNo,
                             maxLength: 12,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -141,57 +131,60 @@ class _SignInAsStudentScreenWidgetState
                           const SizedBox(
                             height: 8,
                           ),
-                          TextFormField(
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.text,
-                            obscureText: isObscure,
-                            cursorColor: Pallets.primaryColor,
-                            controller: _password,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Password cannot be empty';
-                              }
-                              if (value.length < 8) {
-                                return 'Password must be at least 8 characters';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              fillColor: Pallets.textFieldBgColor,
-                              filled: true,
-                              hintText: 'Type Here...',
-                              suffixIcon: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    isObscure = !isObscure;
-                                  });
-                                },
-                                child: Icon(
-                                  isObscure
-                                      ? Icons.lock_outline
-                                      : Icons.lock_open_outlined,
-                                  color: Pallets.primaryColor,
+                          Obx(
+                            () => TextFormField(
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.text,
+                              obscureText:
+                                  signInAsStudentController.isObscure.value,
+                              cursorColor: Pallets.primaryColor,
+                              controller: signInAsStudentController.password,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Password cannot be empty';
+                                }
+                                if (value.length < 8) {
+                                  return 'Password must be at least 8 characters';
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                fillColor: Pallets.textFieldBgColor,
+                                filled: true,
+                                hintText: 'Type Here...',
+                                suffixIcon: InkWell(
+                                  onTap: () {
+                                    signInAsStudentController.isObscure.value =
+                                        !signInAsStudentController
+                                            .isObscure.value;
+                                  },
+                                  child: Icon(
+                                    signInAsStudentController.isObscure.value
+                                        ? Icons.lock_outline
+                                        : Icons.lock_open_outlined,
+                                    color: Pallets.primaryColor,
+                                  ),
                                 ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                    color: Pallets.primaryColor),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                    color: Pallets.primaryColor),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                    color: Pallets.primaryColor),
-                              ),
-                              disabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                    color: Pallets.primaryColor),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                      color: Pallets.primaryColor),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                      color: Pallets.primaryColor),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                      color: Pallets.primaryColor),
+                                ),
+                                disabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                      color: Pallets.primaryColor),
+                                ),
                               ),
                             ),
                           ),
@@ -201,7 +194,8 @@ class _SignInAsStudentScreenWidgetState
                           MaterialButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                _signInWithEmailAndPassword(context);
+                                signInAsStudentController
+                                    .signInWithEmailAndPassword(context);
                               }
                             },
                             color: Pallets.primaryColor,
@@ -307,28 +301,5 @@ class _SignInAsStudentScreenWidgetState
         ),
       ),
     );
-  }
-
-  void _signInWithEmailAndPassword(BuildContext context) async {
-    try {
-      ApiRequest request = ApiRequest(url: RestConstants.studentSignIn, data: {
-        "enrollmentNo": _enrollmentNo.text,
-        "password": _password.text,
-      });
-      final res = await request.post();
-      if (res.success) {
-        final data = StudentSignInModel.fromJson(res.data).data;
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("Successfully signed in"),
-        ));
-      } else {
-        final ApiErrorModel apiErrorModel = ApiErrorModel.fromJson(res.error);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(apiErrorModel.message),
-        ));
-      }
-    } catch (e) {
-      print(e);
-    }
   }
 }
