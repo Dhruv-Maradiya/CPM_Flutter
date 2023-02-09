@@ -55,7 +55,7 @@ class ApiRequest {
 
   Future<ApiResponseModel> get() async {
     try {
-      var resp = await _dio().post(
+      var resp = await _dio().get(
         url,
         queryParameters: queryParameters,
       );

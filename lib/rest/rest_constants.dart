@@ -5,7 +5,7 @@ class RestConstants {
 
   /// Auth related API's urls
   static String studentSignIn = "$baseURL/v1/student/login";
-  static String studentSignUpIn = "$baseURL/v1/student/create";
+  static String studentSignUp = "$baseURL/v1/student";
   static String facultySignIn = "$baseURL/v1/faculty/login";
 
   // Branch related API's urls
