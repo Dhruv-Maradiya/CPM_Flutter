@@ -1,8 +1,9 @@
-import 'package:cpm/views/create_student_account/create_student_account_screen.dart';
-import 'package:cpm/views/sign_in_as_faculty/sign_in_as_faculty_screen.dart';
+import 'package:cpm/preference/shared_preference.dart';
+import 'package:cpm/views/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cpm/core/constants/string_constants.dart';
 import 'package:cpm/views/sign_in_as_student/sign_in_as_student_screen.dart';
+import 'package:get/route_manager.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,11 +15,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      darkTheme: ThemeData.light(),
-      title: StringConstants.appName,
-      home: const SignInAsStudentScreen(),
-    );
+    return GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        darkTheme: ThemeData.light(),
+        title: StringConstants.appName,
+        home: FutureBuilder(
+            future: SharedPreferencesClass.getSharePreference(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.data != null) {
+                  return const HomeScreen();
+                }
+              }
+              return const SignInAsStudentScreen();
+            }));
   }
 }

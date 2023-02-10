@@ -1,8 +1,11 @@
+import 'package:cpm/preference/shared_preference.dart';
 import 'package:cpm/rest/model/base_model.dart';
 import 'package:cpm/rest/rest_client.dart';
 import 'package:cpm/rest/rest_constants.dart';
 import 'package:cpm/views/create_student_account/models/get_branches_model.dart'
     as GetBranchesModel;
+import 'package:cpm/views/create_student_account/providers/create_student_provider.dart';
+import 'package:cpm/views/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,6 +13,7 @@ class CreateStudentAccountController extends GetxController {
   var branches = <GetBranchesModel.Datum>[].obs;
 
   RxBool isObscure = true.obs;
+  RxBool isLoading = false.obs;
   RxBool isBranchLoading = true.obs;
 
   int? selectedBranch;
@@ -30,27 +34,18 @@ class CreateStudentAccountController extends GetxController {
   }
 
   void getBranches() async {
-    ApiRequest request = ApiRequest(url: RestConstants.branchFindMany);
     isBranchLoading.value = true;
-    ApiResponseModel response = await request.get();
-
-    if (response.success) {
-      var data = GetBranchesModel.GetBranchesModel.fromJson(response.data).data;
-      branches.assignAll(data);
-      isBranchLoading.value = false;
-    } else {
-      final ApiErrorModel apiErrorModel =
-          ApiErrorModel.fromJson(response.error);
-      isBranchLoading.value = false;
-
-      Get.snackbar(apiErrorModel.message, '');
-
-      return null;
-    }
+    var response = await CreateStudentProvider().getBranches();
+    isBranchLoading.value = false;
+    if (response != null) {
+      branches.assignAll(response);
+    } else {}
   }
 
-  void submit() async {
-    ApiRequest request = ApiRequest(url: RestConstants.studentSignUp, data: {
+  void submit(BuildContext context) async {
+    isLoading.value = true;
+
+    var data = (await CreateStudentProvider().createStudent({
       "enrollmentNo": enrollmentNo.text,
       "name": name.text,
       "password": password.text,
@@ -58,20 +53,11 @@ class CreateStudentAccountController extends GetxController {
       "branchId": selectedBranch,
       "email": email.text,
       "number": phone.text,
-    });
-    isBranchLoading.value = true;
-    ApiResponseModel response = await request.post();
-
-    if (response.success) {
-      Get.snackbar("Success", '');
-    } else {
-      final ApiErrorModel apiErrorModel =
-          ApiErrorModel.fromJson(response.error);
-      isBranchLoading.value = false;
-
-      Get.snackbar(apiErrorModel.message, '');
-
-      return null;
-    }
+    }, context))!
+        .data;
+    isLoading.value = false;
+    SharedPreferencesClass.addSharePreference(
+        data.student.id, UserType.faculty, data.token);
+    Get.offAll(const HomeScreen());
   }
 }
