@@ -24,4 +24,21 @@ class AppUtils {
       )),
     );
   }
+
+  static List<Widget> buildCarousel(List<String> images) {
+    return images
+        .map(
+          (image) => Container(
+            margin: const EdgeInsets.symmetric(horizontal: 5),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(17),
+              image: DecorationImage(
+                image: NetworkImage(image),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        )
+        .toList();
+  }
 }
