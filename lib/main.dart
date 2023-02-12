@@ -19,17 +19,18 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       darkTheme: ThemeData.light(),
       title: StringConstants.appName,
-      home: FutureBuilder(
-        future: SharedPreferencesClass.getSharePreference(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.data != null) {
-              return const HomeScreen();
-            }
-          }
-          return const SignInAsStudentScreen();
-        },
-      ),
+      // home: FutureBuilder(
+      //   future: SharedPreferencesClass.getSharePreference(),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.done) {
+      //       if (snapshot.data != null) {
+      //         return const HomeScreen();
+      //       }
+      //     }
+      //     return const SignInAsStudentScreen();
+      //   },
+      // ),
+      home: const HomeScreen(),
     );
   }
 }

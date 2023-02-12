@@ -15,4 +15,9 @@ class Pallets {
 
   static const Color projectCardTitle = Color(0xFF606060);
   static const Color projectCardDescription = Color(0xFF6E6E6E);
+
+  static const Color dialogBlurBlackColor = Color(0xB3181818);
+  static const Color dialogBgColor = Color(0xFFCFCFCF);
+
+  static const Color white = Color(0xFFFFFFFF);
 }

@@ -1,5 +1,8 @@
 import 'package:cpm/core/constants/pallets.dart';
+import 'package:cpm/preference/shared_preference.dart';
+import 'package:cpm/utils/app_utils.dart';
 import 'package:cpm/views/home/controllers/home_screen_controller.dart';
+import 'package:cpm/views/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -7,7 +10,12 @@ import 'package:get/get.dart';
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final bool isHomeScreen;
   final String title;
-  CustomAppBar({Key? key, required this.isHomeScreen, required this.title})
+  final Color backgroundColor;
+  CustomAppBar(
+      {Key? key,
+      required this.isHomeScreen,
+      required this.title,
+      this.backgroundColor = Pallets.appBarColor})
       : super(key: key);
 
   HomeScreenController homeScreenController = HomeScreenController();
@@ -15,7 +23,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Pallets.appBarColor,
+      backgroundColor: backgroundColor,
       leading: Padding(
         padding: const EdgeInsets.only(left: 6),
         child: isHomeScreen
@@ -43,29 +51,35 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       elevation: 0,
       actions: isHomeScreen
           ? [
-              Obx(
-                () => homeScreenController.isNotifications.value
-                    ? IconButton(
-                        icon: const Icon(Icons.notifications),
-                        color: Pallets.primaryColor,
-                        iconSize: 30,
-                        onPressed: () => {
-                          homeScreenController.isNotifications.value =
-                              !homeScreenController.isNotifications.value
-                        },
-                      )
-                    : GestureDetector(
-                        onTap: () => {
-                          homeScreenController.isNotifications.value =
-                              !homeScreenController.isNotifications.value
-                        },
-                        child: Image.asset(
-                          'assets/images/active_notification.png',
-                        ),
-                      ),
-              ),
+              Obx(() => homeScreenController.isNotifications.value
+                  ? IconButton(
+                      icon: const Icon(Icons.notifications),
+                      color: Pallets.primaryColor,
+                      iconSize: 30,
+                      onPressed: () => {
+                        homeScreenController.isNotifications.value =
+                            !homeScreenController.isNotifications.value
+                      },
+                    )
+                  : IconButton(
+                      icon: const Icon(Icons.notifications_active),
+                      color: Pallets.primaryColor,
+                      iconSize: 30,
+                      onPressed: () => {
+                        homeScreenController.isNotifications.value =
+                            !homeScreenController.isNotifications.value
+                      },
+                    )),
               GestureDetector(
-                onTap: () => {},
+                onTap: () async {
+                  var result =
+                      await SharedPreferencesClass.getSharePreference();
+                  if (result != null) {
+                    Get.to(const ProfileScreen());
+                  } else {
+                    AppUtils.signInPopUp();
+                  }
+                },
                 child: Container(
                   margin: const EdgeInsets.only(
                       top: 8, right: 18, bottom: 8, left: 8),
@@ -74,13 +88,6 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                     borderRadius: BorderRadius.all(
                       Radius.circular(5),
                     ),
-                    // boxShadow: [
-                    //   BoxShadow(
-                    //       blurRadius: 4,
-                    //       spreadRadius: 0,
-                    //       offset: Offset(0, 4),
-                    //       color: Color.fromRGBO(0, 0, 0, 25))
-                    // ],
                   ),
                   child: Image.asset('assets/images/user.png'),
                 ),
