@@ -102,7 +102,7 @@ class HomeScreenWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Pallets.appBgColor,
-      appBar: CustomAppBar(),
+      appBar: CustomAppBar(isHomeScreen: true, title: 'Projectify'),
       drawer: const HomeScreenDrawer(),
       body: SafeArea(
         child: SingleChildScrollView(
