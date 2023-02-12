@@ -16,18 +16,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        darkTheme: ThemeData.light(),
-        title: StringConstants.appName,
-        home: FutureBuilder(
-            future: SharedPreferencesClass.getSharePreference(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.data != null) {
-                  return const HomeScreen();
-                }
-              }
-              return const SignInAsStudentScreen();
-            }));
+      debugShowCheckedModeBanner: false,
+      darkTheme: ThemeData.light(),
+      title: StringConstants.appName,
+      home: FutureBuilder(
+        future: SharedPreferencesClass.getSharePreference(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.data != null) {
+              return const HomeScreen();
+            }
+          }
+          return const SignInAsStudentScreen();
+        },
+      ),
+    );
   }
 }

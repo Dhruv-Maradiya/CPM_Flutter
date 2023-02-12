@@ -7,6 +7,44 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:get/get.dart';
 
+class Technology {
+  Technology({
+    required this.name,
+    required this.image,
+    required this.id,
+    required this.description,
+  });
+
+  final String name;
+  final String image;
+  final int id;
+  final String description;
+}
+
+class Member {
+  Member({
+    required this.name,
+    required this.image,
+    required this.enrollmentNo,
+    required this.branchName,
+  });
+
+  final String name;
+  final String image;
+  final String enrollmentNo;
+  final String branchName;
+}
+
+class Guide {
+  Guide({
+    required this.name,
+    required this.image,
+  });
+
+  final String name;
+  final String image;
+}
+
 // ignore: must_be_immutable
 class ProjectDetailsWidget extends StatelessWidget {
   ProjectDetailsWidget({super.key});
@@ -95,6 +133,7 @@ class ProjectDetailsWidget extends StatelessWidget {
                             fontSize: 14,
                           ),
                         ),
+                        // TECHNOLOGY STACK
                         const SizedBox(
                           height: 10,
                         ),
@@ -106,20 +145,124 @@ class ProjectDetailsWidget extends StatelessWidget {
                               color: Color(0xFF4F4F4F),
                               fontSize: 20),
                         ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildTechnologyWidget(
+                              technology: Technology(
+                                name: 'Flutter',
+                                image:
+                                    'https://branditechture.agency/brand-logos/wp-content/uploads/wpdm-cache/Flutter-900x0.png',
+                                id: 1,
+                                description:
+                                    'Flutter is a front-end framework for building user interfaces.',
+                              ),
+                            ),
+                            _buildTechnologyWidget(
+                              technology: Technology(
+                                name: 'Flutter',
+                                image:
+                                    'https://branditechture.agency/brand-logos/wp-content/uploads/wpdm-cache/Flutter-900x0.png',
+                                id: 1,
+                                description:
+                                    'Flutter is a front-end framework for building user interfaces.',
+                              ),
+                            ),
+                            _buildTechnologyWidget(
+                              technology: Technology(
+                                name: 'Flutter',
+                                image:
+                                    'https://branditechture.agency/brand-logos/wp-content/uploads/wpdm-cache/Flutter-900x0.png',
+                                id: 1,
+                                description:
+                                    'Flutter is a front-end framework for building user interfaces.',
+                              ),
+                            ),
+                          ],
+                        ),
+                        // MEMBERS
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(
-                          project.description,
+                        const Text(
+                          'Members:',
                           textAlign: TextAlign.start,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFF848484),
-                            fontSize: 14,
-                          ),
-                          // maxLines: 3,
-                          // overflow: TextOverflow.ellipsis,
-                        )
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF4F4F4F),
+                              fontSize: 20),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildMemberWidget(
+                              member: Member(
+                                name: 'Dhruv Maradiya',
+                                enrollmentNo: "206330307033",
+                                image:
+                                    "https://lh3.googleusercontent.com/ogw/AAEL6shsIrRSNdkUDGGD49ykhlSeJzrnWYNTYGfDVBLT=s64-c-mo",
+                                branchName: "CE",
+                              ),
+                            ),
+                            _buildMemberWidget(
+                              member: Member(
+                                name: 'Dhruv Maradiya',
+                                enrollmentNo: "206330307033",
+                                image: "",
+                                branchName: "CE",
+                              ),
+                            ),
+                            _buildMemberWidget(
+                              member: Member(
+                                name: 'Dhruv Maradiya',
+                                enrollmentNo: "206330307033",
+                                image:
+                                    "https://lh3.googleusercontent.com/ogw/AAEL6shsIrRSNdkUDGGD49ykhlSeJzrnWYNTYGfDVBLT=s64-c-mo",
+                                branchName: "CE",
+                              ),
+                            ),
+                            _buildMemberWidget(
+                              member: Member(
+                                name: 'Dhruv Maradiya',
+                                enrollmentNo: "206330307033",
+                                image:
+                                    "https://lh3.googleusercontent.com/ogw/AAEL6shsIrRSNdkUDGGD49ykhlSeJzrnWYNTYGfDVBLT=s64-c-mo",
+                                branchName: "CE",
+                              ),
+                            ),
+                          ],
+                        ),
+                        // Guides
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Text(
+                          'Guide:',
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF4F4F4F),
+                              fontSize: 20),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildGuideWidget(
+                              guide: Guide(
+                                name: 'Amit Shah',
+                                image:
+                                    "https://lh3.googleusercontent.com/ogw/AAEL6shsIrRSNdkUDGGD49ykhlSeJzrnWYNTYGfDVBLT=s64-c-mo",
+                              ),
+                            ),
+                            _buildGuideWidget(
+                              guide: Guide(
+                                name: 'Amit Shah',
+                                image:
+                                    "https://lh3.googleusercontent.com/ogw/AAEL6shsIrRSNdkUDGGD49ykhlSeJzrnWYNTYGfDVBLT=s64-c-mo",
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -128,6 +271,192 @@ class ProjectDetailsWidget extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildTechnologyWidget({required Technology technology}) {
+    return Container(
+      margin: const EdgeInsets.only(top: 15),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+        border: Border.all(
+          color: Colors.black,
+          width: 0.2,
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.network(technology.image, width: 40, height: 40),
+          const SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  technology.name,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF575757),
+                  ),
+                ),
+                Text(
+                  technology.description,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  style: const TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMemberWidget({required Member member}) {
+    return Container(
+      margin: const EdgeInsets.only(top: 15),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+        border: Border.all(
+          color: Colors.black,
+          width: 0.2,
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          member.image.isNotEmpty
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Image.network(
+                    member.image,
+                    width: 40,
+                    height: 40,
+                  ),
+                )
+              : Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.black,
+                  ),
+                  width: 40,
+                  height: 40,
+                  child: Center(
+                    child: Image.asset('assets/images/user.png'),
+                  ),
+                ),
+          const SizedBox(
+            width: 15,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  member.name,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF575757),
+                  ),
+                ),
+                Text(
+                  member.enrollmentNo,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  style: const TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Text(
+            member.branchName,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: Colors.black,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGuideWidget({required Guide guide}) {
+    return Container(
+      margin: const EdgeInsets.only(top: 15),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.25),
+            offset: const Offset(0, 2),
+            blurRadius: 4,
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          guide.image.isNotEmpty
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Image.network(
+                    guide.image,
+                    width: 40,
+                    height: 40,
+                  ),
+                )
+              : Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.black,
+                  ),
+                  width: 40,
+                  height: 40,
+                  child: Center(
+                    child: Image.asset('assets/images/user.png'),
+                  ),
+                ),
+          const SizedBox(
+            width: 15,
+          ),
+          Expanded(
+            child: Text(
+              guide.name,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF575757),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
