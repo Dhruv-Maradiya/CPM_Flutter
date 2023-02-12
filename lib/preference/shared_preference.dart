@@ -26,6 +26,11 @@ class SharedPreferencesClass {
     preference.setString('token', token);
   }
 
+  static clearDataForLogout() async {
+    var preference = await SharedPreferences.getInstance();
+    preference.clear();
+  }
+
   static Future<UserReturn?> getSharePreference() async {
     SharedPreferences preference = await SharedPreferences.getInstance();
     int? userId = preference.getInt('userId');

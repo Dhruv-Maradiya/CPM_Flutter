@@ -10,6 +10,9 @@ class Pallets {
   static const Color searchBarColor = Color(0xffF6F6F6);
   static const Color appBgColor = Color(0xffEEECED);
 
+  static const Color textFieldHelperTextDisabledColor = Color(0xFF949494);
+  static const Color textFieldHelperTextColor = Color(0xFF313131);
+
   static const Color homeFilterSelectedColor = Color(0xFF474747);
   static const Color homeFilterNonSelectedColor = Color(0xFFD6D6D6);
 
@@ -20,4 +23,6 @@ class Pallets {
   static const Color dialogBgColor = Color(0xFFCFCFCF);
 
   static const Color white = Color(0xFFFFFFFF);
+
+  static const Color orange = Color(0xFFF67C15);
 }

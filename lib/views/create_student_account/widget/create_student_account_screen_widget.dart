@@ -400,7 +400,8 @@ class CreateStudentAccountScreenWidget extends StatelessWidget {
                                         //     return isValid ? null : msg;
                                         //   },
                                         // ),
-                                        SelectBranchDropDownState()
+                                        SelectBranchDropDownState(
+                                            isDisabled: false),
                                       ],
                                     ),
                                   ),

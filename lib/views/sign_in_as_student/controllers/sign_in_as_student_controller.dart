@@ -27,7 +27,7 @@ class SignInAsStudentController extends GetxController {
           .data;
       isLoading.value = false;
       SharedPreferencesClass.addSharePreference(
-          data.userId, UserType.faculty, data.token);
+          data.userId, UserType.student, data.token);
       Get.offAll(const HomeScreen());
     } catch (e) {}
   }

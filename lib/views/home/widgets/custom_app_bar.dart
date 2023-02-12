@@ -11,12 +11,14 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final bool isHomeScreen;
   final String title;
   final Color backgroundColor;
-  CustomAppBar(
-      {Key? key,
-      required this.isHomeScreen,
-      required this.title,
-      this.backgroundColor = Pallets.appBarColor})
-      : super(key: key);
+  final List<Widget> actions;
+  CustomAppBar({
+    Key? key,
+    required this.isHomeScreen,
+    required this.title,
+    this.backgroundColor = Pallets.appBarColor,
+    this.actions = const [],
+  }) : super(key: key);
 
   HomeScreenController homeScreenController = HomeScreenController();
 
@@ -75,7 +77,11 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                   var result =
                       await SharedPreferencesClass.getSharePreference();
                   if (result != null) {
-                    Get.to(const ProfileScreen());
+                    Get.to(
+                      ProfileScreen(
+                        type: result.userType,
+                      ),
+                    );
                   } else {
                     AppUtils.signInPopUp();
                   }
@@ -93,7 +99,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                 ),
               )
             ]
-          : [],
+          : actions,
     );
   }
 

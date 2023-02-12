@@ -1,5 +1,6 @@
 import 'package:cpm/core/constants/pallets.dart';
 import 'package:cpm/views/create_student_account/controllers/create_student_account_controller.dart';
+import 'package:cpm/views/profile/widgets/profile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -9,7 +10,9 @@ class SelectBranchDropDownState extends StatelessWidget {
   final CreateStudentAccountController getBranchController =
       Get.put(CreateStudentAccountController());
 
-  SelectBranchDropDownState({super.key});
+  bool isDisabled = false;
+
+  SelectBranchDropDownState({super.key, required this.isDisabled});
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +43,11 @@ class SelectBranchDropDownState extends StatelessWidget {
             ),
           ),
         ),
-        onChanged: (String? value) {
-          getBranchController.selectedBranch = int.parse(value!);
-        },
+        onChanged: isDisabled
+            ? null
+            : (String? value) {
+                getBranchController.selectedBranch = int.parse(value!);
+              },
         hint: const Text("Branch"),
         items: getBranchController.branches.isNotEmpty
             ? getBranchController.branches.map(
