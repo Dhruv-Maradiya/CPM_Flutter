@@ -1,9 +1,9 @@
-import 'package:cpm/core/constants/pallets.dart';
-import 'package:cpm/core/extensions/valid_email.dart';
-import 'package:cpm/utils/app_utils.dart';
-import 'package:cpm/views/create_student_account/widget/create_student_select_branch.dart';
-import 'package:cpm/views/home/widgets/custom_app_bar.dart';
-import 'package:cpm/views/profile/controllers/profile_controller.dart';
+import 'package:projectify/core/constants/pallets.dart';
+import 'package:projectify/core/extensions/valid_email.dart';
+import 'package:projectify/utils/app_utils.dart';
+import 'package:projectify/views/create_student_account/widget/create_student_select_branch.dart';
+import 'package:projectify/views/home/widgets/custom_app_bar.dart';
+import 'package:projectify/views/profile/controllers/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';

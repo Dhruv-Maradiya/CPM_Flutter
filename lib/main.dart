@@ -1,8 +1,8 @@
-import 'package:cpm/preference/shared_preference.dart';
-import 'package:cpm/views/home/home_screen.dart';
+import 'package:projectify/preference/shared_preference.dart';
+import 'package:projectify/views/home/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:cpm/core/constants/string_constants.dart';
-import 'package:cpm/views/sign_in_as_student/sign_in_as_student_screen.dart';
+import 'package:projectify/core/constants/string_constants.dart';
+import 'package:projectify/views/sign_in_as_student/sign_in_as_student_screen.dart';
 import 'package:get/route_manager.dart';
 
 void main() {

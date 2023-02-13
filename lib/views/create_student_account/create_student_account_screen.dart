@@ -1,4 +1,4 @@
-import 'package:cpm/views/create_student_account/widget/create_student_account_screen_widget.dart';
+import 'package:projectify/views/create_student_account/widget/create_student_account_screen_widget.dart';
 import 'package:flutter/material.dart';
 
 class CreateStudentAccountScreen extends StatelessWidget {

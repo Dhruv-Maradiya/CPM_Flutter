@@ -1,4 +1,4 @@
-# cpm
+# projectify
 
 A new Flutter project.
 

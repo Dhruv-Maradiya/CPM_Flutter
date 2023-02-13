@@ -1,8 +1,8 @@
-import 'package:cpm/core/constants/pallets.dart';
-import 'package:cpm/utils/app_utils.dart';
-import 'package:cpm/views/home/widgets/custom_app_bar.dart';
-import 'package:cpm/views/home/widgets/home_screen_drawer.dart';
-import 'package:cpm/views/home/widgets/home_screen_widget.dart';
+import 'package:projectify/core/constants/pallets.dart';
+import 'package:projectify/utils/app_utils.dart';
+import 'package:projectify/views/home/widgets/custom_app_bar.dart';
+import 'package:projectify/views/home/widgets/home_screen_drawer.dart';
+import 'package:projectify/views/home/widgets/home_screen_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 

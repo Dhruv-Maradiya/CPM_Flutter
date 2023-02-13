@@ -1,4 +1,4 @@
-import 'package:cpm/core/constants/pallets.dart';
+import 'package:projectify/core/constants/pallets.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreenDrawer extends StatelessWidget {

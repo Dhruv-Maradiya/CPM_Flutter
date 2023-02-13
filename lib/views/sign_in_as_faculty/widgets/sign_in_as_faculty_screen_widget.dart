@@ -1,7 +1,7 @@
-import 'package:cpm/core/constants/pallets.dart';
-import 'package:cpm/utils/app_utils.dart';
-import 'package:cpm/views/sign_in_as_faculty/controllers/sign_in_as_faculty_controller.dart';
-import 'package:cpm/views/sign_in_as_student/sign_in_as_student_screen.dart';
+import 'package:projectify/core/constants/pallets.dart';
+import 'package:projectify/utils/app_utils.dart';
+import 'package:projectify/views/sign_in_as_faculty/controllers/sign_in_as_faculty_controller.dart';
+import 'package:projectify/views/sign_in_as_student/sign_in_as_student_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

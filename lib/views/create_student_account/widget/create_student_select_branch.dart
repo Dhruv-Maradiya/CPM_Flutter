@@ -1,6 +1,6 @@
-import 'package:cpm/core/constants/pallets.dart';
-import 'package:cpm/views/create_student_account/controllers/create_student_account_controller.dart';
-import 'package:cpm/views/profile/widgets/profile_widget.dart';
+import 'package:projectify/core/constants/pallets.dart';
+import 'package:projectify/views/create_student_account/controllers/create_student_account_controller.dart';
+import 'package:projectify/views/profile/widgets/profile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';

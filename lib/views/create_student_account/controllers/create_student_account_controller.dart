@@ -1,11 +1,11 @@
-import 'package:cpm/preference/shared_preference.dart';
-import 'package:cpm/rest/model/base_model.dart';
-import 'package:cpm/rest/rest_client.dart';
-import 'package:cpm/rest/rest_constants.dart';
-import 'package:cpm/views/create_student_account/models/get_branches_model.dart'
+import 'package:projectify/preference/shared_preference.dart';
+import 'package:projectify/rest/model/base_model.dart';
+import 'package:projectify/rest/rest_client.dart';
+import 'package:projectify/rest/rest_constants.dart';
+import 'package:projectify/views/create_student_account/models/get_branches_model.dart'
     as GetBranchesModel;
-import 'package:cpm/views/create_student_account/providers/create_student_provider.dart';
-import 'package:cpm/views/home/home_screen.dart';
+import 'package:projectify/views/create_student_account/providers/create_student_provider.dart';
+import 'package:projectify/views/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

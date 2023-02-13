@@ -1,4 +1,4 @@
-import 'package:cpm/views/home/widgets/custom_app_bar.dart';
+import 'package:projectify/views/home/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class NotificationWidget extends StatelessWidget {
