@@ -60,6 +60,7 @@ class ProjectDetailsWidget extends StatelessWidget {
       appBar: CustomAppBar(isHomeScreen: false, title: "Project"),
       drawer: const HomeScreenDrawer(),
       body: SafeArea(
+        bottom: false,
         child: SingleChildScrollView(
           child: Container(
             decoration: const BoxDecoration(

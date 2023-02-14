@@ -105,6 +105,7 @@ class HomeScreenWidget extends StatelessWidget {
       appBar: CustomAppBar(isHomeScreen: true, title: 'Projectify'),
       drawer: const HomeScreenDrawer(),
       body: SafeArea(
+        bottom: false,
         child: SingleChildScrollView(
           child: Container(
             color: Pallets.appBgColor,
@@ -224,7 +225,7 @@ class HomeScreenWidget extends StatelessWidget {
             color: Pallets.scaffoldBgColor,
             boxShadow: const [
               BoxShadow(
-                offset: Offset(0, 4),
+                offset: Offset(0, 2),
                 blurRadius: 4,
                 spreadRadius: 0,
                 color: Color.fromRGBO(0, 0, 0, 0.25),
@@ -243,7 +244,7 @@ class HomeScreenWidget extends StatelessWidget {
                 CarouselSlider(
                   items: AppUtils.buildCarousel(project.images),
                   options: CarouselOptions(
-                    aspectRatio: 16 / 11,
+                    aspectRatio: 16 / 12,
                     autoPlay: true,
                     enableInfiniteScroll: true,
                     autoPlayCurve: Curves.fastOutSlowIn,

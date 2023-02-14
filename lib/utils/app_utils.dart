@@ -53,10 +53,11 @@ class AppUtils {
                       margin: const EdgeInsets.only(top: 35),
                       padding: const EdgeInsets.all(30),
                       decoration: const BoxDecoration(
-                          color: Pallets.dialogBgColor,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(12),
-                          )),
+                        color: Pallets.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12),
+                        ),
+                      ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,

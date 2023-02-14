@@ -19,6 +19,7 @@ class SignInAsFacultyScreenWidget extends StatelessWidget {
         Scaffold(
           backgroundColor: Pallets.scaffoldBgColor,
           body: SafeArea(
+            bottom: false,
             child: SingleChildScrollView(
               child: Stack(
                 children: [

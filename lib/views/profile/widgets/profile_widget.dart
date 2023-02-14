@@ -40,6 +40,7 @@ class ProfileWidget extends StatelessWidget {
       ),
       backgroundColor: Pallets.appBgColor,
       body: SafeArea(
+        bottom: false,
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
