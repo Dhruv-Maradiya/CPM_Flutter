@@ -1,4 +1,4 @@
-import 'package:cpm/views/notification/widgets/notification_widget.dart';
+import 'package:projectify/views/notification/widgets/notification_widget.dart';
 import 'package:flutter/material.dart';
 
 class NotificationScreen extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:cpm/core/constants/pallets.dart';
+import 'package:projectify/core/constants/pallets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -44,7 +44,6 @@ SizedBox(height: 50,),
 
 
       ]));
-
 
 
   }

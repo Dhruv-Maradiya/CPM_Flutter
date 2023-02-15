@@ -1,7 +1,7 @@
-import 'package:cpm/rest/model/base_model.dart';
-import 'package:cpm/rest/rest_client.dart';
-import 'package:cpm/rest/rest_constants.dart';
-import 'package:cpm/views/sign_in_as_faculty/models/sign_in_as_faculty_model.dart';
+import 'package:projectify/rest/model/base_model.dart';
+import 'package:projectify/rest/rest_client.dart';
+import 'package:projectify/rest/rest_constants.dart';
+import 'package:projectify/views/sign_in_as_faculty/models/sign_in_as_faculty_model.dart';
 import 'package:flutter/material.dart';
 
 class SignInAsFacultyProvider {

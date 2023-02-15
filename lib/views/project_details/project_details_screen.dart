@@ -1,4 +1,4 @@
-import 'package:cpm/views/project_details/widgets/project_details_screen_widget.dart';
+import 'package:projectify/views/project_details/widgets/project_details_screen_widget.dart';
 import 'package:flutter/material.dart';
 
 class ProjectDetailsScreen extends StatelessWidget {

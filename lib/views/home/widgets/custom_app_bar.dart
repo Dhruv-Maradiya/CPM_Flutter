@@ -1,8 +1,8 @@
-import 'package:cpm/core/constants/pallets.dart';
-import 'package:cpm/preference/shared_preference.dart';
-import 'package:cpm/utils/app_utils.dart';
-import 'package:cpm/views/home/controllers/home_screen_controller.dart';
-import 'package:cpm/views/profile/profile_screen.dart';
+import 'package:projectify/core/constants/pallets.dart';
+import 'package:projectify/preference/shared_preference.dart';
+import 'package:projectify/utils/app_utils.dart';
+import 'package:projectify/views/home/controllers/home_screen_controller.dart';
+import 'package:projectify/views/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

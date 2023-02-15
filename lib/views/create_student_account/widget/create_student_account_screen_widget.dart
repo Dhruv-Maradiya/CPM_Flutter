@@ -1,10 +1,10 @@
-import 'package:cpm/core/constants/pallets.dart';
-import 'package:cpm/utils/app_utils.dart';
-import 'package:cpm/views/create_student_account/controllers/create_student_account_controller.dart';
-import 'package:cpm/views/create_student_account/widget/create_student_select_branch.dart';
-import 'package:cpm/views/sign_in_as_student/sign_in_as_student_screen.dart';
+import 'package:projectify/core/constants/pallets.dart';
+import 'package:projectify/utils/app_utils.dart';
+import 'package:projectify/views/create_student_account/controllers/create_student_account_controller.dart';
+import 'package:projectify/views/create_student_account/widget/create_student_select_branch.dart';
+import 'package:projectify/views/sign_in_as_student/sign_in_as_student_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:cpm/core/extensions/valid_email.dart';
+import 'package:projectify/core/extensions/valid_email.dart';
 import 'package:get/get.dart';
 
 // ignore: must_be_immutable
@@ -23,6 +23,7 @@ class CreateStudentAccountScreenWidget extends StatelessWidget {
         Scaffold(
           backgroundColor: Pallets.scaffoldBgColor,
           body: SafeArea(
+            bottom: false,
             child: SingleChildScrollView(
               child: Stack(
                 children: [
