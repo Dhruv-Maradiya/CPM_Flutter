@@ -8,12 +8,15 @@ class HomeScreenController extends GetxController {
 
   TextEditingController searchController = TextEditingController();
 
-  Rx<HomeScreenModel?> homeScreenModel = null.obs;
+  RxBool isLoading = false.obs;
+  HomeScreenModel? homeScreenModel;
 
   @override
   void onInit() async {
+    isLoading.value = true;
     var data = await HomeScreenProvider().fetch(null);
-    homeScreenModel.value = data;
+    isLoading.value = false;
+    homeScreenModel = data;
     super.onInit();
   }
 }

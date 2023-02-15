@@ -177,8 +177,16 @@ class HomeScreenWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Column(
-                    children: _buildProjects(),
+                  Obx(
+                    () => _homeScreenController.isLoading.value == true
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              color: Pallets.primaryColor,
+                            ),
+                          )
+                        : Column(
+                            children: _buildProjects(),
+                          ),
                   ),
                 ],
               ),
@@ -214,7 +222,10 @@ class HomeScreenWidget extends StatelessWidget {
   }
 
   List<Widget> _buildProjects() {
-    return projects.map((project) {
+    if (_homeScreenController.homeScreenModel?.data == null) {
+      return [];
+    }
+    return _homeScreenController.homeScreenModel!.data.projects.map((project) {
       return GestureDetector(
         onTap: () => {
           Get.to(const ProjectDetailsScreen(), arguments: {"project": project}),
@@ -242,7 +253,9 @@ class HomeScreenWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CarouselSlider(
-                  items: AppUtils.buildCarousel(project.images),
+                  items: AppUtils.buildCarousel(
+                    project.media.map((e) => e.url).toList(),
+                  ),
                   options: CarouselOptions(
                     aspectRatio: 16 / 12,
                     autoPlay: true,
@@ -267,7 +280,7 @@ class HomeScreenWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            project.title,
+                            project.name,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
