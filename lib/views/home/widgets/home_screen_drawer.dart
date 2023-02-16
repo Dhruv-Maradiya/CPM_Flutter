@@ -1,43 +1,46 @@
 import 'package:projectify/core/constants/pallets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 
 class HomeScreenDrawer extends StatelessWidget {
-
-
   const HomeScreenDrawer({super.key});
+
   @override
   Widget build(BuildContext context) {
-
     return Drawer(
-
+      width: MediaQuery.of(context).size.width * 0.65,
       child: SafeArea(
         bottom: false,
-
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-SizedBox(height: 20,),
+            SizedBox(
+              height: 5,
+            ),
             ListTile(
               leading: Container(
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Pallets.secondaryColor,
                 ),
-
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Image.asset(
-                    'assets/images/menu_icon.png',
-                    height: 30,
-                    width: 30,
+                  child: GestureDetector(
+                    onTap: () {
+                      Scaffold.of(context).closeDrawer();
+                    },
+                    child: Image.asset(
+                      'assets/images/menu_icon.png',
+                      height: 30,
+                      width: 30,
+
+                    ),
                   ),
+
                 ),
               ),
-
             ),
-SizedBox(height: 30,),
+            SizedBox(
+              height: 30,
+            ),
             ListTile(
               leading: Container(
                 decoration: const BoxDecoration(
@@ -62,7 +65,9 @@ SizedBox(height: 30,),
                 ),
               ),
             ),
-            // Groups
+            SizedBox(
+              height: 10,
+            ),
             ListTile(
               leading: Container(
                 decoration: const BoxDecoration(
@@ -88,6 +93,10 @@ SizedBox(height: 30,),
               ),
             ),
             // Students
+
+            SizedBox(
+              height: 12,
+            ),
             ListTile(
               leading: Container(
                 decoration: const BoxDecoration(
@@ -113,6 +122,9 @@ SizedBox(height: 30,),
               ),
             ),
             // Faculties
+            SizedBox(
+              height: 12,
+            ),
             ListTile(
               leading: Container(
                 decoration: const BoxDecoration(
@@ -138,6 +150,9 @@ SizedBox(height: 30,),
               ),
             ),
             // Branches
+            SizedBox(
+              height: 12,
+            ),
             ListTile(
               leading: Container(
                 decoration: const BoxDecoration(
@@ -162,6 +177,9 @@ SizedBox(height: 30,),
                 ),
               ),
             ),
+            SizedBox(
+              height: 12,
+            ),
             ListTile(
               leading: Container(
                 decoration: const BoxDecoration(
@@ -175,7 +193,6 @@ SizedBox(height: 30,),
                     height: 30,
                     width: 30,
                   ),
-
                 ),
               ),
               title: const Text(
@@ -186,10 +203,11 @@ SizedBox(height: 30,),
                   color: Pallets.primaryColor,
                 ),
               ),
-
-
-            ),//
-             ListTile(
+            ), //
+            SizedBox(
+              height: 12,
+            ),
+            ListTile(
               leading: Container(
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
@@ -214,12 +232,10 @@ SizedBox(height: 30,),
               ),
             ),
             // Academics
-
             // Categories
-
-    ],
+          ],
         ),
       ),
     );
   }
-  }
+}
