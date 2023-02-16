@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:projectify/rest/rest_constants.dart';
+
 HomeScreenModel homeScreenModelFromJson(String str) =>
     HomeScreenModel.fromJson(json.decode(str));
 
@@ -190,7 +192,7 @@ class Technology {
   factory Technology.fromJson(Map<String, dynamic> json) => Technology(
         id: json["id"],
         name: json["name"],
-        logo: json["logo"],
+        logo: "${RestConstants.public}/images/${json['logo']}",
         description: json["description"],
         url: json["url"],
         createdAt: DateTime.parse(json["createdAt"]),
@@ -246,6 +248,7 @@ class Media {
     this.isReviewed,
     this.reviewedBy,
     required this.createdAt,
+    required this.url,
   });
 
   int id;
@@ -256,6 +259,7 @@ class Media {
   bool? isReviewed;
   int? reviewedBy;
   DateTime createdAt;
+  String url;
 
   factory Media.fromJson(Map<String, dynamic> json) => Media(
         id: json["id"],
@@ -266,6 +270,7 @@ class Media {
         isReviewed: json["isReviewed"],
         reviewedBy: json["reviewedBy"],
         createdAt: DateTime.parse(json["createdAt"]),
+        url: "${RestConstants.public}/images/${json['identifier']}",
       );
 
   Map<String, dynamic> toJson() => {
