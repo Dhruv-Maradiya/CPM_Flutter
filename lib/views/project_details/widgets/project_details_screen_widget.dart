@@ -58,7 +58,7 @@ class ProjectDetailsWidget extends StatelessWidget {
     return Scaffold(
       backgroundColor: Pallets.appBgColor,
       appBar: CustomAppBar(isHomeScreen: false, title: "Project"),
-      drawer: const HomeScreenDrawer(),
+      drawer: HomeScreenDrawer(),
       body: SafeArea(
         bottom: false,
         child: SingleChildScrollView(
