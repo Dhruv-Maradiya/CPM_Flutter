@@ -1,8 +1,8 @@
-import 'package:cpm/core/constants/pallets.dart';
-import 'package:cpm/utils/app_utils.dart';
-import 'package:cpm/views/home/widgets/custom_app_bar.dart';
-import 'package:cpm/views/home/widgets/home_screen_drawer.dart';
-import 'package:cpm/views/home/widgets/home_screen_widget.dart';
+import 'package:projectify/core/constants/pallets.dart';
+import 'package:projectify/utils/app_utils.dart';
+import 'package:projectify/views/home/models/home_screen_model.dart';
+import 'package:projectify/views/home/widgets/custom_app_bar.dart';
+import 'package:projectify/views/home/widgets/home_screen_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -58,8 +58,9 @@ class ProjectDetailsWidget extends StatelessWidget {
     return Scaffold(
       backgroundColor: Pallets.appBgColor,
       appBar: CustomAppBar(isHomeScreen: false, title: "Project"),
-      drawer: const HomeScreenDrawer(),
+      drawer: HomeScreenDrawer(),
       body: SafeArea(
+        bottom: false,
         child: SingleChildScrollView(
           child: Container(
             decoration: const BoxDecoration(
@@ -71,7 +72,8 @@ class ProjectDetailsWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CarouselSlider(
-                    items: AppUtils.buildCarousel(project.images),
+                    items: AppUtils.buildCarousel(
+                        project.media.map((e) => e.url).toList()),
                     options: CarouselOptions(
                       aspectRatio: 16 / 11,
                       autoPlay: true,
@@ -95,7 +97,7 @@ class ProjectDetailsWidget extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              project.title,
+                              project.name,
                               style: const TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 26,
@@ -149,38 +151,7 @@ class ProjectDetailsWidget extends StatelessWidget {
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildTechnologyWidget(
-                              technology: Technology(
-                                name: 'Flutter',
-                                image:
-                                    'https://branditechture.agency/brand-logos/wp-content/uploads/wpdm-cache/Flutter-900x0.png',
-                                id: 1,
-                                description:
-                                    'Flutter is a front-end framework for building user interfaces.',
-                              ),
-                            ),
-                            _buildTechnologyWidget(
-                              technology: Technology(
-                                name: 'Flutter',
-                                image:
-                                    'https://branditechture.agency/brand-logos/wp-content/uploads/wpdm-cache/Flutter-900x0.png',
-                                id: 1,
-                                description:
-                                    'Flutter is a front-end framework for building user interfaces.',
-                              ),
-                            ),
-                            _buildTechnologyWidget(
-                              technology: Technology(
-                                name: 'Flutter',
-                                image:
-                                    'https://branditechture.agency/brand-logos/wp-content/uploads/wpdm-cache/Flutter-900x0.png',
-                                id: 1,
-                                description:
-                                    'Flutter is a front-end framework for building user interfaces.',
-                              ),
-                            ),
-                          ],
+                          children: _buildTechnologyStack(project),
                         ),
                         // MEMBERS
                         const SizedBox(
@@ -273,56 +244,6 @@ class ProjectDetailsWidget extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildTechnologyWidget({required Technology technology}) {
-    return Container(
-      margin: const EdgeInsets.only(top: 15),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.white,
-        border: Border.all(
-          color: Colors.black,
-          width: 0.2,
-        ),
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.network(technology.image, width: 40, height: 40),
-          const SizedBox(
-            width: 10,
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  technology.name,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF575757),
-                  ),
-                ),
-                Text(
-                  technology.description,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  softWrap: false,
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -456,6 +377,82 @@ class ProjectDetailsWidget extends StatelessWidget {
                 fontWeight: FontWeight.w600,
                 color: Color(0xFF575757),
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _buildTechnologyStack(Project project) {
+    return [
+      _buildTechnologyWidget(
+          technology: Technology(
+        name: project.frontendTechnology.name,
+        image: project.frontendTechnology.logo,
+        id: project.frontendTechnology.id,
+        description: project.frontendTechnology.description,
+      )),
+      _buildTechnologyWidget(
+          technology: Technology(
+        name: project.backendTechnology.name,
+        image: project.backendTechnology.logo,
+        id: project.backendTechnology.id,
+        description: project.backendTechnology.description,
+      )),
+      _buildTechnologyWidget(
+          technology: Technology(
+        name: project.databaseTechnology.name,
+        image: project.databaseTechnology.logo,
+        id: project.databaseTechnology.id,
+        description: project.databaseTechnology.description,
+      )),
+    ];
+  }
+
+  Widget _buildTechnologyWidget({required Technology technology}) {
+    return Container(
+      margin: const EdgeInsets.only(top: 15),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+        border: Border.all(
+          color: Colors.black,
+          width: 0.2,
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.network(technology.image, width: 40, height: 40),
+          const SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  technology.name,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF575757),
+                  ),
+                ),
+                Text(
+                  technology.description,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  style: const TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
             ),
           ),
         ],

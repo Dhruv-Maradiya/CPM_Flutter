@@ -1,7 +1,7 @@
-import 'package:cpm/core/constants/pallets.dart';
-import 'package:cpm/preference/shared_preference.dart';
-import 'package:cpm/views/home/home_screen.dart';
-import 'package:cpm/views/sign_in_as_student/sign_in_as_student_screen.dart';
+import 'package:projectify/core/constants/pallets.dart';
+import 'package:projectify/preference/shared_preference.dart';
+import 'package:projectify/views/home/home_screen.dart';
+import 'package:projectify/views/sign_in_as_student/sign_in_as_student_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -53,10 +53,11 @@ class AppUtils {
                       margin: const EdgeInsets.only(top: 35),
                       padding: const EdgeInsets.all(30),
                       decoration: const BoxDecoration(
-                          color: Pallets.dialogBgColor,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(12),
-                          )),
+                        color: Pallets.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12),
+                        ),
+                      ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,

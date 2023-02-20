@@ -1,4 +1,4 @@
-package com.example.cpm
+package com.example.projectify
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:cpm/rest/model/base_model.dart';
-import 'package:cpm/rest/rest_constants.dart';
+import 'package:projectify/rest/model/base_model.dart';
+import 'package:projectify/rest/rest_constants.dart';
 import 'package:dio/dio.dart';
 
 class ApiRequest {

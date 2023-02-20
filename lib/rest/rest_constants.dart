@@ -1,5 +1,6 @@
 class RestConstants {
   static String baseURL = "http://193.168.195.86:3002/api";
+  static String public = "http://193.168.195.86:3002/public";
   // static String baseURL = "http://192.168.1.15:3002/api";
   // static String baseURL = "https://mypredict11.com";
 
@@ -10,4 +11,6 @@ class RestConstants {
 
   // Branch related API's urls
   static String branchFindMany = "$baseURL/v1/branch/findMany";
+
+  static String homeScreen = "$baseURL/v1/home";
 }

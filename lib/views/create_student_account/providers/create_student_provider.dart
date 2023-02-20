@@ -1,8 +1,8 @@
-import 'package:cpm/rest/model/base_model.dart';
-import 'package:cpm/rest/rest_client.dart';
-import 'package:cpm/rest/rest_constants.dart';
-import 'package:cpm/views/create_student_account/models/create_student_model.dart';
-import 'package:cpm/views/create_student_account/models/get_branches_model.dart';
+import 'package:projectify/rest/model/base_model.dart';
+import 'package:projectify/rest/rest_client.dart';
+import 'package:projectify/rest/rest_constants.dart';
+import 'package:projectify/views/create_student_account/models/create_student_model.dart';
+import 'package:projectify/views/create_student_account/models/get_branches_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 

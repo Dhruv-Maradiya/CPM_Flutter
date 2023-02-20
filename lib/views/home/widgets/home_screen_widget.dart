@@ -1,10 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:cpm/core/constants/pallets.dart';
-import 'package:cpm/utils/app_utils.dart';
-import 'package:cpm/views/home/controllers/home_screen_controller.dart';
-import 'package:cpm/views/home/widgets/custom_app_bar.dart';
-import 'package:cpm/views/home/widgets/home_screen_drawer.dart';
-import 'package:cpm/views/project_details/project_details_screen.dart';
+import 'package:projectify/core/constants/pallets.dart';
+import 'package:projectify/utils/app_utils.dart';
+import 'package:projectify/views/home/controllers/home_screen_controller.dart';
+import 'package:projectify/views/home/widgets/custom_app_bar.dart';
+import 'package:projectify/views/home/widgets/home_screen_drawer.dart';
+import 'package:projectify/views/project_details/project_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -103,86 +103,100 @@ class HomeScreenWidget extends StatelessWidget {
     return Scaffold(
       backgroundColor: Pallets.appBgColor,
       appBar: CustomAppBar(isHomeScreen: true, title: 'Projectify'),
-      drawer: const HomeScreenDrawer(),
+      drawer: HomeScreenDrawer(),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            color: Pallets.appBgColor,
-            child: Padding(
-              padding: const EdgeInsets.all(20),
+        bottom: false,
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Column(
-                    children: [
-                      Material(
-                        elevation: 2.5,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
-                        child: TextField(
-                          controller: _homeScreenController.searchController,
-                          decoration: const InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: Pallets.primaryColor,
-                            ),
-                            fillColor: Pallets.searchBarColor,
-                            filled: true,
-                            hintText: 'Search',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              borderSide: BorderSide.none,
-                            ),
-                            focusColor: Pallets.primaryColor,
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              borderSide: BorderSide.none,
-                            ),
-                            disabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              borderSide: BorderSide.none,
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              borderSide: BorderSide.none,
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              borderSide: BorderSide.none,
-                            ),
+                  Material(
+                    elevation: 2.5,
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    child: TextField(
+                      controller: _homeScreenController.searchController,
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Pallets.primaryColor,
+                        ),
+                        fillColor: Pallets.searchBarColor,
+                        filled: true,
+                        hintText: 'Search',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
                           ),
-                          cursorColor: Pallets.primaryColor,
-                          keyboardType: TextInputType.text,
+                          borderSide: BorderSide.none,
+                        ),
+                        focusColor: Pallets.primaryColor,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide.none,
+                        ),
+                        disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide.none,
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: _buildFilters(),
-                        ),
-                      ),
-                    ],
+                      cursorColor: Pallets.primaryColor,
+                      keyboardType: TextInputType.text,
+                    ),
                   ),
-                  Column(
-                    children: _buildProjects(),
+                  Obx(
+                    () => _homeScreenController.isLoading.value == true
+                        ? const SizedBox.shrink()
+                        : Column(
+                            children: [
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: _buildFilters(),
+                                ),
+                              ),
+                              ..._buildProjects(),
+                            ],
+                          ),
                   ),
                 ],
               ),
             ),
-          ),
+            Obx(
+              () => _homeScreenController.isLoading.value == true
+                  ? const Center(
+                      child: SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: CircularProgressIndicator(
+                          color: Pallets.primaryColor,
+                        ),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+            )
+          ],
         ),
       ),
     );
@@ -213,7 +227,10 @@ class HomeScreenWidget extends StatelessWidget {
   }
 
   List<Widget> _buildProjects() {
-    return projects.map((project) {
+    if (_homeScreenController.homeScreenModel?.data == null) {
+      return [];
+    }
+    return _homeScreenController.homeScreenModel!.data.projects.map((project) {
       return GestureDetector(
         onTap: () => {
           Get.to(const ProjectDetailsScreen(), arguments: {"project": project}),
@@ -224,7 +241,7 @@ class HomeScreenWidget extends StatelessWidget {
             color: Pallets.scaffoldBgColor,
             boxShadow: const [
               BoxShadow(
-                offset: Offset(0, 4),
+                offset: Offset(0, 2),
                 blurRadius: 4,
                 spreadRadius: 0,
                 color: Color.fromRGBO(0, 0, 0, 0.25),
@@ -241,9 +258,11 @@ class HomeScreenWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CarouselSlider(
-                  items: AppUtils.buildCarousel(project.images),
+                  items: AppUtils.buildCarousel(
+                    project.media.map((e) => e.url).toList(),
+                  ),
                   options: CarouselOptions(
-                    aspectRatio: 16 / 11,
+                    aspectRatio: 16 / 12,
                     autoPlay: true,
                     enableInfiniteScroll: true,
                     autoPlayCurve: Curves.fastOutSlowIn,
@@ -266,7 +285,7 @@ class HomeScreenWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            project.title,
+                            project.name,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
