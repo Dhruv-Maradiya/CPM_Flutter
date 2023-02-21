@@ -103,7 +103,7 @@ class HomeScreenWidget extends StatelessWidget {
     return Scaffold(
       backgroundColor: Pallets.appBgColor,
       appBar: CustomAppBar(isHomeScreen: true, title: 'Projectify'),
-      drawer: const HomeScreenDrawer(),
+      drawer: HomeScreenDrawer(),
       body: SafeArea(
         bottom: false,
         child: Stack(

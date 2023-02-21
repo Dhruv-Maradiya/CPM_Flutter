@@ -33,7 +33,16 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                 icon: const Icon(Icons.menu),
                 color: Pallets.primaryColor,
                 iconSize: 35,
-                onPressed: () => Scaffold.of(context).openDrawer(),
+                onPressed: () async {
+                  var result =
+                      await SharedPreferencesClass.getSharePreference();
+                  if (result != null) {
+                    // ignore: use_build_context_synchronously
+                    Scaffold.of(context).openDrawer();
+                  } else {
+                    AppUtils.signInPopUp();
+                  }
+                },
               )
             : IconButton(
                 onPressed: () => Get.back(),

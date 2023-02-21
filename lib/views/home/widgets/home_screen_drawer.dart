@@ -1,8 +1,15 @@
+import 'package:get/get.dart';
 import 'package:projectify/core/constants/pallets.dart';
 import 'package:flutter/material.dart';
+import 'package:projectify/preference/shared_preference.dart';
+import 'package:projectify/views/home/controllers/home_screen_drawer_controller.dart';
 
+// ignore: must_be_immutable
 class HomeScreenDrawer extends StatelessWidget {
-  const HomeScreenDrawer({super.key});
+  HomeScreenDrawer({super.key});
+
+  final HomeScreenDrawerController _homeScreenDrawerController =
+      Get.put(HomeScreenDrawerController());
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +60,7 @@ class HomeScreenDrawer extends StatelessWidget {
                   ),
                 ),
               ),
+              // PROJECTS
               const SizedBox(
                 height: 30,
               ),
@@ -80,6 +88,7 @@ class HomeScreenDrawer extends StatelessWidget {
                   ),
                 ),
               ),
+              // GROUPS
               const SizedBox(
                 height: 10,
               ),
@@ -107,146 +116,155 @@ class HomeScreenDrawer extends StatelessWidget {
                   ),
                 ),
               ),
-              // Students
-              const SizedBox(
-                height: 12,
+              Obx(
+                () => _homeScreenDrawerController.isLoading.value == false &&
+                        _homeScreenDrawerController.userType == UserType.faculty
+                    ? Column(
+                        children: [
+                          // Students
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          ListTile(
+                            leading: Container(
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Pallets.secondaryColor,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.asset(
+                                  'assets/images/student_icon.png',
+                                  height: 30,
+                                  width: 30,
+                                ),
+                              ),
+                            ),
+                            title: const Text(
+                              'Students',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Pallets.primaryColor,
+                              ),
+                            ),
+                          ),
+                          // Faculties
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          ListTile(
+                            leading: Container(
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Pallets.secondaryColor,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.asset(
+                                  'assets/images/faculty_icon.png',
+                                  height: 30,
+                                  width: 30,
+                                ),
+                              ),
+                            ),
+                            title: const Text(
+                              'Faculties',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Pallets.primaryColor,
+                              ),
+                            ),
+                          ),
+                          // Branches
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          ListTile(
+                            leading: Container(
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Pallets.secondaryColor,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.asset(
+                                  'assets/images/branch_icon.png',
+                                  height: 30,
+                                  width: 30,
+                                ),
+                              ),
+                            ),
+                            title: const Text(
+                              'Branches',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Pallets.primaryColor,
+                              ),
+                            ),
+                          ),
+                          // ACADEMICS
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          ListTile(
+                            leading: Container(
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Pallets.secondaryColor,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.asset(
+                                  'assets/images/academic_icon.png',
+                                  height: 30,
+                                  width: 30,
+                                ),
+                              ),
+                            ),
+                            title: const Text(
+                              'Academics',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Pallets.primaryColor,
+                              ),
+                            ),
+                          ), //
+                          // TECHNOLOGIES
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          ListTile(
+                            leading: Container(
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Pallets.secondaryColor,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.asset(
+                                  'assets/images/technology_icon.png',
+                                  height: 30,
+                                  width: 30,
+                                ),
+                              ),
+                            ),
+                            title: const Text(
+                              'Technologies',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Pallets.primaryColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : const SizedBox.shrink(),
               ),
-              ListTile(
-                leading: Container(
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Pallets.secondaryColor,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                      'assets/images/student_icon.png',
-                      height: 30,
-                      width: 30,
-                    ),
-                  ),
-                ),
-                title: const Text(
-                  'Students',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Pallets.primaryColor,
-                  ),
-                ),
-              ),
-              // Faculties
-              const SizedBox(
-                height: 12,
-              ),
-              ListTile(
-                leading: Container(
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Pallets.secondaryColor,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                      'assets/images/faculty_icon.png',
-                      height: 30,
-                      width: 30,
-                    ),
-                  ),
-                ),
-                title: const Text(
-                  'Faculties',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Pallets.primaryColor,
-                  ),
-                ),
-              ),
-              // Branches
-              const SizedBox(
-                height: 12,
-              ),
-              ListTile(
-                leading: Container(
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Pallets.secondaryColor,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                      'assets/images/branch_icon.png',
-                      height: 30,
-                      width: 30,
-                    ),
-                  ),
-                ),
-                title: const Text(
-                  'Branches',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Pallets.primaryColor,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              ListTile(
-                leading: Container(
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Pallets.secondaryColor,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                      'assets/images/academic_icon.png',
-                      height: 30,
-                      width: 30,
-                    ),
-                  ),
-                ),
-                title: const Text(
-                  'Academics',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Pallets.primaryColor,
-                  ),
-                ),
-              ), //
-              const SizedBox(
-                height: 12,
-              ),
-              ListTile(
-                leading: Container(
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Pallets.secondaryColor,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                      'assets/images/technology_icon.png',
-                      height: 30,
-                      width: 30,
-                    ),
-                  ),
-                ),
-                title: const Text(
-                  'Technologies',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Pallets.primaryColor,
-                  ),
-                ),
-              ),
-              // Academics
-              // Categories
             ],
           ),
         ),
