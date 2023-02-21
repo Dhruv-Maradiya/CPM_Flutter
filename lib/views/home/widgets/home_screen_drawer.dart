@@ -3,6 +3,7 @@ import 'package:projectify/core/constants/pallets.dart';
 import 'package:flutter/material.dart';
 import 'package:projectify/preference/shared_preference.dart';
 import 'package:projectify/views/home/controllers/home_screen_drawer_controller.dart';
+import 'package:projectify/views/projects/projects_screen.dart';
 
 // ignore: must_be_immutable
 class HomeScreenDrawer extends StatelessWidget {
@@ -65,6 +66,7 @@ class HomeScreenDrawer extends StatelessWidget {
                 height: 30,
               ),
               ListTile(
+                onTap: () => Get.to(() => const ProjectsScreen()),
                 leading: Container(
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
@@ -254,6 +256,34 @@ class HomeScreenDrawer extends StatelessWidget {
                             ),
                             title: const Text(
                               'Technologies',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Pallets.primaryColor,
+                              ),
+                            ),
+                          ),
+                          // Categories
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          ListTile(
+                            leading: Container(
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Pallets.secondaryColor,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.asset(
+                                  'assets/images/technology_icon.png',
+                                  height: 30,
+                                  width: 30,
+                                ),
+                              ),
+                            ),
+                            title: const Text(
+                              'Categories',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
