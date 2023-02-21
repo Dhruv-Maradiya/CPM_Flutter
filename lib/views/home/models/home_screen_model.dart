@@ -58,87 +58,55 @@ class Project {
   Project({
     required this.id,
     required this.name,
-    required this.categoryId,
-    required this.academicId,
-    required this.frontendTechnologyId,
-    required this.backendTechnologyId,
-    required this.databaseTechnologyId,
-    required this.groupId,
-    required this.description,
-    required this.updatedAt,
-    required this.createdAt,
-    required this.isVerified,
-    this.verifiedByFacultyId,
     required this.academic,
-    required this.frontendTechnology,
-    required this.backendTechnology,
-    required this.databaseTechnology,
-    required this.media,
     required this.category,
+    required this.frontendTechnology,
+    required this.databaseTechnology,
+    required this.backendTechnology,
+    required this.isVerified,
+    required this.description,
+    required this.media,
+    required this.group,
   });
 
   int id;
   String name;
-  int categoryId;
-  int academicId;
-  int frontendTechnologyId;
-  int backendTechnologyId;
-  int databaseTechnologyId;
-  int groupId;
-  String description;
-  DateTime updatedAt;
-  DateTime createdAt;
-  bool isVerified;
-  int? verifiedByFacultyId;
   Academic academic;
-  Technology frontendTechnology;
-  Technology backendTechnology;
-  Technology databaseTechnology;
-  List<Media> media;
   Category category;
+  Technology frontendTechnology;
+  Technology databaseTechnology;
+  Technology backendTechnology;
+  bool isVerified;
+  String description;
+  List<Media> media;
+  Group group;
 
   factory Project.fromJson(Map<String, dynamic> json) => Project(
         id: json["id"],
         name: json["name"],
-        categoryId: json["categoryId"],
-        academicId: json["academicId"],
-        frontendTechnologyId: json["frontendTechnologyId"],
-        backendTechnologyId: json["backendTechnologyId"],
-        databaseTechnologyId: json["databaseTechnologyId"],
-        groupId: json["groupId"],
-        description: json["description"],
-        updatedAt: DateTime.parse(json["updatedAt"]),
-        createdAt: DateTime.parse(json["createdAt"]),
-        isVerified: json["isVerified"],
-        verifiedByFacultyId: json["verifiedByFacultyId"],
         academic: Academic.fromJson(json["academic"]),
-        frontendTechnology: Technology.fromJson(json["frontendTechnology"]),
-        backendTechnology: Technology.fromJson(json["backendTechnology"]),
-        databaseTechnology: Technology.fromJson(json["databaseTechnology"]),
-        media: List<Media>.from(json["media"].map((x) => Media.fromJson(x))),
         category: Category.fromJson(json["category"]),
+        frontendTechnology: Technology.fromJson(json["frontendTechnology"]),
+        databaseTechnology: Technology.fromJson(json["databaseTechnology"]),
+        backendTechnology: Technology.fromJson(json["backendTechnology"]),
+        isVerified: json["isVerified"],
+        description: json["description"],
+        media: List<Media>.from(json["media"].map((x) => Media.fromJson(x))),
+        group: Group.fromJson(json["group"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "categoryId": categoryId,
-        "academicId": academicId,
-        "frontendTechnologyId": frontendTechnologyId,
-        "backendTechnologyId": backendTechnologyId,
-        "databaseTechnologyId": databaseTechnologyId,
-        "groupId": groupId,
-        "description": description,
-        "updatedAt": updatedAt.toIso8601String(),
-        "createdAt": createdAt.toIso8601String(),
-        "isVerified": isVerified,
-        "verifiedByFacultyId": verifiedByFacultyId,
         "academic": academic.toJson(),
-        "frontendTechnology": frontendTechnology.toJson(),
-        "backendTechnology": backendTechnology.toJson(),
-        "databaseTechnology": databaseTechnology.toJson(),
-        "media": List<dynamic>.from(media.map((x) => x.toJson())),
         "category": category.toJson(),
+        "frontendTechnology": frontendTechnology.toJson(),
+        "databaseTechnology": databaseTechnology.toJson(),
+        "backendTechnology": backendTechnology.toJson(),
+        "isVerified": isVerified,
+        "description": description,
+        "media": List<dynamic>.from(media.map((x) => x.toJson())),
+        "group": group.toJson(),
       };
 }
 
@@ -177,8 +145,6 @@ class Technology {
     required this.logo,
     required this.description,
     required this.url,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
   int id;
@@ -186,17 +152,13 @@ class Technology {
   String logo;
   String description;
   String url;
-  DateTime createdAt;
-  DateTime updatedAt;
 
   factory Technology.fromJson(Map<String, dynamic> json) => Technology(
         id: json["id"],
         name: json["name"],
-        logo: "${RestConstants.public}/images/${json['logo']}",
+        logo: json["logo"],
         description: json["description"],
         url: json["url"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -205,8 +167,6 @@ class Technology {
         "logo": logo,
         "description": description,
         "url": url,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
       };
 }
 
@@ -214,73 +174,124 @@ class Category {
   Category({
     required this.id,
     required this.name,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
   int id;
   String name;
-  DateTime createdAt;
-  DateTime updatedAt;
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
         id: json["id"],
         name: json["name"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
+      };
+}
+
+class Group {
+  Group({
+    required this.id,
+    required this.name,
+    required this.groupParticipants,
+  });
+
+  int id;
+  String name;
+  List<GroupParticipant> groupParticipants;
+
+  factory Group.fromJson(Map<String, dynamic> json) => Group(
+        id: json["id"],
+        name: json["name"],
+        groupParticipants: List<GroupParticipant>.from(
+            json["groupParticipants"].map((x) => GroupParticipant.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "groupParticipants":
+            List<dynamic>.from(groupParticipants.map((x) => x.toJson())),
+      };
+}
+
+class GroupParticipant {
+  GroupParticipant({
+    required this.id,
+    required this.role,
+    required this.student,
+  });
+
+  int id;
+  String role;
+  Student student;
+
+  factory GroupParticipant.fromJson(Map<String, dynamic> json) =>
+      GroupParticipant(
+        id: json["id"],
+        role: json["role"],
+        student: Student.fromJson(json["student"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "role": role,
+        "student": student.toJson(),
+      };
+}
+
+class Student {
+  Student({
+    required this.id,
+    required this.name,
+    required this.enrollmentNo,
+  });
+
+  int id;
+  String name;
+  String enrollmentNo;
+
+  factory Student.fromJson(Map<String, dynamic> json) => Student(
+        id: json["id"],
+        name: json["name"],
+        enrollmentNo: json["enrollmentNo"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "enrollmentNo": enrollmentNo,
       };
 }
 
 class Media {
   Media({
     required this.id,
-    required this.name,
-    required this.identifier,
-    required this.projectId,
     required this.format,
-    this.isReviewed,
-    this.reviewedBy,
-    required this.createdAt,
+    required this.identifier,
+    required this.name,
     required this.url,
   });
 
   int id;
-  String name;
-  String identifier;
-  int projectId;
   String format;
-  bool? isReviewed;
-  int? reviewedBy;
-  DateTime createdAt;
+  String identifier;
+  String name;
   String url;
 
   factory Media.fromJson(Map<String, dynamic> json) => Media(
         id: json["id"],
-        name: json["name"],
-        identifier: json["identifier"],
-        projectId: json["projectId"],
         format: json["format"],
-        isReviewed: json["isReviewed"],
-        reviewedBy: json["reviewedBy"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        url: "${RestConstants.public}/images/${json['identifier']}",
+        identifier: json["identifier"],
+        name: json["name"],
+        url: RestConstants.public + json["identifier"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "name": name,
-        "identifier": identifier,
-        "projectId": projectId,
         "format": format,
-        "isReviewed": isReviewed,
-        "reviewedBy": reviewedBy,
-        "createdAt": createdAt.toIso8601String(),
+        "identifier": identifier,
+        "name": name,
       };
 }

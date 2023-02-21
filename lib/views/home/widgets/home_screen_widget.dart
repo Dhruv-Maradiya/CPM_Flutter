@@ -106,92 +106,97 @@ class HomeScreenWidget extends StatelessWidget {
       drawer: const HomeScreenDrawer(),
       body: SafeArea(
         bottom: false,
-        child: SingleChildScrollView(
-          child: Container(
-            color: Pallets.appBgColor,
-            child: Padding(
-              padding: const EdgeInsets.all(20),
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Column(
-                    children: [
-                      Material(
-                        elevation: 2.5,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
-                        child: TextField(
-                          controller: _homeScreenController.searchController,
-                          decoration: const InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: Pallets.primaryColor,
-                            ),
-                            fillColor: Pallets.searchBarColor,
-                            filled: true,
-                            hintText: 'Search',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              borderSide: BorderSide.none,
-                            ),
-                            focusColor: Pallets.primaryColor,
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              borderSide: BorderSide.none,
-                            ),
-                            disabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              borderSide: BorderSide.none,
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              borderSide: BorderSide.none,
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              borderSide: BorderSide.none,
-                            ),
+                  Material(
+                    elevation: 2.5,
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    child: TextField(
+                      controller: _homeScreenController.searchController,
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Pallets.primaryColor,
+                        ),
+                        fillColor: Pallets.searchBarColor,
+                        filled: true,
+                        hintText: 'Search',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
                           ),
-                          cursorColor: Pallets.primaryColor,
-                          keyboardType: TextInputType.text,
+                          borderSide: BorderSide.none,
+                        ),
+                        focusColor: Pallets.primaryColor,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide.none,
+                        ),
+                        disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide.none,
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: _buildFilters(),
-                        ),
-                      ),
-                    ],
+                      cursorColor: Pallets.primaryColor,
+                      keyboardType: TextInputType.text,
+                    ),
                   ),
                   Obx(
                     () => _homeScreenController.isLoading.value == true
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                              color: Pallets.primaryColor,
-                            ),
-                          )
+                        ? const SizedBox.shrink()
                         : Column(
-                            children: _buildProjects(),
+                            children: [
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: _buildFilters(),
+                                ),
+                              ),
+                              ..._buildProjects(),
+                            ],
                           ),
                   ),
                 ],
               ),
             ),
-          ),
+            Obx(
+              () => _homeScreenController.isLoading.value == true
+                  ? const Center(
+                      child: SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: CircularProgressIndicator(
+                          color: Pallets.primaryColor,
+                        ),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+            )
+          ],
         ),
       ),
     );
