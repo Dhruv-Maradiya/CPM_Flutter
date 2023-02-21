@@ -62,25 +62,21 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       elevation: 0,
       actions: isHomeScreen
           ? [
-              Obx(() => homeScreenController.isNotifications.value
-                  ? IconButton(
-                      icon: const Icon(Icons.notifications),
-                      color: Pallets.primaryColor,
-                      iconSize: 30,
-                      onPressed: () => {
-                        homeScreenController.isNotifications.value =
-                            !homeScreenController.isNotifications.value
-                      },
-                    )
-                  : IconButton(
-                      icon: const Icon(Icons.notifications_active),
-                      color: Pallets.primaryColor,
-                      iconSize: 30,
-                      onPressed: () => {
-                        homeScreenController.isNotifications.value =
-                            !homeScreenController.isNotifications.value
-                      },
-                    )),
+              Obx(
+                () => homeScreenController.isNotifications.value
+                    ? IconButton(
+                        icon: const Icon(Icons.notifications),
+                        color: Pallets.primaryColor,
+                        iconSize: 30,
+                        onPressed: () => {},
+                      )
+                    : IconButton(
+                        icon: const Icon(Icons.notifications_active),
+                        color: Pallets.primaryColor,
+                        iconSize: 30,
+                        onPressed: () => {},
+                      ),
+              ),
               GestureDetector(
                 onTap: () async {
                   var result =

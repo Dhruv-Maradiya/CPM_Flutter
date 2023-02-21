@@ -145,6 +145,7 @@ class Technology {
     required this.logo,
     required this.description,
     required this.url,
+    required this.logoUrl,
   });
 
   int id;
@@ -152,14 +153,15 @@ class Technology {
   String logo;
   String description;
   String url;
+  String logoUrl;
 
   factory Technology.fromJson(Map<String, dynamic> json) => Technology(
-        id: json["id"],
-        name: json["name"],
-        logo: json["logo"],
-        description: json["description"],
-        url: json["url"],
-      );
+      id: json["id"],
+      name: json["name"],
+      logo: json["logo"],
+      description: json["description"],
+      url: json["url"],
+      logoUrl: "${RestConstants.public}/images/${json['logo']}");
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -246,16 +248,23 @@ class Student {
     required this.id,
     required this.name,
     required this.enrollmentNo,
+    this.profilePicture,
+    this.url,
   });
 
   int id;
   String name;
   String enrollmentNo;
+  String? profilePicture;
+  String? url;
 
   factory Student.fromJson(Map<String, dynamic> json) => Student(
         id: json["id"],
         name: json["name"],
         enrollmentNo: json["enrollmentNo"],
+        profilePicture: json["profilePicture"],
+        url: json["profilePicture"] ??
+            "${RestConstants.public}/images/${json['profilePicture']}",
       );
 
   Map<String, dynamic> toJson() => {
@@ -285,7 +294,7 @@ class Media {
         format: json["format"],
         identifier: json["identifier"],
         name: json["name"],
-        url: RestConstants.public + json["identifier"],
+        url: "${RestConstants.public}/images/${json['identifier']}",
       );
 
   Map<String, dynamic> toJson() => {

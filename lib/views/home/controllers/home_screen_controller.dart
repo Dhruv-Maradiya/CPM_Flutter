@@ -16,6 +16,7 @@ class HomeScreenController extends GetxController {
     isLoading.value = true;
     var data = await HomeScreenProvider().fetch(null);
     isLoading.value = false;
+    isNotifications.value = data?.data.isUnreadNotifications ?? false;
     homeScreenModel = data;
     super.onInit();
   }
