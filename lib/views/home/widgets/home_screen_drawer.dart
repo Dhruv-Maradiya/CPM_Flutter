@@ -117,8 +117,8 @@ class HomeScreenDrawer extends StatelessWidget {
                 ),
               ),
               Obx(
-                () => _homeScreenDrawerController.isLoading.value == false &&
-                        _homeScreenDrawerController.userType == UserType.faculty
+                () => _homeScreenDrawerController.userType.value ==
+                        UserType.faculty
                     ? Column(
                         children: [
                           // Students

@@ -2,9 +2,9 @@ import 'package:projectify/rest/model/base_model.dart';
 import 'package:projectify/rest/rest_client.dart';
 import 'package:projectify/rest/rest_constants.dart';
 import 'package:projectify/views/create_student_account/models/create_student_model.dart';
-import 'package:projectify/views/create_student_account/models/get_branches_model.dart';
+import 'package:projectify/views/create_student_account/models/get_branches_model.dart'
+    as getBranchesModel;
 import 'package:flutter/material.dart';
-import 'package:get/instance_manager.dart';
 
 class CreateStudentProvider {
   Future<StudentCreateModel?> createStudent(data, BuildContext context) async {
@@ -25,13 +25,13 @@ class CreateStudentProvider {
     return null;
   }
 
-  Future<List<Datum>?> getBranches() async {
+  Future<List<getBranchesModel.Branch>?>? getBranches() async {
     ApiRequest request = ApiRequest(url: RestConstants.branchFindMany);
     ApiResponseModel response = await request.get();
 
     if (response.success) {
-      var data = GetBranchesModel.fromJson(response.data).data;
-      return data;
+      var data = getBranchesModel.GetBranchesModel.fromJson(response.data).data;
+      return data.branches;
     } else {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);

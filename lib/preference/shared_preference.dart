@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum UserType { student, faculty }
+enum UserType { student, faculty, none }
 
 class UserReturn {
   UserReturn({

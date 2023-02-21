@@ -1,5 +1,6 @@
 import 'package:projectify/core/constants/pallets.dart';
 import 'package:projectify/preference/shared_preference.dart';
+import 'package:projectify/views/home/controllers/home_screen_controller.dart';
 import 'package:projectify/views/home/home_screen.dart';
 import 'package:projectify/views/sign_in_as_student/sign_in_as_student_screen.dart';
 import 'package:flutter/material.dart';

@@ -1,59 +1,73 @@
 // To parse this JSON data, do
 //
-//     final getBranches = getBranchesFromJson(jsonString);
+//     final getBranchesModel = getBranchesModelFromJson(jsonString);
 
 import 'dart:convert';
 
-GetBranchesModel getBranchesFromJson(String str) =>
+GetBranchesModel getBranchesModelFromJson(String str) =>
     GetBranchesModel.fromJson(json.decode(str));
 
-String getBranchesToJson(GetBranchesModel data) => json.encode(data.toJson());
+String getBranchesModelToJson(GetBranchesModel data) =>
+    json.encode(data.toJson());
 
 class GetBranchesModel {
   GetBranchesModel({
     required this.data,
   });
 
-  List<Datum> data;
+  Data data;
 
   factory GetBranchesModel.fromJson(Map<String, dynamic> json) =>
       GetBranchesModel(
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: Data.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": data.toJson(),
       };
 }
 
-class Datum {
-  Datum({
+class Data {
+  Data({
+    required this.branches,
+    required this.count,
+  });
+
+  List<Branch> branches;
+  int count;
+
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+        branches:
+            List<Branch>.from(json["branches"].map((x) => Branch.fromJson(x))),
+        count: json["count"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "branches": List<dynamic>.from(branches.map((x) => x.toJson())),
+        "count": count,
+      };
+}
+
+class Branch {
+  Branch({
     required this.id,
     required this.name,
     required this.displayName,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
   int id;
   String name;
   String displayName;
-  DateTime createdAt;
-  DateTime updatedAt;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Branch.fromJson(Map<String, dynamic> json) => Branch(
         id: json["id"],
         name: json["name"],
         displayName: json["displayName"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
         "displayName": displayName,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
       };
 }

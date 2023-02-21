@@ -173,7 +173,7 @@ class HomeScreenWidget extends StatelessWidget {
                               SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
-                                  children: _buildFilters(),
+                                  children: _buildFilters1(),
                                 ),
                               ),
                               ..._buildProjects(),
@@ -202,28 +202,62 @@ class HomeScreenWidget extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildFilters() {
-    return filters.map((filter) {
-      return Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: filter.isSelected
-                ? Pallets.homeFilterSelectedColor
-                : Pallets.homeFilterNonSelectedColor),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 7,
-        ),
-        margin: const EdgeInsets.only(right: 10),
-        child: Text(
-          filter.title,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: filter.isSelected ? Colors.white : Colors.black,
+  List<Widget> _buildFilters1() {
+    final int selectedFilter =
+        _homeScreenController.selectedCategoryIndex.value;
+    return [
+      GestureDetector(
+        onTap: () => _homeScreenController.selectedCategoryIndex.value = 0,
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: selectedFilter == 0
+                  ? Pallets.homeFilterSelectedColor
+                  : Pallets.homeFilterNonSelectedColor),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 7,
+          ),
+          margin: const EdgeInsets.only(right: 10),
+          child: Text(
+            "All Projects",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: selectedFilter == 0 ? Colors.white : Colors.black,
+            ),
           ),
         ),
-      );
-    }).toList();
+      ),
+      ...?_homeScreenController.homeScreenModel?.data.categories.categories
+          .map((filter) {
+        return GestureDetector(
+          onTap: () {
+            _homeScreenController.selectedCategoryIndex.value = filter.id;
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: filter.id == selectedFilter
+                  ? Pallets.homeFilterSelectedColor
+                  : Pallets.homeFilterNonSelectedColor,
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 7,
+            ),
+            margin: const EdgeInsets.only(right: 10),
+            child: Text(
+              filter.name,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color:
+                    filter.id == selectedFilter ? Colors.white : Colors.black,
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    ];
   }
 
   List<Widget> _buildProjects() {

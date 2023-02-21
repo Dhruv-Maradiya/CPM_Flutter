@@ -6,6 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 
+// ignore: must_be_immutable
 class SelectBranchDropDownState extends StatelessWidget {
   final CreateStudentAccountController getBranchController =
       Get.put(CreateStudentAccountController());

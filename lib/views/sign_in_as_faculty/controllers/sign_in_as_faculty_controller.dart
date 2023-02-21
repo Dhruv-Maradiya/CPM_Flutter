@@ -1,4 +1,5 @@
 import 'package:projectify/preference/shared_preference.dart';
+import 'package:projectify/views/home/controllers/home_screen_controller.dart';
 import 'package:projectify/views/home/home_screen.dart';
 import 'package:projectify/views/sign_in_as_faculty/providers/sign_in_as_faculty_provider.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,8 @@ class SignInAsFacultyController extends GetxController {
       isLoading.value = false;
       SharedPreferencesClass.addSharePreference(
           data.userId, UserType.faculty, data.token);
-      Get.offAll(const HomeScreen());
+      Get.offAll(const HomeScreen())
+          ?.then((value) => Get.delete<HomeScreenController>());
     } catch (e) {}
   }
 }

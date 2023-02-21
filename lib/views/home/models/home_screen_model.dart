@@ -34,23 +34,48 @@ class Data {
     required this.projects,
     required this.count,
     required this.isUnreadNotifications,
+    required this.categories,
   });
 
   List<Project> projects;
   int count;
   bool isUnreadNotifications;
+  Categories categories;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         projects: List<Project>.from(
             json["projects"].map((x) => Project.fromJson(x))),
         count: json["count"],
         isUnreadNotifications: json["isUnreadNotifications"],
+        categories: Categories.fromJson(json["categories"]),
       );
 
   Map<String, dynamic> toJson() => {
         "projects": List<dynamic>.from(projects.map((x) => x.toJson())),
         "count": count,
         "isUnreadNotifications": isUnreadNotifications,
+        "categories": categories.toJson(),
+      };
+}
+
+class Categories {
+  Categories({
+    required this.categories,
+    required this.count,
+  });
+
+  List<Category> categories;
+  int count;
+
+  factory Categories.fromJson(Map<String, dynamic> json) => Categories(
+        categories: List<Category>.from(
+            json["categories"].map((x) => Category.fromJson(x))),
+        count: json["count"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "categories": List<dynamic>.from(categories.map((x) => x.toJson())),
+        "count": count,
       };
 }
 
@@ -67,6 +92,7 @@ class Project {
     required this.description,
     required this.media,
     required this.group,
+    required this.projectGuideMapping,
   });
 
   int id;
@@ -80,6 +106,7 @@ class Project {
   String description;
   List<Media> media;
   Group group;
+  List<ProjectGuideMapping> projectGuideMapping;
 
   factory Project.fromJson(Map<String, dynamic> json) => Project(
         id: json["id"],
@@ -93,6 +120,9 @@ class Project {
         description: json["description"],
         media: List<Media>.from(json["media"].map((x) => Media.fromJson(x))),
         group: Group.fromJson(json["group"]),
+        projectGuideMapping: List<ProjectGuideMapping>.from(
+            json["projectGuideMapping"]
+                .map((x) => ProjectGuideMapping.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -107,6 +137,8 @@ class Project {
         "description": description,
         "media": List<dynamic>.from(media.map((x) => x.toJson())),
         "group": group.toJson(),
+        "projectGuideMapping":
+            List<dynamic>.from(projectGuideMapping.map((x) => x.toJson())),
       };
 }
 
@@ -156,12 +188,13 @@ class Technology {
   String logoUrl;
 
   factory Technology.fromJson(Map<String, dynamic> json) => Technology(
-      id: json["id"],
-      name: json["name"],
-      logo: json["logo"],
-      description: json["description"],
-      url: json["url"],
-      logoUrl: "${RestConstants.public}/images/${json['logo']}");
+        id: json["id"],
+        name: json["name"],
+        logo: json["logo"],
+        description: json["description"],
+        url: json["url"],
+        logoUrl: "${RestConstants.public}/images/${json['logo']}",
+      );
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -248,29 +281,57 @@ class Student {
     required this.id,
     required this.name,
     required this.enrollmentNo,
-    this.profilePicture,
-    this.url,
+    required this.profilePicture,
+    required this.branch,
+    required this.url,
   });
 
   int id;
   String name;
   String enrollmentNo;
-  String? profilePicture;
-  String? url;
+  String profilePicture;
+  Branch branch;
+  String url;
 
   factory Student.fromJson(Map<String, dynamic> json) => Student(
         id: json["id"],
         name: json["name"],
         enrollmentNo: json["enrollmentNo"],
         profilePicture: json["profilePicture"],
-        url: json["profilePicture"] ??
-            "${RestConstants.public}/images/${json['profilePicture']}",
+        branch: Branch.fromJson(json["branch"]),
+        url: "${RestConstants.public}/images/${json['profilePicture']}",
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
         "enrollmentNo": enrollmentNo,
+        "profilePicture": profilePicture,
+        "branch": branch.toJson(),
+      };
+}
+
+class Branch {
+  Branch({
+    required this.name,
+    required this.displayName,
+    required this.id,
+  });
+
+  String name;
+  String displayName;
+  int id;
+
+  factory Branch.fromJson(Map<String, dynamic> json) => Branch(
+        name: json["name"],
+        displayName: json["displayName"],
+        id: json["id"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "displayName": displayName,
+        "id": id,
       };
 }
 
@@ -302,5 +363,53 @@ class Media {
         "format": format,
         "identifier": identifier,
         "name": name,
+      };
+}
+
+class ProjectGuideMapping {
+  ProjectGuideMapping({
+    required this.id,
+    required this.faculty,
+  });
+
+  int id;
+  Faculty faculty;
+
+  factory ProjectGuideMapping.fromJson(Map<String, dynamic> json) =>
+      ProjectGuideMapping(
+        id: json["id"],
+        faculty: Faculty.fromJson(json["faculty"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "faculty": faculty.toJson(),
+      };
+}
+
+class Faculty {
+  Faculty({
+    required this.name,
+    required this.employeeId,
+    required this.profilePicture,
+    required this.url,
+  });
+
+  String name;
+  String employeeId;
+  String profilePicture;
+  String url;
+
+  factory Faculty.fromJson(Map<String, dynamic> json) => Faculty(
+        name: json["name"],
+        employeeId: json["employeeId"],
+        profilePicture: json["profilePicture"],
+        url: "${RestConstants.public}/images/${json['profilePicture']}",
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "employeeId": employeeId,
+        "profilePicture": profilePicture,
       };
 }

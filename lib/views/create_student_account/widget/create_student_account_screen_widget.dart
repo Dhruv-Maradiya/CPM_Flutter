@@ -670,7 +670,7 @@ class CreateStudentAccountScreenWidget extends StatelessWidget {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      Get.offAll(const SignInAsStudentScreen());
+                                      Get.to(const SignInAsStudentScreen());
                                     },
                                     child: const Text(
                                       "Sign in",
