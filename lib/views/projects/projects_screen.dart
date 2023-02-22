@@ -6,6 +6,6 @@ class ProjectsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ProjectsWidget();
+    return ProjectsWidget();
   }
 }

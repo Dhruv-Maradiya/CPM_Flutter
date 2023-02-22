@@ -66,9 +66,48 @@ class HomeScreenDrawer extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // PROJECTS
+                  // Home
                   const SizedBox(
                     height: 30,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Get.currentRoute == Routes.home
+                          ? Pallets.appBarColor
+                          : Pallets.appBgColor,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                    ),
+                    child: ListTile(
+                      onTap: () => Get.toNamed(Routes.home),
+                      leading: Container(
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Pallets.secondaryColor,
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.home_filled,
+                            color: Pallets.primaryColor,
+                            size: 30,
+                          ),
+                        ),
+                      ),
+                      title: const Text(
+                        'Home',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: Pallets.primaryColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                  // PROJECTS
+                  const SizedBox(
+                    height: 10,
                   ),
                   Container(
                     decoration: BoxDecoration(

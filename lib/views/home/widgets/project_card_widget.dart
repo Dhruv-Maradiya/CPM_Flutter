@@ -8,14 +8,22 @@ import 'package:projectify/views/home/models/home_screen_model.dart'
 import 'package:projectify/core/constants/routes.dart';
 
 class ProjectCardWidget extends StatelessWidget {
-  const ProjectCardWidget({super.key, required this.project});
+  const ProjectCardWidget(
+      {super.key,
+      required this.project,
+      required this.isRedirectToProjectDetails});
   final HomeScreenModel.Project project;
+  // ignore: prefer_typing_uninitialized_variables
+  final isRedirectToProjectDetails;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => {
-        Get.toNamed(Routes.projectDetails, arguments: {"project": project}),
+        if (isRedirectToProjectDetails == true)
+          {
+            Get.toNamed(Routes.projectDetails, arguments: {"project": project}),
+          }
       },
       child: Container(
         decoration: BoxDecoration(

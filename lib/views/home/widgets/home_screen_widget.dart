@@ -206,7 +206,10 @@ class HomeScreenWidget extends StatelessWidget {
       return [];
     }
     return _homeScreenController.homeScreenModel!.data.projects.map((project) {
-      return ProjectCardWidget(project: project);
+      return ProjectCardWidget(
+        project: project,
+        isRedirectToProjectDetails: true,
+      );
     }).toList();
   }
 }

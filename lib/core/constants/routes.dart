@@ -8,7 +8,7 @@ import 'package:projectify/views/sign_in_as_faculty/sign_in_as_faculty_screen.da
 import 'package:projectify/views/sign_in_as_student/sign_in_as_student_screen.dart';
 
 class Routes {
-  static const home = "/home";
+  static const home = "/";
   static const projectDetails = "/projectDetails";
   static const studentSignIn = "/auth/signIn/student";
   static const facultySignIn = "/auth/signIn/faculty";

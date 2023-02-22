@@ -11,6 +11,8 @@ class RestConstants {
 
   // Branch related API's urls
   static String branchFindMany = "$baseURL/v1/branch/findMany";
+  static String findManyProjectsByStudent =
+      "$baseURL/v1/project/findManyByStudent";
 
   static String homeScreen = "$baseURL/v1/home";
 }

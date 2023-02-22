@@ -59,9 +59,19 @@ class ApiRequest {
         url,
         queryParameters: queryParameters,
       );
-      return ApiResponseModel(success: true, data: resp.data);
+      if (resp.statusCode! < 400) {
+        return ApiResponseModel(success: true, data: resp.data);
+      } else {
+        return ApiResponseModel(success: false, error: resp.data);
+      }
     } on DioError catch (e) {
       return ApiResponseModel(success: false, error: e.response?.data);
+    } catch (e) {
+      return ApiResponseModel(success: false, error: {
+        "message": e.toString(),
+        "status": "error",
+        "name": e.toString(),
+      });
     }
   }
 
