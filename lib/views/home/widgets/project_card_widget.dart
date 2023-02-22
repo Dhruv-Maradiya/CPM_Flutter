@@ -24,6 +24,12 @@ class ProjectCardWidget extends StatelessWidget {
           {
             Get.toNamed(Routes.projectDetails, arguments: {"project": project}),
           }
+        else
+          {
+            Get.toNamed(
+              Routes.projectOperation,
+            ),
+          }
       },
       child: Container(
         decoration: BoxDecoration(

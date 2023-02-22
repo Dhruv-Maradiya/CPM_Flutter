@@ -3,6 +3,7 @@ import 'package:projectify/views/create_student_account/create_student_account_s
 import 'package:projectify/views/home/home_screen.dart';
 import 'package:projectify/views/profile/profile_screen.dart';
 import 'package:projectify/views/project_details/project_details_screen.dart';
+import 'package:projectify/views/project_operation/project_operation_screen.dart';
 import 'package:projectify/views/projects/projects_screen.dart';
 import 'package:projectify/views/sign_in_as_faculty/sign_in_as_faculty_screen.dart';
 import 'package:projectify/views/sign_in_as_student/sign_in_as_student_screen.dart';
@@ -15,6 +16,7 @@ class Routes {
   static const studentRegister = "/auth/signUp/student";
   static const profile = "/profile";
   static const projects = "/projects";
+  static const projectOperation = "/projectsOperation";
   static const groups = "/groups";
   static const students = "/students";
   static const faculties = "/faculties";
@@ -53,6 +55,10 @@ class Routes {
     GetPage(
       name: Routes.projects,
       page: () => const ProjectsScreen(),
+    ),
+    GetPage(
+      name: Routes.projectOperation,
+      page: () => const ProjectOperationScreen(),
     ),
     GetPage(
       name: Routes.groups,
