@@ -4,6 +4,7 @@ import 'package:projectify/views/home/home_screen.dart';
 import 'package:projectify/views/sign_in_as_faculty/providers/sign_in_as_faculty_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:projectify/core/constants/routes.dart';
 
 class SignInAsFacultyController extends GetxController {
   RxBool isObscure = true.obs;
@@ -29,8 +30,7 @@ class SignInAsFacultyController extends GetxController {
       isLoading.value = false;
       SharedPreferencesClass.addSharePreference(
           data.userId, UserType.faculty, data.token);
-      Get.offAll(const HomeScreen())
-          ?.then((value) => Get.delete<HomeScreenController>());
+      Get.offAllNamed(Routes.home);
     } catch (e) {}
   }
 }

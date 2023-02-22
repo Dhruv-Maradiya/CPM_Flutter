@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 import 'package:projectify/core/constants/pallets.dart';
 import 'package:projectify/utils/app_utils.dart';
 import 'package:projectify/views/home/models/home_screen_model.dart';
@@ -20,7 +19,7 @@ class ProjectDetailsWidget extends StatelessWidget {
     final Project project = data['project'];
     return Scaffold(
       backgroundColor: Pallets.appBgColor,
-      appBar: CustomAppBar(isHomeScreen: false, title: "Project"),
+      appBar: CustomAppBar(isMenubarToShow: false, title: "Project"),
       drawer: HomeScreenDrawer(),
       body: SafeArea(
         bottom: false,

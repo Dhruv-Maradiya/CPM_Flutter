@@ -39,71 +39,11 @@ class HomeScreenWidget extends StatelessWidget {
   final HomeScreenController _homeScreenController =
       Get.put(HomeScreenController());
 
-  List<Filter> filters = [
-    Filter(title: 'All Projects', isSelected: true, id: 1),
-    Filter(title: 'Gaming', isSelected: false, id: 2),
-    Filter(title: 'Management', isSelected: false, id: 3),
-    Filter(title: 'Robotics', isSelected: false, id: 4),
-    Filter(title: 'Missions', isSelected: false, id: 5),
-    Filter(title: 'Gaming', isSelected: false, id: 6),
-    Filter(title: 'Robotics', isSelected: false, id: 7),
-    Filter(title: 'Gaming', isSelected: false, id: 8),
-  ];
-
-  List<Project> projects = [
-    Project(
-      title: 'Projectify',
-      isVerified: true,
-      id: 1,
-      images: [
-        'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
-        'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
-      ],
-      description:
-          'The Himalayas, or Himalaya, is a mountain range in Asia separating the plains of the Indian subcontinent from the Indian Ocean. It is the largest mountain in the world, and the highest mountain in the world, Mount Everest.',
-    ),
-    Project(
-      title: 'Projectify',
-      isVerified: true,
-      id: 2,
-      images: [
-        'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
-        'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
-      ],
-      description:
-          'The Himalayas, or Himalaya, is a mountain range in Asia separating the plains of the Indian subcontinent from the Indian Ocean. It is the largest mountain in the world, and the highest mountain in the world, Mount Everest.',
-    ),
-    Project(
-      title: 'Projectify',
-      isVerified: true,
-      id: 3,
-      images: [
-        'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
-        'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
-        'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
-      ],
-      description:
-          "The Himalayas, or Himalaya, is a mountain range in Asia separating the plains of the Indian subcontinent from the Indian Ocean. It is the largest mountain in the world, and the highest mountain in the world, Mount Everest.",
-    ),
-    Project(
-      title: 'Projectify',
-      isVerified: true,
-      id: 4,
-      images: [
-        'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
-        'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
-        'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
-      ],
-      description:
-          "The Himalayas, or Himalaya, is a mountain range in Asia separating the plains of the Indian subcontinent from the Indian Ocean. It is the largest mountain in the world, and the highest mountain in the world, Mount Everest.",
-    )
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Pallets.appBgColor,
-      appBar: CustomAppBar(isHomeScreen: true, title: 'Projectify'),
+      appBar: CustomAppBar(isMenubarToShow: true, title: 'Projectify'),
       drawer: HomeScreenDrawer(),
       body: SafeArea(
         bottom: false,
@@ -174,7 +114,7 @@ class HomeScreenWidget extends StatelessWidget {
                               SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
-                                  children: _buildFilters1(),
+                                  children: _buildFilters(),
                                 ),
                               ),
                               ..._buildProjects(),
@@ -203,7 +143,7 @@ class HomeScreenWidget extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildFilters1() {
+  List<Widget> _buildFilters() {
     final int selectedFilter =
         _homeScreenController.selectedCategoryIndex.value;
     return [

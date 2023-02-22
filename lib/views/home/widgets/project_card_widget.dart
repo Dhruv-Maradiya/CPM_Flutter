@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projectify/core/constants/pallets.dart';
 import 'package:projectify/utils/app_utils.dart';
-import 'package:projectify/views/project_details/project_details_screen.dart';
 import 'package:projectify/views/home/models/home_screen_model.dart'
     as HomeScreenModel;
+import 'package:projectify/core/constants/routes.dart';
 
 class ProjectCardWidget extends StatelessWidget {
   const ProjectCardWidget({super.key, required this.project});
@@ -15,7 +15,7 @@ class ProjectCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => {
-        Get.to(const ProjectDetailsScreen(), arguments: {"project": project}),
+        Get.toNamed(Routes.projectDetails, arguments: {"project": project}),
       },
       child: Container(
         decoration: BoxDecoration(

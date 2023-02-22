@@ -7,7 +7,7 @@ class NotificationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(isHomeScreen: false, title: "Notifications"),
+      appBar: CustomAppBar(isMenubarToShow: false, title: "Notifications"),
       body: Container(),
     );
   }

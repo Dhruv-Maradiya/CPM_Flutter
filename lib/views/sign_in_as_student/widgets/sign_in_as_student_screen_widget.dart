@@ -1,10 +1,10 @@
 import 'package:projectify/utils/app_utils.dart';
 import 'package:projectify/views/create_student_account/create_student_account_screen.dart';
-import 'package:projectify/views/sign_in_as_faculty/sign_in_as_faculty_screen.dart';
 import 'package:projectify/views/sign_in_as_student/controllers/sign_in_as_student_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:projectify/core/constants/pallets.dart';
 import 'package:get/get.dart';
+import 'package:projectify/core/constants/routes.dart';
 
 class SignInAsStudentScreenWidget extends StatelessWidget {
   final SignInAsStudentController signInAsStudentController =
@@ -236,8 +236,7 @@ class SignInAsStudentScreenWidget extends StatelessWidget {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      Get.offAll(
-                                          const CreateStudentAccountScreen());
+                                      Get.offAllNamed(Routes.studentRegister);
                                     },
                                     child: const Text(
                                       "Create Account",
@@ -266,7 +265,7 @@ class SignInAsStudentScreenWidget extends StatelessWidget {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      Get.offAll(const SignInAsFacultyScreen());
+                                      Get.offAllNamed(Routes.facultySignIn);
                                     },
                                     child: const Text(
                                       "Sign in",

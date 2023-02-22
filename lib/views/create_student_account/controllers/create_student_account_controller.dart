@@ -3,9 +3,9 @@ import 'package:projectify/views/create_student_account/models/get_branches_mode
     as GetBranchesModel;
 import 'package:projectify/views/create_student_account/providers/create_student_provider.dart';
 import 'package:projectify/views/home/controllers/home_screen_controller.dart';
-import 'package:projectify/views/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:projectify/core/constants/routes.dart';
 
 class CreateStudentAccountController extends GetxController {
   var branches = <GetBranchesModel.Branch>[].obs;
@@ -56,7 +56,7 @@ class CreateStudentAccountController extends GetxController {
     isLoading.value = false;
     SharedPreferencesClass.addSharePreference(
         data.student.id, UserType.faculty, data.token);
-    Get.offAll(const HomeScreen())
+    Get.offAllNamed(Routes.home)
         ?.then((value) => Get.delete<HomeScreenController>());
   }
 }
