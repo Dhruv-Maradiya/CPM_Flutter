@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:projectify/core/constants/pallets.dart';
 import 'package:projectify/views/home/widgets/custom_app_bar.dart';
@@ -24,7 +23,7 @@ class ProjectOperationWidget extends StatelessWidget {
                   color: Pallets.appBgColor,
                   border: Border(
                     bottom: BorderSide(
-                      color: Pallets.primaryColor,
+                      color: Pallets.tabBarBottomBorderColor,
                       width: 0.5,
                     ),
                   ),
@@ -183,13 +182,37 @@ class ProjectOperationWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
               Expanded(
                 child: ListView.builder(
                   itemCount: 10,
                   itemBuilder: (context, index) {
-                    return Container();
+                    return Container(
+                      margin: const EdgeInsets.only(
+                        top: 15,
+                      ),
+                      decoration: const BoxDecoration(
+                        color: Pallets.taskCompletedBackgroundColor,
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            decoration: const BoxDecoration(
+                              color: Pallets.white,
+                              shape: BoxShape.circle,
+                            ),
+                            padding: const EdgeInsets.all(6),
+                            child: const Icon(
+                              Icons.check,
+                              color: Pallets.primaryColor,
+                              size: 28,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
                   },
                 ),
               ),
@@ -219,6 +242,13 @@ class ProjectOperationWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Pallets.white,
                     borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Pallets.primaryColor.withOpacity(0.1),
+                        blurRadius: 1,
+                        spreadRadius: 1.5,
+                      ),
+                    ],
                   ),
                   padding: const EdgeInsets.all(12),
                   child: Row(
