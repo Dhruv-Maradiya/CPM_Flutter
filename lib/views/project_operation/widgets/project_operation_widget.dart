@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:projectify/core/constants/pallets.dart';
+import 'package:projectify/views/common/widgets/dropdown.dart';
 import 'package:projectify/views/home/widgets/custom_app_bar.dart';
 import 'package:projectify/views/home/widgets/home_screen_drawer.dart';
+import 'package:projectify/core/constants/routes.dart';
 
 class ProjectOperationWidget extends StatelessWidget {
   const ProjectOperationWidget({super.key});
@@ -67,6 +70,7 @@ class ProjectOperationWidget extends StatelessWidget {
               ),
               Expanded(
                 child: TabBarView(
+                  controller: DefaultTabController.of(context),
                   children: [
                     _buildTasks(context),
                     _buildProject(context),
@@ -84,8 +88,8 @@ class ProjectOperationWidget extends StatelessWidget {
   Widget _buildTasks(BuildContext context) {
     return Stack(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(20),
+        Container(
+          padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,6 +191,7 @@ class ProjectOperationWidget extends StatelessWidget {
               Expanded(
                 child: ListView.builder(
                   itemCount: 10,
+                  padding: const EdgeInsets.only(bottom: 20),
                   itemBuilder: (context, index) {
                     return Container(
                       padding: const EdgeInsets.all(12),
@@ -249,73 +254,217 @@ class ProjectOperationWidget extends StatelessWidget {
             ],
           ),
         ),
-        _buildAddButton(context, () {})
+        _buildAddButton(
+          context,
+          () {
+            Get.toNamed(Routes.createTask);
+          },
+        ),
       ],
     );
   }
 
   Widget _buildProject(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          Container(
-            color: Pallets.uploadBgColor,
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () {},
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(5),
+    return SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              color: Pallets.uploadBgColor,
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 14, horizontal: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(5),
+                      ),
+                      border:
+                          Border.all(color: Pallets.primaryColor, width: 0.5),
                     ),
-                    border: Border.all(color: Pallets.primaryColor, width: 0.5),
-                  ),
-                  height: 60,
-                  child: Stack(
-                    alignment: AlignmentDirectional.centerStart,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text(
-                            "Upload Images",
-                            style: TextStyle(
-                              fontSize: 18,
+                    height: 60,
+                    child: Stack(
+                      alignment: AlignmentDirectional.centerStart,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text(
+                              "Upload Images",
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const Positioned(
-                        child: Icon(
-                          Icons.upload,
-                          size: 30,
+                          ],
                         ),
-                      ),
-                    ],
+                        const Positioned(
+                          child: Icon(
+                            Icons.upload,
+                            size: 30,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          _buildTextField(context, "Title", "Design"),
-        ],
+            const SizedBox(
+              height: 20,
+            ),
+            _buildTextField(context, "Title", "Design", null),
+            const SizedBox(
+              height: 20,
+            ),
+            _buildTextField(context, "Description", "Description", 4),
+            const SizedBox(
+              height: 20,
+            ),
+            CommonDropDown(
+              label: const Text(
+                "Frontend",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Pallets.primaryColor,
+                ),
+              ),
+              onChanged: null,
+              items: const [
+                DropdownMenuItem(
+                  value: "1",
+                  child: Text("Item 1"),
+                ),
+              ],
+              hintText: "Frontend Technology",
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Please select frontend technology";
+                }
+                return null;
+              },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            CommonDropDown(
+              label: const Text(
+                "Backend",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Pallets.primaryColor,
+                ),
+              ),
+              onChanged: null,
+              items: const [
+                DropdownMenuItem(
+                  value: "1",
+                  child: Text("Item 1"),
+                ),
+              ],
+              hintText: "Backend Technology",
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Please select backend technology";
+                }
+                return null;
+              },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            CommonDropDown(
+              label: const Text(
+                "Database",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Pallets.primaryColor,
+                ),
+              ),
+              onChanged: null,
+              items: const [
+                DropdownMenuItem(
+                  value: "1",
+                  child: Text("Item 1"),
+                ),
+              ],
+              hintText: "Database Technology",
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Please select database technology";
+                }
+                return null;
+              },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            CommonDropDown(
+              label: const Text(
+                "Category",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Pallets.primaryColor,
+                ),
+              ),
+              onChanged: null,
+              items: const [
+                DropdownMenuItem(
+                  value: "1",
+                  child: Text("Item 1"),
+                ),
+              ],
+              hintText: "Category",
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Please select category";
+                }
+                return null;
+              },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            MaterialButton(
+              onPressed: () {},
+              color: Pallets.primaryColor,
+              height: 52,
+              minWidth: double.maxFinite,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Text(
+                'Submit',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: Pallets.scaffoldBgColor,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildMember(BuildContext context) {
-    return Expanded(
-      child: Stack(
-        children: [
-          Container(
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          child: Container(
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
@@ -381,9 +530,9 @@ class ProjectOperationWidget extends StatelessWidget {
               ],
             ),
           ),
-          _buildAddButton(context, () {})
-        ],
-      ),
+        ),
+        _buildAddButton(context, () {})
+      ],
     );
   }
 
@@ -427,7 +576,8 @@ class ProjectOperationWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField(BuildContext context, String title, String? hintText) {
+  Widget _buildTextField(
+      BuildContext context, String title, String? hintText, int? maxLines) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -456,6 +606,7 @@ class ProjectOperationWidget extends StatelessWidget {
             filled: true,
             fillColor: Pallets.textFieldBgColor,
           ),
+          maxLines: maxLines,
         ),
       ],
     );

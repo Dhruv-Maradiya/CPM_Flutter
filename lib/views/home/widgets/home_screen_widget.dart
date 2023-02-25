@@ -1,36 +1,10 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:projectify/core/constants/pallets.dart';
-import 'package:projectify/utils/app_utils.dart';
 import 'package:projectify/views/home/controllers/home_screen_controller.dart';
 import 'package:projectify/views/home/widgets/custom_app_bar.dart';
 import 'package:projectify/views/home/widgets/home_screen_drawer.dart';
 import 'package:projectify/views/home/widgets/project_card_widget.dart';
-import 'package:projectify/views/project_details/project_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-class Filter {
-  Filter({required this.title, required this.isSelected, required this.id});
-  final String title;
-  final bool isSelected;
-  final int id;
-}
-
-class Project {
-  Project({
-    required this.title,
-    required this.isVerified,
-    required this.id,
-    required this.images,
-    required this.description,
-  });
-
-  final String title;
-  final bool isVerified;
-  final int id;
-  final List<String> images;
-  final String description;
-}
 
 // ignore: must_be_immutable
 class HomeScreenWidget extends StatelessWidget {

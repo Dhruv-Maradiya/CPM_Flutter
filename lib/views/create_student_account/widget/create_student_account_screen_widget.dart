@@ -338,72 +338,8 @@ class CreateStudentAccountScreenWidget extends StatelessWidget {
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Branch Name',
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500,
-                                              color: Pallets.primaryColor),
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        // TextFormField(
-                                        //   controller:
-                                        //       createStudentAccountController
-                                        //           .branch,
-                                        //   decoration: InputDecoration(
-                                        //     hintText: "Branch",
-                                        //     focusColor: Pallets.scaffoldBgColor,
-                                        //     disabledBorder: OutlineInputBorder(
-                                        //         borderRadius:
-                                        //             BorderRadius.circular(10),
-                                        //         borderSide: const BorderSide(
-                                        //           color: Pallets.primaryColor,
-                                        //         )),
-                                        //     focusedBorder: OutlineInputBorder(
-                                        //         borderRadius:
-                                        //             BorderRadius.circular(10),
-                                        //         borderSide: const BorderSide(
-                                        //           color: Pallets.primaryColor,
-                                        //         )),
-                                        //     enabledBorder: OutlineInputBorder(
-                                        //         borderRadius:
-                                        //             BorderRadius.circular(10),
-                                        //         borderSide: const BorderSide(
-                                        //           color: Pallets.primaryColor,
-                                        //         )),
-                                        //     border: OutlineInputBorder(
-                                        //       borderRadius:
-                                        //           BorderRadius.circular(10),
-                                        //       borderSide: const BorderSide(
-                                        //         color: Pallets.primaryColor,
-                                        //       ),
-                                        //     ),
-                                        //     filled: true,
-                                        //     fillColor: Pallets.textFieldBgColor,
-                                        //   ),
-                                        //   keyboardType: TextInputType.number,
-                                        //   textInputAction: TextInputAction.next,
-                                        //   cursorColor: Pallets.primaryColor,
-                                        //   validator: (value) {
-                                        //     bool isValid = true;
-                                        //     String msg = 'Select valid Branch.';
-
-                                        //     if (value!.isEmpty) {
-                                        //       isValid = false;
-                                        //     }
-
-                                        //     return isValid ? null : msg;
-                                        //   },
-                                        // ),
-                                        SelectBranchDropDownState(
-                                            isDisabled: false),
-                                      ],
+                                    child: SelectBranchDropDownState(
+                                      isDisabled: false,
                                     ),
                                   ),
                                   const SizedBox(

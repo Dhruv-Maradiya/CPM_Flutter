@@ -111,7 +111,7 @@ class HomeScreenDrawer extends StatelessWidget {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      color: Get.currentRoute == Routes.projects
+                      color: Get.currentRoute.contains(Routes.projects)
                           ? Pallets.appBarColor
                           : Pallets.appBgColor,
                       borderRadius: const BorderRadius.all(
@@ -150,7 +150,7 @@ class HomeScreenDrawer extends StatelessWidget {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      color: Get.currentRoute == Routes.groups
+                      color: Get.currentRoute.contains(Routes.groups)
                           ? Pallets.appBarColor
                           : Pallets.appBgColor,
                       borderRadius: const BorderRadius.all(
@@ -191,9 +191,10 @@ class HomeScreenDrawer extends StatelessWidget {
                             ),
                             Container(
                               decoration: BoxDecoration(
-                                color: Get.currentRoute == Routes.students
-                                    ? Pallets.appBarColor
-                                    : Pallets.appBgColor,
+                                color:
+                                    Get.currentRoute.contains(Routes.students)
+                                        ? Pallets.appBarColor
+                                        : Pallets.appBgColor,
                                 borderRadius: const BorderRadius.all(
                                   Radius.circular(12),
                                 ),
@@ -229,9 +230,10 @@ class HomeScreenDrawer extends StatelessWidget {
                             ),
                             Container(
                               decoration: BoxDecoration(
-                                color: Get.currentRoute == Routes.faculties
-                                    ? Pallets.appBarColor
-                                    : Pallets.appBgColor,
+                                color:
+                                    Get.currentRoute.contains(Routes.faculties)
+                                        ? Pallets.appBarColor
+                                        : Pallets.appBgColor,
                                 borderRadius: const BorderRadius.all(
                                   Radius.circular(12),
                                 ),
@@ -267,9 +269,10 @@ class HomeScreenDrawer extends StatelessWidget {
                             ),
                             Container(
                               decoration: BoxDecoration(
-                                color: Get.currentRoute == Routes.branches
-                                    ? Pallets.appBarColor
-                                    : Pallets.appBgColor,
+                                color:
+                                    Get.currentRoute.contains(Routes.branches)
+                                        ? Pallets.appBarColor
+                                        : Pallets.appBgColor,
                                 borderRadius: const BorderRadius.all(
                                   Radius.circular(12),
                                 ),
@@ -305,9 +308,10 @@ class HomeScreenDrawer extends StatelessWidget {
                             ),
                             Container(
                               decoration: BoxDecoration(
-                                color: Get.currentRoute == Routes.academics
-                                    ? Pallets.appBarColor
-                                    : Pallets.appBgColor,
+                                color:
+                                    Get.currentRoute.contains(Routes.academics)
+                                        ? Pallets.appBarColor
+                                        : Pallets.appBgColor,
                                 borderRadius: const BorderRadius.all(
                                   Radius.circular(12),
                                 ),
@@ -343,10 +347,10 @@ class HomeScreenDrawer extends StatelessWidget {
                             ),
                             Container(
                               decoration: BoxDecoration(
-                                color:
-                                    Get.currentRoute == Routes.backendTechnology
-                                        ? Pallets.appBarColor
-                                        : Pallets.appBgColor,
+                                color: Get.currentRoute
+                                        .contains(Routes.backendTechnology)
+                                    ? Pallets.appBarColor
+                                    : Pallets.appBgColor,
                                 borderRadius: const BorderRadius.all(
                                   Radius.circular(12),
                                 ),
@@ -382,9 +386,10 @@ class HomeScreenDrawer extends StatelessWidget {
                             ),
                             Container(
                               decoration: BoxDecoration(
-                                color: Get.currentRoute == Routes.categories
-                                    ? Pallets.appBarColor
-                                    : Pallets.appBgColor,
+                                color:
+                                    Get.currentRoute.contains(Routes.categories)
+                                        ? Pallets.appBarColor
+                                        : Pallets.appBgColor,
                                 borderRadius: const BorderRadius.all(
                                   Radius.circular(12),
                                 ),

@@ -14,13 +14,9 @@ class HomeScreenController extends GetxController {
   RxInt selectedCategoryIndex = 0.obs;
 
   @override
-  void onInit() async {
+  void onInit() {
     super.onInit();
-    isLoading.value = true;
-    var data = await HomeScreenProvider().fetch(null);
-    isLoading.value = false;
-    isNotifications.value = data?.data.isUnreadNotifications ?? false;
-    homeScreenModel = data;
+    fetch();
   }
 
   @override
@@ -29,5 +25,13 @@ class HomeScreenController extends GetxController {
     isLoading.close();
     searchController.clear();
     isNotifications.close();
+  }
+
+  void fetch() async {
+    isLoading.value = true;
+    var data = await HomeScreenProvider().fetch(null);
+    isLoading.value = false;
+    isNotifications.value = data?.data.isUnreadNotifications ?? false;
+    homeScreenModel = data;
   }
 }

@@ -236,7 +236,7 @@ class SignInAsStudentScreenWidget extends StatelessWidget {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      Get.offAllNamed(Routes.studentRegister);
+                                      Get.toNamed(Routes.studentRegister);
                                     },
                                     child: const Text(
                                       "Create Account",
@@ -265,7 +265,7 @@ class SignInAsStudentScreenWidget extends StatelessWidget {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      Get.offAllNamed(Routes.facultySignIn);
+                                      Get.toNamed(Routes.facultySignIn);
                                     },
                                     child: const Text(
                                       "Sign in",

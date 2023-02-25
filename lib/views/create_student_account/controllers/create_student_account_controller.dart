@@ -27,17 +27,17 @@ class CreateStudentAccountController extends GetxController {
   @override
   // ignore: unnecessary_overrides
   void onInit() {
-    getBranches();
     super.onInit();
+    getBranches();
   }
 
   void getBranches() async {
     isBranchLoading.value = true;
     var response = await CreateStudentProvider().getBranches();
-    isBranchLoading.value = false;
     if (response != null) {
       branches.assignAll(response);
     } else {}
+    isBranchLoading.value = false;
   }
 
   void submit(BuildContext context) async {

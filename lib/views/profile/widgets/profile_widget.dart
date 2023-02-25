@@ -366,27 +366,33 @@ class ProfileWidget extends StatelessWidget {
                                           MainAxisAlignment.center,
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
+                                        // Expanded(
+                                        //   child: Column(
+                                        //     crossAxisAlignment:
+                                        //         CrossAxisAlignment.start,
+                                        //     children: [
+                                        //       const Text(
+                                        //         'Branch Name',
+                                        //         style: TextStyle(
+                                        //           fontSize: 18,
+                                        //           fontWeight: FontWeight.w500,
+                                        //           color: Pallets
+                                        //               .textFieldHelperTextDisabledColor,
+                                        //         ),
+                                        //       ),
+                                        //       const SizedBox(
+                                        //         height: 5,
+                                        //       ),
+                                        //       SelectBranchDropDownState(
+                                        //         isDisabled: true,
+                                        //         label: 'Branch Name',
+                                        //       ),
+                                        //     ],
+                                        //   ),
+                                        // ),
                                         Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const Text(
-                                                'Branch Name',
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Pallets
-                                                      .textFieldHelperTextDisabledColor,
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                height: 5,
-                                              ),
-                                              SelectBranchDropDownState(
-                                                isDisabled: true,
-                                              ),
-                                            ],
+                                          child: SelectBranchDropDownState(
+                                            isDisabled: true,
                                           ),
                                         ),
                                         const SizedBox(

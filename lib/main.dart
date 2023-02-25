@@ -19,17 +19,6 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeData.light(),
       title: StringConstants.appName,
       getPages: Routes.getPages,
-      // home: FutureBuilder(
-      //   future: SharedPreferencesClass.getSharePreference(),
-      //   builder: (context, snapshot) {
-      //     if (snapshot.connectionState == ConnectionState.done) {
-      //       if (snapshot.data != null) {
-      //         return const HomeScreen();
-      //       }
-      //     }
-      //     return const SignInAsStudentScreen();
-      //   },
-      // ),
       home: const HomeScreen(),
     );
   }

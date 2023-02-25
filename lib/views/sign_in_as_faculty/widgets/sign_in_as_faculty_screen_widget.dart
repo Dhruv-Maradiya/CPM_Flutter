@@ -235,7 +235,7 @@ class SignInAsFacultyScreenWidget extends StatelessWidget {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      Get.offAllNamed(Routes.studentSignIn);
+                                      Get.toNamed(Routes.studentSignIn);
                                     },
                                     child: const Text(
                                       "Sign in",
