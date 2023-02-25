@@ -25,6 +25,7 @@ class Pallets {
   static const Color tabBarBottomBorderColor = Color(0xFF8E8E8E);
 
   static const Color taskCompletedBackgroundColor = Color(0xFFE9EFFD);
+  static const Color uploadBgColor = Color(0xFFF3F3F3);
 
   static const Color white = Color(0xFFFFFFFF);
   static const Color orange = Color(0xFFF67C15);

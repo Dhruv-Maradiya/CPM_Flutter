@@ -189,6 +189,7 @@ class ProjectOperationWidget extends StatelessWidget {
                   itemCount: 10,
                   itemBuilder: (context, index) {
                     return Container(
+                      padding: const EdgeInsets.all(12),
                       margin: const EdgeInsets.only(
                         top: 15,
                       ),
@@ -204,11 +205,40 @@ class ProjectOperationWidget extends StatelessWidget {
                               shape: BoxShape.circle,
                             ),
                             padding: const EdgeInsets.all(6),
+                            height: 45,
+                            width: 45,
                             child: const Icon(
                               Icons.check,
                               color: Pallets.primaryColor,
                               size: 28,
                             ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text(
+                                "Task Name",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Pallets.primaryColor,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                "16 of 21 completed",
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w400,
+                                  color: Pallets.primaryColor,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -219,14 +249,65 @@ class ProjectOperationWidget extends StatelessWidget {
             ],
           ),
         ),
-        __buildAddButton(context, () {})
+        _buildAddButton(context, () {})
       ],
     );
   }
 
   Widget _buildProject(BuildContext context) {
-    return const Center(
-      child: Text("Tasks"),
+    return Container(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          Container(
+            color: Pallets.uploadBgColor,
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {},
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                    border: Border.all(color: Pallets.primaryColor, width: 0.5),
+                  ),
+                  height: 60,
+                  child: Stack(
+                    alignment: AlignmentDirectional.centerStart,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Text(
+                            "Upload Images",
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Positioned(
+                        child: Icon(
+                          Icons.upload,
+                          size: 30,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          _buildTextField(context, "Title", "Design"),
+        ],
+      ),
     );
   }
 
@@ -300,13 +381,13 @@ class ProjectOperationWidget extends StatelessWidget {
               ],
             ),
           ),
-          __buildAddButton(context, () {})
+          _buildAddButton(context, () {})
         ],
       ),
     );
   }
 
-  Widget __buildAddButton(BuildContext context, void Function() onTap) {
+  Widget _buildAddButton(BuildContext context, void Function() onTap) {
     return Positioned(
       bottom: 0,
       child: SizedBox(
@@ -343,6 +424,40 @@ class ProjectOperationWidget extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildTextField(BuildContext context, String title, String? hintText) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        TextFormField(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+            hintText: hintText,
+            filled: true,
+            fillColor: Pallets.textFieldBgColor,
+          ),
+        ),
+      ],
     );
   }
 }
