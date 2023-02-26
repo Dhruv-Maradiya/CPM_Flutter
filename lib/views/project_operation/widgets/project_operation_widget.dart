@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projectify/core/constants/pallets.dart';
 import 'package:projectify/views/common/widgets/dropdown.dart';
+import 'package:projectify/views/common/widgets/text_field.dart';
 import 'package:projectify/views/home/widgets/custom_app_bar.dart';
 import 'package:projectify/views/home/widgets/home_screen_drawer.dart';
 import 'package:projectify/core/constants/routes.dart';
@@ -318,11 +319,19 @@ class ProjectOperationWidget extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            _buildTextField(context, "Title", "Design", null),
+            CommonTextField(
+              title: "Title",
+              hintText: "Title",
+              maxLines: null,
+            ),
             const SizedBox(
               height: 20,
             ),
-            _buildTextField(context, "Description", "Description", 4),
+            CommonTextField(
+              title: "Description",
+              hintText: "Description",
+              maxLines: 4,
+            ),
             const SizedBox(
               height: 20,
             ),
@@ -573,42 +582,6 @@ class ProjectOperationWidget extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildTextField(
-      BuildContext context, String title, String? hintText, int? maxLines) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        TextFormField(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
-            ),
-            hintText: hintText,
-            filled: true,
-            fillColor: Pallets.textFieldBgColor,
-          ),
-          maxLines: maxLines,
-        ),
-      ],
     );
   }
 }

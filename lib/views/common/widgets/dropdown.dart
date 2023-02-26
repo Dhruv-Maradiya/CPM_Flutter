@@ -3,13 +3,14 @@ import 'package:projectify/core/constants/pallets.dart';
 
 // ignore: must_be_immutable
 class CommonDropDown extends StatelessWidget {
-  CommonDropDown(
-      {super.key,
-      required this.onChanged,
-      required this.items,
-      required this.hintText,
-      required this.validator,
-      required this.label});
+  CommonDropDown({
+    super.key,
+    required this.onChanged,
+    required this.items,
+    required this.hintText,
+    required this.validator,
+    required this.label,
+  });
 
   void Function(String?)? onChanged;
   List<DropdownMenuItem<String>>? items;
@@ -50,6 +51,10 @@ class CommonDropDown extends StatelessWidget {
               borderSide: const BorderSide(
                 color: Pallets.primaryColor,
               ),
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 17,
+              horizontal: 10,
             ),
           ),
           onChanged: onChanged,
