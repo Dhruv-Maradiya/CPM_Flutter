@@ -129,7 +129,6 @@ class CreateStudentAccountScreenWidget extends StatelessWidget {
                                 height: 15,
                               ),
                               // MOBILE NUMBER
-
                               TextFormField(
                                 controller:
                                     createStudentAccountController.phone,
@@ -200,7 +199,6 @@ class CreateStudentAccountScreenWidget extends StatelessWidget {
                                   return isValid ? null : msg;
                                 },
                               ),
-
                               // NAME
                               const SizedBox(
                                 height: 10,
@@ -490,7 +488,7 @@ class CreateStudentAccountScreenWidget extends StatelessWidget {
                                         isValid = false;
                                       }
                                       RegExp regExp = RegExp(
-                                          r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$');
+                                          r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%_*?&])[A-Za-z\d@$!%_*?&]{8,}$');
                                       if (!regExp.hasMatch(value)) {
                                         isValid = false;
                                         msg =

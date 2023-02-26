@@ -1,6 +1,6 @@
 import 'dart:io';
+import 'package:projectify/preference/shared_preference.dart';
 import 'package:projectify/rest/model/base_model.dart';
-import 'package:projectify/rest/rest_constants.dart';
 import 'package:dio/dio.dart';
 
 class ApiRequest {
@@ -14,23 +14,14 @@ class ApiRequest {
     this.queryParameters,
   });
 
-  // Future<void> _getLocalTimeZoneRegion() async {
-  //   print('_getLocalTimeZoneRegion()');
-  //   try {
-  //     _timezone = await FlutterNativeTimezone.getLocalTimezone();
-  //     print('Local timezone: $_timezone');
-  //   } catch (e) {
-  //     print('Could not get the local timezone');
-  //   }
-  // }
-
-  Dio _dio() {
+  Future<Dio> _dio() async {
+    final preference = await SharedPreferencesClass.getSharePreference();
+    final String? token = preference?.token;
     return Dio(BaseOptions(
       headers: {
         HttpHeaders.contentTypeHeader: "application/json",
-        // 'Access-Control-Allow-Origin': '*',
+        HttpHeaders.authorizationHeader: "Bearer $token",
       },
-
       // baseUrl: RestConstants.baseURL,
       followRedirects: true,
       connectTimeout: 60 * 1000, // 60 seconds
@@ -43,7 +34,7 @@ class ApiRequest {
 
   Future<ApiResponseModel> post() async {
     try {
-      var resp = await _dio().post(
+      var resp = await (await _dio()).post(
         url,
         data: data,
       );
@@ -53,9 +44,22 @@ class ApiRequest {
     }
   }
 
+  Future<ApiResponseModel> put() async {
+    try {
+      var resp = await (await _dio()).put(
+        url,
+        data: data,
+        queryParameters: queryParameters,
+      );
+      return ApiResponseModel(success: true, data: resp.data);
+    } on DioError catch (e) {
+      return ApiResponseModel(success: false, error: e.response?.data);
+    }
+  }
+
   Future<ApiResponseModel> get() async {
     try {
-      var resp = await _dio().get(
+      var resp = await (await _dio()).get(
         url,
         queryParameters: queryParameters,
       );
