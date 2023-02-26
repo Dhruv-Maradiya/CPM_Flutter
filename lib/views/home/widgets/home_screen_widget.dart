@@ -19,99 +19,134 @@ class HomeScreenWidget extends StatelessWidget {
       backgroundColor: Pallets.appBgColor,
       appBar: CustomAppBar(isMenubarToShow: true, title: 'Projectify'),
       drawer: HomeScreenDrawer(),
-      body: SafeArea(
-        bottom: false,
-        child: Stack(
-          children: [
-            SingleChildScrollView(
-              padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Material(
-                    elevation: 2.5,
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    child: TextField(
-                      controller: _homeScreenController.searchController,
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Pallets.primaryColor,
-                        ),
-                        fillColor: Pallets.searchBarColor,
-                        filled: true,
-                        hintText: 'Search',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
+      body: RefreshIndicator(
+        onRefresh: () => _homeScreenController.fetch(),
+        color: Pallets.primaryColor,
+        child: SafeArea(
+          bottom: false,
+          child: Stack(
+            children: [
+              Container(
+                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Material(
+                      elevation: 2.5,
+                      borderRadius: const BorderRadius.all(Radius.circular(8)),
+                      child: TextField(
+                        controller: _homeScreenController.searchController,
+                        decoration: const InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: Pallets.primaryColor,
                           ),
-                          borderSide: BorderSide.none,
-                        ),
-                        focusColor: Pallets.primaryColor,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
+                          fillColor: Pallets.searchBarColor,
+                          filled: true,
+                          hintText: 'Search',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                            borderSide: BorderSide.none,
                           ),
-                          borderSide: BorderSide.none,
-                        ),
-                        disabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
+                          focusColor: Pallets.primaryColor,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                            borderSide: BorderSide.none,
                           ),
-                          borderSide: BorderSide.none,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
+                          disabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                            borderSide: BorderSide.none,
                           ),
-                          borderSide: BorderSide.none,
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                            borderSide: BorderSide.none,
                           ),
-                          borderSide: BorderSide.none,
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                            borderSide: BorderSide.none,
+                          ),
                         ),
+                        cursorColor: Pallets.primaryColor,
+                        keyboardType: TextInputType.text,
                       ),
-                      cursorColor: Pallets.primaryColor,
-                      keyboardType: TextInputType.text,
                     ),
-                  ),
-                  Obx(
-                    () => _homeScreenController.isLoading.value == true
-                        ? const SizedBox.shrink()
-                        : Column(
-                            children: [
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: _buildFilters(),
+                    Obx(
+                      () => _homeScreenController.isLoading.value == true
+                          ? const SizedBox.shrink()
+                          : _homeScreenController.isSuccess.value
+                              ? Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        children: _buildFilters(),
+                                      ),
+                                    ),
+                                    NotificationListener<
+                                        OverscrollIndicatorNotification>(
+                                      onNotification: (overscroll) {
+                                        overscroll.disallowIndicator();
+                                        return true;
+                                      },
+                                      child: _buildProjects(),
+                                    ),
+                                  ],
+                                )
+                              : Expanded(
+                                  child: Center(
+                                    child: MaterialButton(
+                                      onPressed: () {
+                                        _homeScreenController.fetch();
+                                      },
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 10,
+                                        horizontal: 20,
+                                      ),
+                                      elevation: 3,
+                                      color: Pallets.primaryColor,
+                                      child: const Text(
+                                        'Retry',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w700,
+                                          color: Pallets.scaffoldBgColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              ..._buildProjects(),
-                            ],
-                          ),
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Obx(
-              () => _homeScreenController.isLoading.value == true
-                  ? const Center(
-                      child: SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: CircularProgressIndicator(
-                          color: Pallets.primaryColor,
+              Obx(
+                () => _homeScreenController.isLoading.value == true
+                    ? const Center(
+                        child: SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: CircularProgressIndicator(
+                            color: Pallets.primaryColor,
+                          ),
                         ),
-                      ),
-                    )
-                  : const SizedBox.shrink(),
-            )
-          ],
+                      )
+                    : const SizedBox.shrink(),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -175,15 +210,27 @@ class HomeScreenWidget extends StatelessWidget {
     ];
   }
 
-  List<Widget> _buildProjects() {
+  Widget _buildProjects() {
     if (_homeScreenController.homeScreenModel?.data == null) {
-      return [];
+      return const SizedBox.shrink();
     }
-    return _homeScreenController.homeScreenModel!.data.projects.map((project) {
-      return ProjectCardWidget(
-        project: project,
-        isRedirectToProjectDetails: true,
-      );
-    }).toList();
+    // return _homeScreenController.homeScreenModel!.data.projects.map((project) {
+    //   return ProjectCardWidget(
+    //     project: project,
+    //     isRedirectToProjectDetails: true,
+    //   );
+    // }).toList();
+
+    return ListView.builder(
+      // physics: const BouncingScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: _homeScreenController.homeScreenModel!.data.projects.length,
+      itemBuilder: (context, index) {
+        return ProjectCardWidget(
+          project: _homeScreenController.homeScreenModel!.data.projects[index],
+          isRedirectToProjectDetails: true,
+        );
+      },
+    );
   }
 }

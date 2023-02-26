@@ -16,11 +16,13 @@ class ApiRequest {
 
   Future<Dio> _dio() async {
     final preference = await SharedPreferencesClass.getSharePreference();
-    final String? token = preference?.token;
+    final String token = preference?.token ?? '';
     return Dio(BaseOptions(
       headers: {
         HttpHeaders.contentTypeHeader: "application/json",
-        HttpHeaders.authorizationHeader: "Bearer $token",
+        ...token.isNotEmpty
+            ? {HttpHeaders.authorizationHeader: "Bearer $token"}
+            : {},
       },
       // baseUrl: RestConstants.baseURL,
       followRedirects: true,

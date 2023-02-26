@@ -62,21 +62,21 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       elevation: 0,
       actions: isMenubarToShow
           ? [
-              Obx(
-                () => homeScreenController.isNotifications.value
-                    ? IconButton(
-                        icon: const Icon(Icons.notifications),
-                        color: Pallets.primaryColor,
-                        iconSize: 30,
-                        onPressed: () => {},
-                      )
-                    : IconButton(
-                        icon: const Icon(Icons.notifications_active),
-                        color: Pallets.primaryColor,
-                        iconSize: 30,
-                        onPressed: () => {},
-                      ),
-              ),
+              // Obx(
+              //   () => homeScreenController.isNotifications.value
+              //       ? IconButton(
+              //           icon: const Icon(Icons.notifications),
+              //           color: Pallets.primaryColor,
+              //           iconSize: 30,
+              //           onPressed: () => {},
+              //         )
+              //       : IconButton(
+              //           icon: const Icon(Icons.notifications_active),
+              //           color: Pallets.primaryColor,
+              //           iconSize: 30,
+              //           onPressed: () => {},
+              //         ),
+              // ),
               GestureDetector(
                 onTap: () async {
                   var result =

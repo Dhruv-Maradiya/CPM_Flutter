@@ -15,45 +15,48 @@ class ProjectsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Pallets.scaffoldBgColor,
-      drawer: HomeScreenDrawer(),
-      appBar: CustomAppBar(isMenubarToShow: true, title: "Projects"),
-      body: SafeArea(
-        bottom: false,
-        child: Stack(
-          children: [
-            SingleChildScrollView(
-              padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-              child: Obx(
-                () => _projectsController.isLoading.value == false
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: _projectsController.projects
-                            .map(
-                              (project) => ProjectCardWidget(
-                                project: project,
+    return RefreshIndicator(
+      color: Pallets.primaryColor,
+      onRefresh: () async => _projectsController.getProjects(),
+      child: Scaffold(
+        backgroundColor: Pallets.scaffoldBgColor,
+        drawer: HomeScreenDrawer(),
+        appBar: CustomAppBar(isMenubarToShow: true, title: "Projects"),
+        body: SafeArea(
+          bottom: false,
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+                child: Obx(
+                  () => _projectsController.isLoading.value == false
+                      ? ListView.builder(
+                          itemBuilder: ((context, index) => ProjectCardWidget(
+                                project: _projectsController.projects[index],
                                 isRedirectToProjectDetails: false,
-                              ),
-                            )
-                            .toList())
-                    : const SizedBox.shrink(),
+                              )),
+                          itemCount: _projectsController.projects.length,
+                          shrinkWrap: true,
+                          physics: const AlwaysScrollableScrollPhysics(),
+                        )
+                      : const SizedBox.shrink(),
+                ),
               ),
-            ),
-            Obx(
-              () => _projectsController.isLoading.value == true
-                  ? const Center(
-                      child: SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: CircularProgressIndicator(
-                          color: Pallets.primaryColor,
+              Obx(
+                () => _projectsController.isLoading.value == true
+                    ? const Center(
+                        child: SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: CircularProgressIndicator(
+                            color: Pallets.primaryColor,
+                          ),
                         ),
-                      ),
-                    )
-                  : const SizedBox.shrink(),
-            )
-          ],
+                      )
+                    : const SizedBox.shrink(),
+              )
+            ],
+          ),
         ),
       ),
     );

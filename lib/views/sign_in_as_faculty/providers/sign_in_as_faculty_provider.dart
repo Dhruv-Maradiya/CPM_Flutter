@@ -1,3 +1,4 @@
+import 'package:get/route_manager.dart';
 import 'package:projectify/rest/model/base_model.dart';
 import 'package:projectify/rest/rest_client.dart';
 import 'package:projectify/rest/rest_constants.dart';
@@ -16,11 +17,14 @@ class SignInAsFacultyProvider {
     } else {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(apiErrorModel.message),
-      ));
 
+      Get.snackbar(
+        apiErrorModel.name,
+        apiErrorModel.message,
+        isDismissible: true,
+        duration: const Duration(seconds: 3),
+        snackPosition: SnackPosition.BOTTOM,
+      );
       return null;
     }
   }

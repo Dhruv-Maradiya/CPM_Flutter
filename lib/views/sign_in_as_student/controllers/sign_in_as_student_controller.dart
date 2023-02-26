@@ -30,6 +30,8 @@ class SignInAsStudentController extends GetxController {
       SharedPreferencesClass.addSharePreference(
           data.userId, UserType.student, data.token);
       Get.offAllNamed(Routes.home);
-    } catch (e) {}
+    } catch (e) {
+      isLoading.value = false;
+    }
   }
 }

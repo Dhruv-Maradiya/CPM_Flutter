@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/state_manager.dart';
+import 'package:get/get.dart';
 import 'package:projectify/preference/shared_preference.dart';
 import 'package:projectify/views/profile/providers/profile_provider.dart';
 
@@ -62,11 +62,16 @@ class ProfileController extends GetxController {
     var data = await SharedPreferencesClass.getSharePreference();
     if (data != null) {
       type.value = data.userType;
-      fetchProfile(data);
+      fetchProfile();
     }
   }
 
-  void fetchProfile(UserReturn user) async {
+  void fetchProfile() async {
+    UserReturn? user = await SharedPreferencesClass.getSharePreference();
+
+    if (user == null) {
+      return Get.back();
+    }
     isLoading.value = true;
     if (user.userType == UserType.student) {
       var data =

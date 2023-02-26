@@ -9,6 +9,7 @@ class HomeScreenController extends GetxController {
   TextEditingController searchController = TextEditingController();
 
   RxBool isLoading = false.obs;
+  RxBool isSuccess = false.obs;
   HomeScreenModel? homeScreenModel;
 
   RxInt selectedCategoryIndex = 0.obs;
@@ -19,19 +20,18 @@ class HomeScreenController extends GetxController {
     fetch();
   }
 
-  @override
-  void onClose() {
-    homeScreenModel = null;
-    isLoading.close();
-    searchController.clear();
-    isNotifications.close();
-  }
-
-  void fetch() async {
+  Future<void> fetch() async {
     isLoading.value = true;
     var data = await HomeScreenProvider().fetch(null);
     isLoading.value = false;
+
+    if (data != null) {
+      homeScreenModel = data;
+      isSuccess.value = true;
+    } else {
+      isSuccess.value = false;
+    }
+
     isNotifications.value = data?.data.isUnreadNotifications ?? false;
-    homeScreenModel = data;
   }
 }

@@ -16,7 +16,13 @@ class HomeScreenProvider {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar("", apiErrorModel.message, isDismissible: true);
+      Get.snackbar(
+        apiErrorModel.name,
+        apiErrorModel.message,
+        isDismissible: true,
+        duration: const Duration(seconds: 3),
+        snackPosition: SnackPosition.BOTTOM,
+      );
 
       return null;
     }
