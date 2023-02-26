@@ -540,7 +540,12 @@ class ProjectOperationWidget extends StatelessWidget {
             ),
           ),
         ),
-        _buildAddButton(context, () {})
+        _buildAddButton(
+          context,
+          () {
+            _showBottomSheet(context);
+          },
+        ),
       ],
     );
   }
@@ -579,6 +584,180 @@ class ProjectOperationWidget extends StatelessWidget {
                 ),
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future _showBottomSheet(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      backgroundColor: Pallets.scaffoldBgColor,
+      isDismissible: true,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      builder: (context) => FractionallySizedBox(
+        heightFactor: 0.8,
+        child: Container(
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  const Material(
+                    elevation: 2.5,
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Pallets.primaryColor,
+                        ),
+                        fillColor: Pallets.searchBarColor,
+                        filled: true,
+                        hintText: 'Enrollment No.',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusColor: Pallets.primaryColor,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide.none,
+                        ),
+                        disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                      cursorColor: Pallets.primaryColor,
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: 20,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Card(
+                            color: Pallets.white,
+                            elevation: 1.5,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              side: const BorderSide(
+                                color: Pallets.primaryColor,
+                                width: .25,
+                              ),
+                            ),
+                            margin: const EdgeInsets.only(bottom: 20),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 10.0,
+                                horizontal: 10,
+                              ),
+                              child: Expanded(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/ellipse_4.png',
+                                      height: 45,
+                                      width: 45,
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: const [
+                                          Text(
+                                            "John Doe",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          Text(
+                                            "206330307033",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Checkbox(
+                                      value: false,
+                                      onChanged: (value) {},
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 50),
+                ],
+              ),
+              Positioned(
+                bottom: 15,
+                left: 0,
+                right: 0,
+                child: MaterialButton(
+                  onPressed: () {},
+                  color: Pallets.primaryColor,
+                  height: 52,
+                  minWidth: double.maxFinite,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Text(
+                    'Invite (2)',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: Pallets.scaffoldBgColor,
+                    ),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),
