@@ -71,7 +71,7 @@ class ProjectOperationWidget extends StatelessWidget {
               ),
               Expanded(
                 child: TabBarView(
-                  controller: DefaultTabController.of(context),
+                  // controller: DefaultTabController.of(context),
                   children: [
                     _buildTasks(context),
                     _buildProject(context),
