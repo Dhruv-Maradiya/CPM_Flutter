@@ -1,16 +1,14 @@
 import 'package:projectify/preference/shared_preference.dart';
-import 'package:projectify/rest/model/base_model.dart';
-import 'package:projectify/rest/rest_client.dart';
-import 'package:projectify/rest/rest_constants.dart';
 import 'package:projectify/views/create_student_account/models/get_branches_model.dart'
     as GetBranchesModel;
 import 'package:projectify/views/create_student_account/providers/create_student_provider.dart';
-import 'package:projectify/views/home/home_screen.dart';
+import 'package:projectify/views/home/controllers/home_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:projectify/core/constants/routes.dart';
 
 class CreateStudentAccountController extends GetxController {
-  var branches = <GetBranchesModel.Datum>[].obs;
+  var branches = <GetBranchesModel.Branch>[].obs;
 
   RxBool isObscure = true.obs;
   RxBool isLoading = false.obs;
@@ -29,17 +27,17 @@ class CreateStudentAccountController extends GetxController {
   @override
   // ignore: unnecessary_overrides
   void onInit() {
-    getBranches();
     super.onInit();
+    getBranches();
   }
 
   void getBranches() async {
     isBranchLoading.value = true;
     var response = await CreateStudentProvider().getBranches();
-    isBranchLoading.value = false;
     if (response != null) {
       branches.assignAll(response);
     } else {}
+    isBranchLoading.value = false;
   }
 
   void submit(BuildContext context) async {
@@ -58,6 +56,7 @@ class CreateStudentAccountController extends GetxController {
     isLoading.value = false;
     SharedPreferencesClass.addSharePreference(
         data.student.id, UserType.faculty, data.token);
-    Get.offAll(const HomeScreen());
+    Get.offAllNamed(Routes.home)
+        ?.then((value) => Get.delete<HomeScreenController>());
   }
 }

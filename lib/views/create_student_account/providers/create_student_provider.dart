@@ -1,10 +1,11 @@
+import 'package:get/route_manager.dart';
 import 'package:projectify/rest/model/base_model.dart';
 import 'package:projectify/rest/rest_client.dart';
 import 'package:projectify/rest/rest_constants.dart';
 import 'package:projectify/views/create_student_account/models/create_student_model.dart';
-import 'package:projectify/views/create_student_account/models/get_branches_model.dart';
+import 'package:projectify/views/create_student_account/models/get_branches_model.dart'
+    as getBranchesModel;
 import 'package:flutter/material.dart';
-import 'package:get/instance_manager.dart';
 
 class CreateStudentProvider {
   Future<StudentCreateModel?> createStudent(data, BuildContext context) async {
@@ -17,21 +18,24 @@ class CreateStudentProvider {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);
 
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(apiErrorModel.message),
-      ));
+      Get.snackbar(
+        apiErrorModel.name,
+        apiErrorModel.message,
+        isDismissible: true,
+        duration: const Duration(seconds: 3),
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
     return null;
   }
 
-  Future<List<Datum>?> getBranches() async {
+  Future<List<getBranchesModel.Branch>?>? getBranches() async {
     ApiRequest request = ApiRequest(url: RestConstants.branchFindMany);
     ApiResponseModel response = await request.get();
 
     if (response.success) {
-      var data = GetBranchesModel.fromJson(response.data).data;
-      return data;
+      var data = getBranchesModel.GetBranchesModel.fromJson(response.data).data;
+      return data.branches;
     } else {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);

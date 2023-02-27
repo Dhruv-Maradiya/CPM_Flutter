@@ -2,19 +2,19 @@ import 'package:projectify/core/constants/pallets.dart';
 import 'package:projectify/preference/shared_preference.dart';
 import 'package:projectify/utils/app_utils.dart';
 import 'package:projectify/views/home/controllers/home_screen_controller.dart';
-import 'package:projectify/views/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:projectify/core/constants/routes.dart';
 
 // ignore: must_be_immutable
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
-  final bool isHomeScreen;
+  final bool isMenubarToShow;
   final String title;
   final Color backgroundColor;
   final List<Widget> actions;
   CustomAppBar({
     Key? key,
-    required this.isHomeScreen,
+    required this.isMenubarToShow,
     required this.title,
     this.backgroundColor = Pallets.appBarColor,
     this.actions = const [],
@@ -28,7 +28,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       backgroundColor: backgroundColor,
       leading: Padding(
         padding: const EdgeInsets.only(left: 6),
-        child: isHomeScreen
+        child: isMenubarToShow
             ? IconButton(
                 icon: const Icon(Icons.menu),
                 color: Pallets.primaryColor,
@@ -60,37 +60,29 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         ),
       ),
       elevation: 0,
-      actions: isHomeScreen
+      actions: isMenubarToShow
           ? [
-              Obx(() => homeScreenController.isNotifications.value
-                  ? IconButton(
-                      icon: const Icon(Icons.notifications),
-                      color: Pallets.primaryColor,
-                      iconSize: 30,
-                      onPressed: () => {
-                        homeScreenController.isNotifications.value =
-                            !homeScreenController.isNotifications.value
-                      },
-                    )
-                  : IconButton(
-                      icon: const Icon(Icons.notifications_active),
-                      color: Pallets.primaryColor,
-                      iconSize: 30,
-                      onPressed: () => {
-                        homeScreenController.isNotifications.value =
-                            !homeScreenController.isNotifications.value
-                      },
-                    )),
+              // Obx(
+              //   () => homeScreenController.isNotifications.value
+              //       ? IconButton(
+              //           icon: const Icon(Icons.notifications),
+              //           color: Pallets.primaryColor,
+              //           iconSize: 30,
+              //           onPressed: () => {},
+              //         )
+              //       : IconButton(
+              //           icon: const Icon(Icons.notifications_active),
+              //           color: Pallets.primaryColor,
+              //           iconSize: 30,
+              //           onPressed: () => {},
+              //         ),
+              // ),
               GestureDetector(
                 onTap: () async {
                   var result =
                       await SharedPreferencesClass.getSharePreference();
                   if (result != null) {
-                    Get.to(
-                      ProfileScreen(
-                        type: result.userType,
-                      ),
-                    );
+                    Get.toNamed(Routes.profile);
                   } else {
                     AppUtils.signInPopUp();
                   }

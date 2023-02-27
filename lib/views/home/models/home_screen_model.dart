@@ -34,23 +34,48 @@ class Data {
     required this.projects,
     required this.count,
     required this.isUnreadNotifications,
+    required this.categories,
   });
 
   List<Project> projects;
   int count;
   bool isUnreadNotifications;
+  Categories categories;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         projects: List<Project>.from(
             json["projects"].map((x) => Project.fromJson(x))),
         count: json["count"],
         isUnreadNotifications: json["isUnreadNotifications"],
+        categories: Categories.fromJson(json["categories"]),
       );
 
   Map<String, dynamic> toJson() => {
         "projects": List<dynamic>.from(projects.map((x) => x.toJson())),
         "count": count,
         "isUnreadNotifications": isUnreadNotifications,
+        "categories": categories.toJson(),
+      };
+}
+
+class Categories {
+  Categories({
+    required this.categories,
+    required this.count,
+  });
+
+  List<Category> categories;
+  int count;
+
+  factory Categories.fromJson(Map<String, dynamic> json) => Categories(
+        categories: List<Category>.from(
+            json["categories"].map((x) => Category.fromJson(x))),
+        count: json["count"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "categories": List<dynamic>.from(categories.map((x) => x.toJson())),
+        "count": count,
       };
 }
 
@@ -58,87 +83,62 @@ class Project {
   Project({
     required this.id,
     required this.name,
-    required this.categoryId,
-    required this.academicId,
-    required this.frontendTechnologyId,
-    required this.backendTechnologyId,
-    required this.databaseTechnologyId,
-    required this.groupId,
-    required this.description,
-    required this.updatedAt,
-    required this.createdAt,
-    required this.isVerified,
-    this.verifiedByFacultyId,
     required this.academic,
-    required this.frontendTechnology,
-    required this.backendTechnology,
-    required this.databaseTechnology,
-    required this.media,
     required this.category,
+    required this.frontendTechnology,
+    required this.databaseTechnology,
+    required this.backendTechnology,
+    required this.isVerified,
+    required this.description,
+    required this.media,
+    required this.group,
+    required this.projectGuideMapping,
   });
 
   int id;
   String name;
-  int categoryId;
-  int academicId;
-  int frontendTechnologyId;
-  int backendTechnologyId;
-  int databaseTechnologyId;
-  int groupId;
-  String description;
-  DateTime updatedAt;
-  DateTime createdAt;
-  bool isVerified;
-  int? verifiedByFacultyId;
   Academic academic;
-  Technology frontendTechnology;
-  Technology backendTechnology;
-  Technology databaseTechnology;
-  List<Media> media;
   Category category;
+  Technology frontendTechnology;
+  Technology databaseTechnology;
+  Technology backendTechnology;
+  bool isVerified;
+  String description;
+  List<Media> media;
+  Group group;
+  List<ProjectGuideMapping> projectGuideMapping;
 
   factory Project.fromJson(Map<String, dynamic> json) => Project(
         id: json["id"],
         name: json["name"],
-        categoryId: json["categoryId"],
-        academicId: json["academicId"],
-        frontendTechnologyId: json["frontendTechnologyId"],
-        backendTechnologyId: json["backendTechnologyId"],
-        databaseTechnologyId: json["databaseTechnologyId"],
-        groupId: json["groupId"],
-        description: json["description"],
-        updatedAt: DateTime.parse(json["updatedAt"]),
-        createdAt: DateTime.parse(json["createdAt"]),
-        isVerified: json["isVerified"],
-        verifiedByFacultyId: json["verifiedByFacultyId"],
         academic: Academic.fromJson(json["academic"]),
-        frontendTechnology: Technology.fromJson(json["frontendTechnology"]),
-        backendTechnology: Technology.fromJson(json["backendTechnology"]),
-        databaseTechnology: Technology.fromJson(json["databaseTechnology"]),
-        media: List<Media>.from(json["media"].map((x) => Media.fromJson(x))),
         category: Category.fromJson(json["category"]),
+        frontendTechnology: Technology.fromJson(json["frontendTechnology"]),
+        databaseTechnology: Technology.fromJson(json["databaseTechnology"]),
+        backendTechnology: Technology.fromJson(json["backendTechnology"]),
+        isVerified: json["isVerified"],
+        description: json["description"],
+        media: List<Media>.from(json["media"].map((x) => Media.fromJson(x))),
+        group: Group.fromJson(json["group"]),
+        projectGuideMapping: List<ProjectGuideMapping>.from(
+            json["projectGuideMapping"]
+                .map((x) => ProjectGuideMapping.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "categoryId": categoryId,
-        "academicId": academicId,
-        "frontendTechnologyId": frontendTechnologyId,
-        "backendTechnologyId": backendTechnologyId,
-        "databaseTechnologyId": databaseTechnologyId,
-        "groupId": groupId,
-        "description": description,
-        "updatedAt": updatedAt.toIso8601String(),
-        "createdAt": createdAt.toIso8601String(),
-        "isVerified": isVerified,
-        "verifiedByFacultyId": verifiedByFacultyId,
         "academic": academic.toJson(),
-        "frontendTechnology": frontendTechnology.toJson(),
-        "backendTechnology": backendTechnology.toJson(),
-        "databaseTechnology": databaseTechnology.toJson(),
-        "media": List<dynamic>.from(media.map((x) => x.toJson())),
         "category": category.toJson(),
+        "frontendTechnology": frontendTechnology.toJson(),
+        "databaseTechnology": databaseTechnology.toJson(),
+        "backendTechnology": backendTechnology.toJson(),
+        "isVerified": isVerified,
+        "description": description,
+        "media": List<dynamic>.from(media.map((x) => x.toJson())),
+        "group": group.toJson(),
+        "projectGuideMapping":
+            List<dynamic>.from(projectGuideMapping.map((x) => x.toJson())),
       };
 }
 
@@ -177,8 +177,7 @@ class Technology {
     required this.logo,
     required this.description,
     required this.url,
-    required this.createdAt,
-    required this.updatedAt,
+    required this.logoUrl,
   });
 
   int id;
@@ -186,17 +185,15 @@ class Technology {
   String logo;
   String description;
   String url;
-  DateTime createdAt;
-  DateTime updatedAt;
+  String logoUrl;
 
   factory Technology.fromJson(Map<String, dynamic> json) => Technology(
         id: json["id"],
         name: json["name"],
-        logo: "${RestConstants.public}/images/${json['logo']}",
+        logo: json["logo"],
         description: json["description"],
         url: json["url"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
+        logoUrl: "${RestConstants.public}/images/${json['logo']}",
       );
 
   Map<String, dynamic> toJson() => {
@@ -205,8 +202,6 @@ class Technology {
         "logo": logo,
         "description": description,
         "url": url,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
       };
 }
 
@@ -214,73 +209,207 @@ class Category {
   Category({
     required this.id,
     required this.name,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
   int id;
   String name;
-  DateTime createdAt;
-  DateTime updatedAt;
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
         id: json["id"],
         name: json["name"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
+      };
+}
+
+class Group {
+  Group({
+    required this.id,
+    required this.name,
+    required this.groupParticipants,
+  });
+
+  int id;
+  String name;
+  List<GroupParticipant> groupParticipants;
+
+  factory Group.fromJson(Map<String, dynamic> json) => Group(
+        id: json["id"],
+        name: json["name"],
+        groupParticipants: List<GroupParticipant>.from(
+            json["groupParticipants"].map((x) => GroupParticipant.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "groupParticipants":
+            List<dynamic>.from(groupParticipants.map((x) => x.toJson())),
+      };
+}
+
+class GroupParticipant {
+  GroupParticipant({
+    required this.id,
+    required this.role,
+    required this.student,
+  });
+
+  int id;
+  String role;
+  Student student;
+
+  factory GroupParticipant.fromJson(Map<String, dynamic> json) =>
+      GroupParticipant(
+        id: json["id"],
+        role: json["role"],
+        student: Student.fromJson(json["student"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "role": role,
+        "student": student.toJson(),
+      };
+}
+
+class Student {
+  Student({
+    required this.id,
+    required this.name,
+    required this.enrollmentNo,
+    required this.profilePicture,
+    required this.branch,
+    required this.url,
+  });
+
+  int id;
+  String name;
+  String enrollmentNo;
+  String profilePicture;
+  Branch branch;
+  String url;
+
+  factory Student.fromJson(Map<String, dynamic> json) => Student(
+        id: json["id"],
+        name: json["name"],
+        enrollmentNo: json["enrollmentNo"],
+        profilePicture: json["profilePicture"],
+        branch: Branch.fromJson(json["branch"]),
+        url: "${RestConstants.public}/images/${json['profilePicture']}",
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "enrollmentNo": enrollmentNo,
+        "profilePicture": profilePicture,
+        "branch": branch.toJson(),
+      };
+}
+
+class Branch {
+  Branch({
+    required this.name,
+    required this.displayName,
+    required this.id,
+  });
+
+  String name;
+  String displayName;
+  int id;
+
+  factory Branch.fromJson(Map<String, dynamic> json) => Branch(
+        name: json["name"],
+        displayName: json["displayName"],
+        id: json["id"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "displayName": displayName,
+        "id": id,
       };
 }
 
 class Media {
   Media({
     required this.id,
-    required this.name,
-    required this.identifier,
-    required this.projectId,
     required this.format,
-    this.isReviewed,
-    this.reviewedBy,
-    required this.createdAt,
+    required this.identifier,
+    required this.name,
     required this.url,
   });
 
   int id;
-  String name;
-  String identifier;
-  int projectId;
   String format;
-  bool? isReviewed;
-  int? reviewedBy;
-  DateTime createdAt;
+  String identifier;
+  String name;
   String url;
 
   factory Media.fromJson(Map<String, dynamic> json) => Media(
         id: json["id"],
-        name: json["name"],
-        identifier: json["identifier"],
-        projectId: json["projectId"],
         format: json["format"],
-        isReviewed: json["isReviewed"],
-        reviewedBy: json["reviewedBy"],
-        createdAt: DateTime.parse(json["createdAt"]),
+        identifier: json["identifier"],
+        name: json["name"],
         url: "${RestConstants.public}/images/${json['identifier']}",
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "name": name,
-        "identifier": identifier,
-        "projectId": projectId,
         "format": format,
-        "isReviewed": isReviewed,
-        "reviewedBy": reviewedBy,
-        "createdAt": createdAt.toIso8601String(),
+        "identifier": identifier,
+        "name": name,
+      };
+}
+
+class ProjectGuideMapping {
+  ProjectGuideMapping({
+    required this.id,
+    required this.faculty,
+  });
+
+  int id;
+  Faculty faculty;
+
+  factory ProjectGuideMapping.fromJson(Map<String, dynamic> json) =>
+      ProjectGuideMapping(
+        id: json["id"],
+        faculty: Faculty.fromJson(json["faculty"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "faculty": faculty.toJson(),
+      };
+}
+
+class Faculty {
+  Faculty({
+    required this.name,
+    required this.employeeId,
+    required this.profilePicture,
+    required this.url,
+  });
+
+  String name;
+  String employeeId;
+  String profilePicture;
+  String url;
+
+  factory Faculty.fromJson(Map<String, dynamic> json) => Faculty(
+        name: json["name"],
+        employeeId: json["employeeId"],
+        profilePicture: json["profilePicture"],
+        url: "${RestConstants.public}/images/${json['profilePicture']}",
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "employeeId": employeeId,
+        "profilePicture": profilePicture,
       };
 }

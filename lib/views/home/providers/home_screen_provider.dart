@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:projectify/rest/model/base_model.dart';
 import 'package:projectify/rest/rest_client.dart';
 import 'package:projectify/rest/rest_constants.dart';
@@ -14,6 +15,14 @@ class HomeScreenProvider {
     } else {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);
+
+      Get.snackbar(
+        apiErrorModel.name,
+        apiErrorModel.message,
+        isDismissible: true,
+        duration: const Duration(seconds: 3),
+        snackPosition: SnackPosition.BOTTOM,
+      );
 
       return null;
     }

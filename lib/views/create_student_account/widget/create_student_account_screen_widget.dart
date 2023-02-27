@@ -2,10 +2,10 @@ import 'package:projectify/core/constants/pallets.dart';
 import 'package:projectify/utils/app_utils.dart';
 import 'package:projectify/views/create_student_account/controllers/create_student_account_controller.dart';
 import 'package:projectify/views/create_student_account/widget/create_student_select_branch.dart';
-import 'package:projectify/views/sign_in_as_student/sign_in_as_student_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:projectify/core/extensions/valid_email.dart';
 import 'package:get/get.dart';
+import 'package:projectify/core/constants/routes.dart';
 
 // ignore: must_be_immutable
 class CreateStudentAccountScreenWidget extends StatelessWidget {
@@ -129,7 +129,6 @@ class CreateStudentAccountScreenWidget extends StatelessWidget {
                                 height: 15,
                               ),
                               // MOBILE NUMBER
-
                               TextFormField(
                                 controller:
                                     createStudentAccountController.phone,
@@ -200,7 +199,6 @@ class CreateStudentAccountScreenWidget extends StatelessWidget {
                                   return isValid ? null : msg;
                                 },
                               ),
-
                               // NAME
                               const SizedBox(
                                 height: 10,
@@ -338,72 +336,8 @@ class CreateStudentAccountScreenWidget extends StatelessWidget {
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Branch Name',
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w500,
-                                              color: Pallets.primaryColor),
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        // TextFormField(
-                                        //   controller:
-                                        //       createStudentAccountController
-                                        //           .branch,
-                                        //   decoration: InputDecoration(
-                                        //     hintText: "Branch",
-                                        //     focusColor: Pallets.scaffoldBgColor,
-                                        //     disabledBorder: OutlineInputBorder(
-                                        //         borderRadius:
-                                        //             BorderRadius.circular(10),
-                                        //         borderSide: const BorderSide(
-                                        //           color: Pallets.primaryColor,
-                                        //         )),
-                                        //     focusedBorder: OutlineInputBorder(
-                                        //         borderRadius:
-                                        //             BorderRadius.circular(10),
-                                        //         borderSide: const BorderSide(
-                                        //           color: Pallets.primaryColor,
-                                        //         )),
-                                        //     enabledBorder: OutlineInputBorder(
-                                        //         borderRadius:
-                                        //             BorderRadius.circular(10),
-                                        //         borderSide: const BorderSide(
-                                        //           color: Pallets.primaryColor,
-                                        //         )),
-                                        //     border: OutlineInputBorder(
-                                        //       borderRadius:
-                                        //           BorderRadius.circular(10),
-                                        //       borderSide: const BorderSide(
-                                        //         color: Pallets.primaryColor,
-                                        //       ),
-                                        //     ),
-                                        //     filled: true,
-                                        //     fillColor: Pallets.textFieldBgColor,
-                                        //   ),
-                                        //   keyboardType: TextInputType.number,
-                                        //   textInputAction: TextInputAction.next,
-                                        //   cursorColor: Pallets.primaryColor,
-                                        //   validator: (value) {
-                                        //     bool isValid = true;
-                                        //     String msg = 'Select valid Branch.';
-
-                                        //     if (value!.isEmpty) {
-                                        //       isValid = false;
-                                        //     }
-
-                                        //     return isValid ? null : msg;
-                                        //   },
-                                        // ),
-                                        SelectBranchDropDownState(
-                                            isDisabled: false),
-                                      ],
+                                    child: SelectBranchDropDownState(
+                                      isDisabled: false,
                                     ),
                                   ),
                                   const SizedBox(
@@ -554,7 +488,7 @@ class CreateStudentAccountScreenWidget extends StatelessWidget {
                                         isValid = false;
                                       }
                                       RegExp regExp = RegExp(
-                                          r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$');
+                                          r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%_*?&])[A-Za-z\d@$!%_*?&]{8,}$');
                                       if (!regExp.hasMatch(value)) {
                                         isValid = false;
                                         msg =
@@ -670,7 +604,7 @@ class CreateStudentAccountScreenWidget extends StatelessWidget {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      Get.offAll(const SignInAsStudentScreen());
+                                      Get.toNamed(Routes.studentSignIn);
                                     },
                                     child: const Text(
                                       "Sign in",

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:projectify/core/constants/pallets.dart';
 import 'package:projectify/utils/app_utils.dart';
 import 'package:projectify/views/home/models/home_screen_model.dart';
@@ -5,46 +6,7 @@ import 'package:projectify/views/home/widgets/custom_app_bar.dart';
 import 'package:projectify/views/home/widgets/home_screen_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-
 import 'package:get/get.dart';
-
-class Technology {
-  Technology({
-    required this.name,
-    required this.image,
-    required this.id,
-    required this.description,
-  });
-
-  final String name;
-  final String image;
-  final int id;
-  final String description;
-}
-
-class Member {
-  Member({
-    required this.name,
-    required this.image,
-    required this.enrollmentNo,
-    required this.branchName,
-  });
-
-  final String name;
-  final String image;
-  final String enrollmentNo;
-  final String branchName;
-}
-
-class Guide {
-  Guide({
-    required this.name,
-    required this.image,
-  });
-
-  final String name;
-  final String image;
-}
 
 // ignore: must_be_immutable
 class ProjectDetailsWidget extends StatelessWidget {
@@ -57,7 +19,7 @@ class ProjectDetailsWidget extends StatelessWidget {
     final Project project = data['project'];
     return Scaffold(
       backgroundColor: Pallets.appBgColor,
-      appBar: CustomAppBar(isHomeScreen: false, title: "Project"),
+      appBar: CustomAppBar(isMenubarToShow: false, title: "Project"),
       drawer: HomeScreenDrawer(),
       body: SafeArea(
         bottom: false,
@@ -167,43 +129,106 @@ class ProjectDetailsWidget extends StatelessWidget {
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildMemberWidget(
-                              member: Member(
-                                name: 'Dhruv Maradiya',
-                                enrollmentNo: "206330307033",
-                                image:
-                                    "https://lh3.googleusercontent.com/ogw/AAEL6shsIrRSNdkUDGGD49ykhlSeJzrnWYNTYGfDVBLT=s64-c-mo",
-                                branchName: "CE",
-                              ),
-                            ),
-                            _buildMemberWidget(
-                              member: Member(
-                                name: 'Dhruv Maradiya',
-                                enrollmentNo: "206330307033",
-                                image: "",
-                                branchName: "CE",
-                              ),
-                            ),
-                            _buildMemberWidget(
-                              member: Member(
-                                name: 'Dhruv Maradiya',
-                                enrollmentNo: "206330307033",
-                                image:
-                                    "https://lh3.googleusercontent.com/ogw/AAEL6shsIrRSNdkUDGGD49ykhlSeJzrnWYNTYGfDVBLT=s64-c-mo",
-                                branchName: "CE",
-                              ),
-                            ),
-                            _buildMemberWidget(
-                              member: Member(
-                                name: 'Dhruv Maradiya',
-                                enrollmentNo: "206330307033",
-                                image:
-                                    "https://lh3.googleusercontent.com/ogw/AAEL6shsIrRSNdkUDGGD49ykhlSeJzrnWYNTYGfDVBLT=s64-c-mo",
-                                branchName: "CE",
-                              ),
-                            ),
-                          ],
+                          children: project.group.groupParticipants.map(
+                            (member) {
+                              String profilePicture = member.student.url;
+                              return Container(
+                                margin: const EdgeInsets.only(top: 15),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    color: Colors.black,
+                                    width: 0.2,
+                                  ),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 20),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    profilePicture.isNotEmpty
+                                        ? ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            // child: Image.network(
+                                            //   profilePicture,
+                                            //   width: 40,
+                                            //   height: 40,
+
+                                            // ),
+                                            child: CachedNetworkImage(
+                                              imageUrl: profilePicture,
+                                              width: 40,
+                                              height: 40,
+                                              placeholder: (context, url) =>
+                                                  const CircularProgressIndicator(
+                                                color: Pallets.primaryColor,
+                                              ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      const Icon(Icons.error),
+                                            ),
+                                          )
+                                        : Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              color: Colors.black,
+                                            ),
+                                            width: 40,
+                                            height: 40,
+                                            child: Center(
+                                              child: Image.asset(
+                                                'assets/images/user.png',
+                                              ),
+                                            ),
+                                          ),
+                                    const SizedBox(
+                                      width: 15,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            member.student.name,
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                              color: Color(0xFF575757),
+                                            ),
+                                          ),
+                                          Text(
+                                            member.student.enrollmentNo,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            softWrap: false,
+                                            style: const TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Text(
+                                      member.student.branch.displayName,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                          ).toList(),
                         ),
                         // Guides
                         const SizedBox(
@@ -213,28 +238,16 @@ class ProjectDetailsWidget extends StatelessWidget {
                           'Guide:',
                           textAlign: TextAlign.start,
                           style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF4F4F4F),
-                              fontSize: 20),
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF4F4F4F),
+                            fontSize: 20,
+                          ),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildGuideWidget(
-                              guide: Guide(
-                                name: 'Amit Shah',
-                                image:
-                                    "https://lh3.googleusercontent.com/ogw/AAEL6shsIrRSNdkUDGGD49ykhlSeJzrnWYNTYGfDVBLT=s64-c-mo",
-                              ),
-                            ),
-                            _buildGuideWidget(
-                              guide: Guide(
-                                name: 'Amit Shah',
-                                image:
-                                    "https://lh3.googleusercontent.com/ogw/AAEL6shsIrRSNdkUDGGD49ykhlSeJzrnWYNTYGfDVBLT=s64-c-mo",
-                              ),
-                            ),
-                          ],
+                          children: project.projectGuideMapping
+                              .map((guide) => _buildGuideWidget(guide: guide))
+                              .toList(),
                         ),
                       ],
                     ),
@@ -248,85 +261,7 @@ class ProjectDetailsWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildMemberWidget({required Member member}) {
-    return Container(
-      margin: const EdgeInsets.only(top: 15),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.white,
-        border: Border.all(
-          color: Colors.black,
-          width: 0.2,
-        ),
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          member.image.isNotEmpty
-              ? ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  child: Image.network(
-                    member.image,
-                    width: 40,
-                    height: 40,
-                  ),
-                )
-              : Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: Colors.black,
-                  ),
-                  width: 40,
-                  height: 40,
-                  child: Center(
-                    child: Image.asset('assets/images/user.png'),
-                  ),
-                ),
-          const SizedBox(
-            width: 15,
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  member.name,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF575757),
-                  ),
-                ),
-                Text(
-                  member.enrollmentNo,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  softWrap: false,
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Text(
-            member.branchName,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: Colors.black,
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildGuideWidget({required Guide guide}) {
+  Widget _buildGuideWidget({required ProjectGuideMapping guide}) {
     return Container(
       margin: const EdgeInsets.only(top: 15),
       decoration: BoxDecoration(
@@ -346,13 +281,24 @@ class ProjectDetailsWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          guide.image.isNotEmpty
+          guide.faculty.url.isNotEmpty
               ? ClipRRect(
                   borderRadius: BorderRadius.circular(50),
-                  child: Image.network(
-                    guide.image,
+                  // child: Image.network(
+                  //   guide.faculty.url,
+                  //   width: 40,
+                  //   height: 40,
+                  // ),
+                  child: CachedNetworkImage(
+                    imageUrl: guide.faculty.url,
                     width: 40,
                     height: 40,
+                    placeholder: (context, url) =>
+                        const CircularProgressIndicator(
+                      color: Pallets.primaryColor,
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                   ),
                 )
               : Container(
@@ -371,7 +317,7 @@ class ProjectDetailsWidget extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              guide.name,
+              guide.faculty.name,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -389,24 +335,32 @@ class ProjectDetailsWidget extends StatelessWidget {
       _buildTechnologyWidget(
           technology: Technology(
         name: project.frontendTechnology.name,
-        image: project.frontendTechnology.logo,
         id: project.frontendTechnology.id,
         description: project.frontendTechnology.description,
+        logo: project.frontendTechnology.logo,
+        logoUrl: project.frontendTechnology.logoUrl,
+        url: project.frontendTechnology.url,
       )),
       _buildTechnologyWidget(
-          technology: Technology(
-        name: project.backendTechnology.name,
-        image: project.backendTechnology.logo,
-        id: project.backendTechnology.id,
-        description: project.backendTechnology.description,
-      )),
+        technology: Technology(
+          name: project.backendTechnology.name,
+          id: project.backendTechnology.id,
+          description: project.backendTechnology.description,
+          logo: project.backendTechnology.logo,
+          logoUrl: project.backendTechnology.logoUrl,
+          url: project.backendTechnology.url,
+        ),
+      ),
       _buildTechnologyWidget(
-          technology: Technology(
-        name: project.databaseTechnology.name,
-        image: project.databaseTechnology.logo,
-        id: project.databaseTechnology.id,
-        description: project.databaseTechnology.description,
-      )),
+        technology: Technology(
+          name: project.databaseTechnology.name,
+          id: project.databaseTechnology.id,
+          description: project.databaseTechnology.description,
+          logo: project.databaseTechnology.logo,
+          logoUrl: project.databaseTechnology.logoUrl,
+          url: project.databaseTechnology.url,
+        ),
+      ),
     ];
   }
 
@@ -425,7 +379,20 @@ class ProjectDetailsWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.network(technology.image, width: 40, height: 40),
+          // Image.network(
+          //   technology.logoUrl,
+          //   width: 40,
+          //   height: 40,
+          // ),
+          CachedNetworkImage(
+            imageUrl: technology.logoUrl,
+            width: 40,
+            height: 40,
+            placeholder: (context, url) => const CircularProgressIndicator(
+              color: Pallets.primaryColor,
+            ),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+          ),
           const SizedBox(
             width: 10,
           ),

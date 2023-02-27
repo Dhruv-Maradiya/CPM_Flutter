@@ -1,4 +1,9 @@
 {
-  "cSpell.words": ["autocorrect", "Getx", "Projectify"],
+  "cSpell.words": [
+    "autocorrect",
+    "Getx",
+    "overscroll",
+    "Projectify"
+  ],
   "java.configuration.updateBuildConfiguration": "interactive"
 }

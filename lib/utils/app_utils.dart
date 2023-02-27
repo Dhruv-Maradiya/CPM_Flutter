@@ -5,6 +5,7 @@ import 'package:projectify/views/sign_in_as_student/sign_in_as_student_screen.da
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:projectify/core/constants/routes.dart';
 
 class AppUtils {
   static Widget getFullScreenLoader({
@@ -113,7 +114,8 @@ class AppUtils {
                                 ),
                               ),
                               onPressed: () {
-                                Get.off(const SignInAsStudentScreen());
+                                // Get.off(const SignInAsStudentScreen());
+                                Get.offNamed(Routes.studentSignIn);
                               }),
                         ],
                       ),
@@ -243,7 +245,7 @@ class AppUtils {
                                     () {
                                       SharedPreferencesClass
                                           .clearDataForLogout();
-                                      Get.offAll(const HomeScreen());
+                                      Get.offAllNamed(Routes.home);
                                     },
                                 child: Container(
                                   // decoration: CustomBaseBoxDecoration()

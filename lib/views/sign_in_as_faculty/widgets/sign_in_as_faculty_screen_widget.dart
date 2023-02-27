@@ -4,6 +4,7 @@ import 'package:projectify/views/sign_in_as_faculty/controllers/sign_in_as_facul
 import 'package:projectify/views/sign_in_as_student/sign_in_as_student_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:projectify/core/constants/routes.dart';
 
 class SignInAsFacultyScreenWidget extends StatelessWidget {
   SignInAsFacultyScreenWidget({Key? key}) : super(key: key);
@@ -234,7 +235,7 @@ class SignInAsFacultyScreenWidget extends StatelessWidget {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      Get.offAll(const SignInAsStudentScreen());
+                                      Get.toNamed(Routes.studentSignIn);
                                     },
                                     child: const Text(
                                       "Sign in",

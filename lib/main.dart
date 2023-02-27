@@ -1,9 +1,8 @@
-import 'package:projectify/preference/shared_preference.dart';
 import 'package:projectify/views/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:projectify/core/constants/string_constants.dart';
-import 'package:projectify/views/sign_in_as_student/sign_in_as_student_screen.dart';
 import 'package:get/route_manager.dart';
+import 'package:projectify/core/constants/routes.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,17 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       darkTheme: ThemeData.light(),
       title: StringConstants.appName,
-      // home: FutureBuilder(
-      //   future: SharedPreferencesClass.getSharePreference(),
-      //   builder: (context, snapshot) {
-      //     if (snapshot.connectionState == ConnectionState.done) {
-      //       if (snapshot.data != null) {
-      //         return const HomeScreen();
-      //       }
-      //     }
-      //     return const SignInAsStudentScreen();
-      //   },
-      // ),
+      getPages: Routes.getPages,
       home: const HomeScreen(),
     );
   }
