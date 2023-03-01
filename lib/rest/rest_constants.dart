@@ -20,4 +20,5 @@ class RestConstants {
   static String facultyProfile = "$baseURL/v1/faculty/find";
   static String studentProfileUpdate = "$baseURL/v1/student";
   static String facultyProfileUpdate = "$baseURL/v1/faculty";
+  static String projectTasksFetch = "$baseURL/v1/task/findManyByProject";
 }

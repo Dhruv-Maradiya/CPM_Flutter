@@ -107,23 +107,13 @@ class HomeScreenWidget extends StatelessWidget {
                                 )
                               : Expanded(
                                   child: Center(
-                                    child: MaterialButton(
+                                    child: FloatingActionButton(
                                       onPressed: () {
                                         _homeScreenController.fetch();
                                       },
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 10,
-                                        horizontal: 20,
-                                      ),
-                                      elevation: 3,
-                                      color: Pallets.primaryColor,
-                                      child: const Text(
-                                        'Retry',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700,
-                                          color: Pallets.scaffoldBgColor,
-                                        ),
+                                      backgroundColor: Pallets.primaryColor,
+                                      child: const Icon(
+                                        Icons.refresh,
                                       ),
                                     ),
                                   ),

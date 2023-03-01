@@ -3,12 +3,20 @@ import 'package:get/get.dart';
 import 'package:projectify/core/constants/pallets.dart';
 import 'package:projectify/views/common/widgets/dropdown.dart';
 import 'package:projectify/views/common/widgets/text_field.dart';
+import 'package:projectify/views/home/models/home_screen_model.dart';
 import 'package:projectify/views/home/widgets/custom_app_bar.dart';
 import 'package:projectify/views/home/widgets/home_screen_drawer.dart';
 import 'package:projectify/core/constants/routes.dart';
+import 'package:projectify/views/project_operation/controllers/project_operation_controller.dart';
 
+// ignore: must_be_immutable
 class ProjectOperationWidget extends StatelessWidget {
-  const ProjectOperationWidget({super.key});
+  ProjectOperationWidget({super.key});
+
+  final ProjectOperationController _controller =
+      Get.put(ProjectOperationController());
+
+  var data = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -87,136 +95,74 @@ class ProjectOperationWidget extends StatelessWidget {
   }
 
   Widget _buildTasks(BuildContext context) {
+    final Project project = data['project'];
+
+    _controller.fetchTasks(
+      projectId: project.id,
+    );
     return Stack(
       children: [
-        Container(
-          padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Pallets.primaryColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 12.0,
-                    horizontal: 24,
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Pallets.primaryColor,
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: Pallets.white,
-                            width: 2,
-                          ),
-                        ),
-                        height: 55,
-                        width: 55,
-                        child: Center(
-                          child: Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              color: Pallets.primaryColor,
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Pallets.white,
-                                width: 1,
-                              ),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                "64%",
-                                style: TextStyle(
-                                  color: Pallets.white,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            "your daily goals Almost done!",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
-                              color: Pallets.white,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            "16 of 21 completed",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: Pallets.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+        Obx(() {
+          if (_controller.isTasksLoading.value) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Pallets.primaryColor,
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                "Tasks",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
-                  color: Pallets.primaryColor,
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: 10,
-                  padding: const EdgeInsets.only(bottom: 20),
-                  itemBuilder: (context, index) {
-                    return Container(
-                      padding: const EdgeInsets.all(12),
-                      margin: const EdgeInsets.only(
-                        top: 15,
-                      ),
-                      decoration: const BoxDecoration(
-                        color: Pallets.taskCompletedBackgroundColor,
+            );
+          } else if (_controller.isTasksSuccess.value) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Pallets.primaryColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12.0,
+                        horizontal: 24,
                       ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                            decoration: const BoxDecoration(
-                              color: Pallets.white,
-                              shape: BoxShape.circle,
-                            ),
-                            padding: const EdgeInsets.all(6),
-                            height: 45,
-                            width: 45,
-                            child: const Icon(
-                              Icons.check,
+                            decoration: BoxDecoration(
                               color: Pallets.primaryColor,
-                              size: 28,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Pallets.white,
+                                width: 2,
+                              ),
+                            ),
+                            height: 55,
+                            width: 55,
+                            child: Center(
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                  color: Pallets.primaryColor,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Pallets.white,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    "64%",
+                                    style: TextStyle(
+                                      color: Pallets.white,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                           const SizedBox(
@@ -226,11 +172,11 @@ class ProjectOperationWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: const [
                               Text(
-                                "Task Name",
+                                "your daily goals Almost done!",
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.w600,
-                                  color: Pallets.primaryColor,
+                                  color: Pallets.white,
                                 ),
                               ),
                               SizedBox(
@@ -239,28 +185,130 @@ class ProjectOperationWidget extends StatelessWidget {
                               Text(
                                 "16 of 21 completed",
                                 style: TextStyle(
-                                  fontSize: 10,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.w400,
-                                  color: Pallets.primaryColor,
+                                  color: Pallets.white,
                                 ),
                               ),
                             ],
                           ),
                         ],
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
+                    "Tasks",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                      color: Pallets.primaryColor,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: _controller.tasks.value?.data.tasks.length,
+                      padding: const EdgeInsets.only(bottom: 20),
+                      itemBuilder: (context, index) {
+                        final task = _controller.tasks.value?.data.tasks[index];
+                        if (task == null) {
+                          return const SizedBox.shrink();
+                        }
+                        return Container(
+                          padding: const EdgeInsets.all(12),
+                          margin: const EdgeInsets.only(
+                            top: 15,
+                          ),
+                          decoration: BoxDecoration(
+                            color: task.status == "COMPLETED"
+                                ? Pallets.taskCompletedBackgroundColor
+                                : Pallets.white,
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                decoration: const BoxDecoration(
+                                  color: Pallets.white,
+                                  shape: BoxShape.circle,
+                                ),
+                                padding: const EdgeInsets.all(6),
+                                height: 45,
+                                width: 45,
+                                child: const Icon(
+                                  Icons.check,
+                                  color: Pallets.primaryColor,
+                                  size: 28,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    task.name,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: Pallets.primaryColor,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    task.description,
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w400,
+                                      color: Pallets.primaryColor,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-        _buildAddButton(
-          context,
-          () {
-            Get.toNamed(Routes.createTask);
-          },
-        ),
+            );
+          }
+          // refresh button
+          return Material(
+              child: Center(
+            child: FloatingActionButton(
+              onPressed: () {
+                _controller.fetchTasks(
+                  projectId: project.id,
+                );
+              },
+              backgroundColor: Pallets.primaryColor,
+              child: const Icon(
+                Icons.refresh,
+              ),
+            ),
+          ));
+        }),
+        Obx(() => _controller.isTasksLoading.value == false &&
+                _controller.isTasksSuccess.value == true
+            ? _buildAddButton(
+                context,
+                () {
+                  Get.toNamed(Routes.createTask);
+                },
+              )
+            : const SizedBox.shrink())
       ],
     );
   }
