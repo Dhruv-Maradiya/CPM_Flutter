@@ -1,4 +1,5 @@
-import 'package:get/state_manager.dart';
+import 'package:get/get.dart';
+import 'package:projectify/views/home/models/home_screen_model.dart';
 import 'package:projectify/views/project_operation/models/project_operation_tasks.dart';
 import 'package:projectify/views/project_operation/providers/project_operation_provider.dart';
 
@@ -7,6 +8,16 @@ class ProjectOperationController extends GetxController {
   RxBool isTasksSuccess = false.obs;
   RxBool isProjectLoading = false.obs;
   Rx<ProjectOperationTasksModel?> tasks = null.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    var data = Get.arguments;
+    final Project project = data['project'];
+
+    fetchTasks(projectId: project.id);
+  }
 
   fetchTasks({
     required int projectId,

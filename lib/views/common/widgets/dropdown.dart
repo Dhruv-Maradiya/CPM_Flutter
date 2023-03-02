@@ -3,14 +3,15 @@ import 'package:projectify/core/constants/pallets.dart';
 
 // ignore: must_be_immutable
 class CommonDropDown extends StatelessWidget {
-  CommonDropDown(
-      {super.key,
-      required this.onChanged,
-      required this.items,
-      required this.hintText,
-      required this.validator,
-      required this.label,
-      this.value});
+  CommonDropDown({
+    super.key,
+    required this.onChanged,
+    required this.items,
+    required this.hintText,
+    required this.validator,
+    required this.label,
+    this.value,
+  });
 
   void Function(String?)? onChanged;
   List<DropdownMenuItem<String>>? items;
