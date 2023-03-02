@@ -24,6 +24,7 @@ class CreateTaskWidget extends StatelessWidget {
         isMenubarToShow: true,
       ),
       drawer: HomeScreenDrawer(),
+      backgroundColor: Pallets.appBgColor,
       body: RefreshIndicator(
         onRefresh: () {
           _createTaskController.fetchGroupDetails(project: project);

@@ -19,7 +19,7 @@ class ProjectsWidget extends StatelessWidget {
       color: Pallets.primaryColor,
       onRefresh: () async => _projectsController.getProjects(),
       child: Scaffold(
-        backgroundColor: Pallets.scaffoldBgColor,
+        backgroundColor: Pallets.appBgColor,
         drawer: HomeScreenDrawer(),
         appBar: CustomAppBar(isMenubarToShow: true, title: "Projects"),
         body: SafeArea(

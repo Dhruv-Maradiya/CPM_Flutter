@@ -2,12 +2,14 @@ import 'package:get/get.dart';
 import 'package:projectify/views/create_student_account/create_student_account_screen.dart';
 import 'package:projectify/views/create_task/create_task_screen.dart';
 import 'package:projectify/views/home/home_screen.dart';
+import 'package:projectify/views/invitations/invitations_screen.dart';
 import 'package:projectify/views/profile/profile_screen.dart';
 import 'package:projectify/views/project_details/project_details_screen.dart';
 import 'package:projectify/views/project_operation/project_operation_screen.dart';
 import 'package:projectify/views/projects/projects_screen.dart';
 import 'package:projectify/views/sign_in_as_faculty/sign_in_as_faculty_screen.dart';
 import 'package:projectify/views/sign_in_as_student/sign_in_as_student_screen.dart';
+import 'package:projectify/views/groups/groups_screen.dart';
 
 class Routes {
   static const home = "/";
@@ -20,6 +22,7 @@ class Routes {
   static const projectOperation = "/projectsOperation";
   static const createTask = "/projectsOperation/createTask";
   static const groups = "/groups";
+  static const invitations = "/invitations";
   static const students = "/students";
   static const faculties = "/faculties";
   static const branches = "/branches";
@@ -68,7 +71,11 @@ class Routes {
     ),
     GetPage(
       name: Routes.groups,
-      page: () => const ProfileScreen(),
+      page: () => const GroupsScreen(),
+    ),
+    GetPage(
+      name: Routes.invitations,
+      page: () => const InvitationScreen(),
     ),
     GetPage(
       name: Routes.students,
