@@ -3,7 +3,8 @@
     "autocorrect",
     "Getx",
     "overscroll",
-    "Projectify"
+    "Projectify",
+    "RGBO"
   ],
   "java.configuration.updateBuildConfiguration": "interactive"
 }

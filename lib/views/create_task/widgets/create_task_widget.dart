@@ -81,6 +81,7 @@ class CreateTaskWidget extends StatelessWidget {
                       if (value == null || value.isEmpty) {
                         return "Title is required";
                       }
+                      return null;
                     },
                     controller: _createTaskController.titleController,
                   ),
@@ -95,6 +96,7 @@ class CreateTaskWidget extends StatelessWidget {
                       if (value == null || value.isEmpty) {
                         return "Description is required";
                       }
+                      return null;
                     },
                     controller: _createTaskController.descriptionController,
                   ),
@@ -127,6 +129,7 @@ class CreateTaskWidget extends StatelessWidget {
                                   if (val == null) {
                                     return "Please select a member";
                                   }
+                                  return null;
                                 },
                                 label: const Text(
                                   "Assign to",
@@ -175,6 +178,7 @@ class CreateTaskWidget extends StatelessWidget {
                             if (val == null) {
                               return "Please select a priority";
                             }
+                            return null;
                           },
                           label: const Text(
                             "Priority",
@@ -278,6 +282,7 @@ class CreateTaskWidget extends StatelessWidget {
                       if (val == null) {
                         return "Please select a status";
                       }
+                      return null;
                     },
                     label: const Text(
                       "Status",

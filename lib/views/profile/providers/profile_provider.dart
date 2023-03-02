@@ -68,6 +68,7 @@ class ProfileProvider {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);
     }
+    return null;
   }
 
   Future<FacultyProfileModel?> updateFacultyProfile(
@@ -84,5 +85,6 @@ class ProfileProvider {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);
     }
+    return null;
   }
 }
