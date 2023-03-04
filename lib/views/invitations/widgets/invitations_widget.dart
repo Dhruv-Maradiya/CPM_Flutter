@@ -18,6 +18,7 @@ class InvitationsWidget extends StatelessWidget {
         title: "",
       ),
       drawer: HomeScreenDrawer(),
+      backgroundColor: Pallets.appBgColor,
       body: Padding(
         padding: const EdgeInsets.only(
           top: 20,

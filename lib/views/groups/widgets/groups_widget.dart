@@ -55,6 +55,7 @@ class GroupsWidget extends StatelessWidget {
                         horizontal: 20,
                       ),
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
