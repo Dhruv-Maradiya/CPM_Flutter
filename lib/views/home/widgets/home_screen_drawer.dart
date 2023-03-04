@@ -422,40 +422,48 @@ class HomeScreenDrawer extends StatelessWidget {
                             ),
                           ],
                         )
-                      : Container(
-                          decoration: BoxDecoration(
-                            color: Get.currentRoute.contains(Routes.invitations)
-                                ? Pallets.appBarColor
-                                : Pallets.appBgColor,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(12),
+                      : Column(
+                          children: [
+                            const SizedBox(
+                              height: 12,
                             ),
-                          ),
-                          child: ListTile(
-                            onTap: () => Get.toNamed(Routes.invitations),
-                            leading: Container(
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Pallets.secondaryColor,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Image.asset(
-                                  'assets/images/group_icon.png',
-                                  height: 30,
-                                  width: 30,
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Get.currentRoute
+                                        .contains(Routes.invitations)
+                                    ? Pallets.appBarColor
+                                    : Pallets.appBgColor,
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(12),
                                 ),
                               ),
-                            ),
-                            title: const Text(
-                              'Invitations',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                color: Pallets.primaryColor,
+                              child: ListTile(
+                                onTap: () => Get.toNamed(Routes.invitations),
+                                leading: Container(
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Pallets.secondaryColor,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Image.asset(
+                                      'assets/images/group_icon.png',
+                                      height: 30,
+                                      width: 30,
+                                    ),
+                                  ),
+                                ),
+                                title: const Text(
+                                  'Invitations',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: Pallets.primaryColor,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
+                            )
+                          ],
                         ),
                 ],
               ),
