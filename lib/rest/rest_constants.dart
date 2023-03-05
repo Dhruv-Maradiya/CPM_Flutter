@@ -25,4 +25,13 @@ class RestConstants {
   static String projectTasksCreate = "$baseURL/v1/task";
 
   static String fetchGroup = "$baseURL/v1/group/find";
+
+  // Technologies
+  static String fetchFrontendTechnologies =
+      "$baseURL/v1/frontendTechnology/findMany";
+  static String fetchBackendTechnologies =
+      "$baseURL/v1/backendTechnology/findMany";
+  static String fetchDatabaseTechnologies =
+      "$baseURL/v1/databaseTechnology/findMany";
+  static String fetchCategories = "$baseURL/v1/category/findMany";
 }

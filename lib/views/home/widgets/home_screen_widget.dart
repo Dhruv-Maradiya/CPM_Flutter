@@ -99,21 +99,14 @@ class HomeScreenWidget extends StatelessWidget {
                                     ),
                                     SingleChildScrollView(
                                       scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        children: _buildFilters(),
-                                      ),
+                                      child: Obx(() => Row(
+                                            children: _buildFilters(),
+                                          )),
                                     ),
-                                    NotificationListener<
-                                        OverscrollIndicatorNotification>(
-                                      onNotification: (overscroll) {
-                                        overscroll.disallowIndicator();
-                                        return true;
-                                      },
-                                      child: Expanded(
-                                        child: _buildProjects(
-                                          onLoading: onLoading,
-                                          refreshController: refreshController,
-                                        ),
+                                    Expanded(
+                                      child: _buildProjects(
+                                        onLoading: onLoading,
+                                        refreshController: refreshController,
                                       ),
                                     ),
                                   ],
