@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:projectify/core/constants/pallets.dart';
 import 'package:projectify/rest/model/base_model.dart';
 import 'package:projectify/rest/rest_client.dart';
 import 'package:projectify/rest/rest_constants.dart';
@@ -24,5 +25,26 @@ class CreateTaskProvider {
       );
     }
     return null;
+  }
+
+  Future<bool> createTask(dynamic data) async {
+    ApiRequest request =
+        ApiRequest(url: RestConstants.projectTasksCreate, data: data);
+    ApiResponseModel response = await request.post();
+    if (response.success) {
+      return true;
+    } else {
+      final ApiErrorModel apiErrorModel =
+          ApiErrorModel.fromJson(response.error);
+
+      Get.snackbar(
+        apiErrorModel.name,
+        apiErrorModel.message,
+        isDismissible: true,
+        duration: const Duration(seconds: 3),
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+    return false;
   }
 }

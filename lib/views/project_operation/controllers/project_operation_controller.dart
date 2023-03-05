@@ -9,6 +9,10 @@ class ProjectOperationController extends GetxController {
   RxBool isProjectLoading = false.obs;
   Rx<ProjectOperationTasksModel?> tasks = null.obs;
 
+  RxInt totalTasks = 0.obs;
+
+  RxBool hasMoreTasks = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -26,15 +30,43 @@ class ProjectOperationController extends GetxController {
       isTasksLoading.value = true;
       var data = await ProjectOperationProvider().fetchTasks({
         "projectId": projectId,
+        "take": 10,
+        "skip": 0,
       });
       if (data != null) {
         tasks = data.obs;
+        totalTasks.value = data.data.tasks.length;
       }
       isTasksSuccess.value = true;
       isTasksLoading.value = false;
+      hasMoreTasks.value = (tasks.value?.data.count ?? 0) >
+          (tasks.value?.data.tasks.length ?? 0);
     } catch (e) {
       isTasksLoading.value = false;
       isTasksSuccess.value = false;
+    }
+  }
+
+  loadMoreTasks({
+    required int projectId,
+  }) async {
+    int take = 10;
+    int skip = tasks.value?.data.tasks.length ?? 0;
+    var data = await ProjectOperationProvider().fetchTasks({
+      "projectId": projectId,
+      "take": take,
+      "skip": skip,
+    });
+    if (data != null) {
+      if (tasks.value?.data.tasks.isNotEmpty == true) {
+        tasks.value?.data.tasks.addAll(data.data.tasks);
+        totalTasks.value = totalTasks.value + data.data.tasks.length;
+      } else {
+        tasks = data.obs;
+        totalTasks.value = data.data.tasks.length;
+      }
+      hasMoreTasks.value = (tasks.value?.data.count ?? 0) >
+          (tasks.value?.data.tasks.length ?? 0);
     }
   }
 }
