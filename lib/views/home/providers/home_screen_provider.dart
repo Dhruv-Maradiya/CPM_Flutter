@@ -5,7 +5,7 @@ import 'package:projectify/rest/rest_constants.dart';
 import 'package:projectify/views/home/models/home_screen_model.dart';
 
 class HomeScreenProvider {
-  Future<HomeScreenModel?> fetch(params) async {
+  Future<HomeScreenModel?> fetch(dynamic params) async {
     ApiRequest request =
         ApiRequest(url: RestConstants.homeScreen, queryParameters: params);
     ApiResponseModel response = await request.get();

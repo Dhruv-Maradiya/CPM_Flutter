@@ -1,5 +1,6 @@
 class RestConstants {
   static String baseURL = "http://193.168.195.86:3002/api";
+  // static String baseURL = "http://192.168.1.11:3002/api";
   static String public = "http://193.168.195.86:3002/public";
   // static String baseURL = "http://192.168.1.15:3002/api";
   // static String baseURL = "https://mypredict11.com";
@@ -15,6 +16,7 @@ class RestConstants {
       "$baseURL/v1/project/findManyByStudent";
 
   static String homeScreen = "$baseURL/v1/home";
+  static String findOneProject = "$baseURL/v1/project/find";
 
   static String studentProfile = "$baseURL/v1/student/find";
   static String facultyProfile = "$baseURL/v1/faculty/find";

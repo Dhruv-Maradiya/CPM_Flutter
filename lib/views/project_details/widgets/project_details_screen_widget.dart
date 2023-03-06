@@ -153,12 +153,6 @@ class ProjectDetailsWidget extends StatelessWidget {
                                         ? ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(50),
-                                            // child: Image.network(
-                                            //   profilePicture,
-                                            //   width: 40,
-                                            //   height: 40,
-
-                                            // ),
                                             child: CachedNetworkImage(
                                               imageUrl: profilePicture,
                                               width: 40,

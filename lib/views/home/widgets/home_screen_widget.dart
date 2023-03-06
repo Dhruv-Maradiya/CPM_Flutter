@@ -85,6 +85,7 @@ class HomeScreenWidget extends StatelessWidget {
                       ),
                       cursorColor: Pallets.primaryColor,
                       keyboardType: TextInputType.text,
+                      onSubmitted: (value) => _homeScreenController.fetch(),
                     ),
                   ),
                   Obx(
@@ -103,11 +104,9 @@ class HomeScreenWidget extends StatelessWidget {
                                             children: _buildFilters(),
                                           )),
                                     ),
-                                    Expanded(
-                                      child: _buildProjects(
-                                        onLoading: onLoading,
-                                        refreshController: refreshController,
-                                      ),
+                                    _buildProjects(
+                                      onLoading: onLoading,
+                                      refreshController: refreshController,
                                     ),
                                   ],
                                 ),
@@ -179,6 +178,7 @@ class HomeScreenWidget extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             _homeScreenController.selectedCategoryIndex.value = filter.id;
+            _homeScreenController.fetch();
           },
           child: Container(
             decoration: BoxDecoration(
@@ -225,18 +225,24 @@ class HomeScreenWidget extends StatelessWidget {
         header: const pull_to_refresh.ClassicHeader(
           completeDuration: Duration(seconds: 1),
         ),
-        child: ListView.builder(
-          // physics: const BouncingScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: _homeScreenController.loadedProjects.value,
-          itemBuilder: (context, index) {
-            return ProjectCardWidget(
-              project:
-                  _homeScreenController.homeScreenModel!.data.projects[index],
-              isRedirectToProjectDetails: true,
-            );
-          },
-        ),
+        child: _homeScreenController.loadedProjects.value > 0 &&
+                !_homeScreenController.isLoading.value
+            ? ListView.builder(
+                // physics: const BouncingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: _homeScreenController.loadedProjects.value,
+                itemBuilder: (context, index) {
+                  return ProjectCardWidget(
+                    project: _homeScreenController
+                        .homeScreenModel!.data.projects[index],
+                    isRedirectToProjectDetails: true,
+                  );
+                },
+              )
+            : const Center(
+                child: Text(
+                "No projects found",
+              )),
       ),
     );
   }

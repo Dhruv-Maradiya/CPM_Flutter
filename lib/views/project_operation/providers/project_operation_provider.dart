@@ -3,14 +3,36 @@ import 'package:projectify/rest/model/base_model.dart';
 import 'package:projectify/rest/rest_client.dart';
 import 'package:projectify/rest/rest_constants.dart';
 import 'package:projectify/views/home/models/home_screen_model.dart';
-import 'package:projectify/views/project_operation/models/backend_technologies.dart';
-import 'package:projectify/views/project_operation/models/database_technologies.dart';
-import 'package:projectify/views/project_operation/models/frontend_technologies.dart';
-import 'package:projectify/views/project_operation/models/categories.dart'
-    as categories_model;
 import 'package:projectify/views/project_operation/models/project_operation_tasks.dart';
+import 'package:projectify/views/project_operation/models/project_model.dart';
+import 'package:projectify/views/project_operation/models/technology.dart';
+import 'package:projectify/views/project_operation/models/categories_modal.dart'
+    as categories_modal;
 
 class ProjectOperationProvider {
+  Future<ProjectOperationProjectModel?> fetchProject(dynamic params) async {
+    ApiRequest request =
+        ApiRequest(url: RestConstants.findOneProject, queryParameters: params);
+    ApiResponseModel response = await request.get();
+
+    if (response.success) {
+      return ProjectOperationProjectModel.fromJson(response.data);
+    } else {
+      final ApiErrorModel apiErrorModel =
+          ApiErrorModel.fromJson(response.error);
+
+      Get.snackbar(
+        apiErrorModel.name,
+        apiErrorModel.message,
+        isDismissible: true,
+        duration: const Duration(seconds: 3),
+        snackPosition: SnackPosition.BOTTOM,
+      );
+
+      return null;
+    }
+  }
+
   Future<ProjectOperationTasksModel?> fetchTasks(dynamic params) async {
     ApiRequest request = ApiRequest(
         url: RestConstants.projectTasksFetch, queryParameters: params);
@@ -34,13 +56,13 @@ class ProjectOperationProvider {
     }
   }
 
-  Future<FrontendTechnologies?> fetchFrontendTechnologies() async {
+  Future<Technologies?> fetchFrontendTechnologies() async {
     ApiRequest request =
         ApiRequest(url: RestConstants.fetchFrontendTechnologies);
     ApiResponseModel response = await request.get();
 
     if (response.success) {
-      return FrontendTechnologies.fromJson(response.data);
+      return Technologies.fromJson(response.data, "frontendTechnologies");
     } else {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);
@@ -57,13 +79,13 @@ class ProjectOperationProvider {
     }
   }
 
-  Future<BackendTechnologies?> fetchBackendTechnologies() async {
+  Future<Technologies?> fetchBackendTechnologies() async {
     ApiRequest request =
         ApiRequest(url: RestConstants.fetchBackendTechnologies);
     ApiResponseModel response = await request.get();
 
     if (response.success) {
-      return BackendTechnologies.fromJson(response.data);
+      return Technologies.fromJson(response.data, "backendTechnologies");
     } else {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);
@@ -80,13 +102,13 @@ class ProjectOperationProvider {
     }
   }
 
-  Future<DatabaseTechnologies?> fetchDatabaseTechnologies() async {
+  Future<Technologies?> fetchDatabaseTechnologies() async {
     ApiRequest request =
         ApiRequest(url: RestConstants.fetchDatabaseTechnologies);
     ApiResponseModel response = await request.get();
 
     if (response.success) {
-      return DatabaseTechnologies.fromJson(response.data);
+      return Technologies.fromJson(response.data, "databaseTechnologies");
     } else {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);
@@ -103,13 +125,13 @@ class ProjectOperationProvider {
     }
   }
 
-  Future<categories_model.Categories?> fetchCategories() async {
+  Future<categories_modal.Categories?> fetchCategories() async {
     ApiRequest request = ApiRequest(url: RestConstants.fetchCategories);
 
     ApiResponseModel response = await request.get();
 
     if (response.success) {
-      return categories_model.Categories.fromJson(response.data);
+      return categories_modal.Categories.fromJson(response.data);
     } else {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);

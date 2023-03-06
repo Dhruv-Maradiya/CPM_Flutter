@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -349,397 +349,468 @@ class ProjectOperationWidget extends StatelessWidget {
   }
 
   Widget _buildProject(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        child: Form(
-          key: _controller.projectFormKey,
-          child: Obx(() => Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  _controller.images.isEmpty
-                      ? Container(
-                          color: Pallets.uploadBgColor,
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                _selectImages();
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 14, horizontal: 20),
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(5),
+    final Project project = data['project'];
+    return RefreshIndicator(
+      onRefresh: () async {
+        _controller.fetchTechnologies();
+        _controller.fetchProject(projectId: project.id);
+      },
+      color: Pallets.primaryColor,
+      child: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          child: Form(
+            key: _controller.projectFormKey,
+            child: Obx(() => Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    _controller.images.isEmpty
+                        ? Container(
+                            color: Pallets.uploadBgColor,
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: () {
+                                  _selectImages();
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 14, horizontal: 20),
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(5),
+                                    ),
+                                    border: Border.all(
+                                        color: Pallets.primaryColor,
+                                        width: 0.5),
                                   ),
-                                  border: Border.all(
-                                      color: Pallets.primaryColor, width: 0.5),
-                                ),
-                                height: 60,
-                                child: Stack(
-                                  alignment: AlignmentDirectional.centerStart,
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: const [
-                                        Text(
-                                          "Upload Images",
-                                          style: TextStyle(
-                                            fontSize: 18,
+                                  height: 60,
+                                  child: Stack(
+                                    alignment: AlignmentDirectional.centerStart,
+                                    children: [
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Text(
+                                            "Upload Images",
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    const Positioned(
-                                      child: Icon(
-                                        Icons.upload,
-                                        size: 30,
+                                        ],
                                       ),
-                                    ),
-                                  ],
+                                      const Positioned(
+                                        child: Icon(
+                                          Icons.upload,
+                                          size: 30,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        )
-                      : Material(
-                          color: Pallets.appBarColor,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                CarouselSlider(
-                                  items: _controller.images.map((image) {
-                                    return Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 10,
-                                      ),
-                                      child: Image.file(image),
-                                    );
-                                  }).toList(),
-                                  options: CarouselOptions(
-                                    aspectRatio: 16 / 12,
-                                    autoPlay: true,
-                                    enableInfiniteScroll: false,
-                                    autoPlayCurve: Curves.fastOutSlowIn,
-                                    autoPlayAnimationDuration:
-                                        const Duration(milliseconds: 800),
-                                    viewportFraction: 1,
-                                    autoPlayInterval:
-                                        const Duration(seconds: 7),
-                                    enlargeCenterPage: true,
-                                    onPageChanged: (index, reason) {
-                                      _controller.currentSlide = index;
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Material(
-                                      color: Pallets.appBgColor,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(5),
+                          )
+                        : Material(
+                            color: Pallets.appBarColor,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  CarouselSlider(
+                                    items: _controller.images.map((image) {
+                                      return Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 10,
                                         ),
-                                      ),
-                                      child: IconButton(
-                                        icon: const Icon(
-                                          Icons.delete,
+                                        child: image.file != null
+                                            ? Image.file(image.file as File)
+                                            : image.img == null
+                                                ? const SizedBox.shrink()
+                                                : CachedNetworkImage(
+                                                    imageUrl:
+                                                        image.img?.url ?? "",
+                                                    placeholder:
+                                                        (context, url) =>
+                                                            const SizedBox(
+                                                      height: 60,
+                                                      width: 60,
+                                                      child: Center(
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          color: Pallets
+                                                              .primaryColor,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    errorWidget: (context, url,
+                                                            error) =>
+                                                        const Icon(Icons.error),
+                                                  ),
+                                      );
+                                    }).toList(),
+                                    options: CarouselOptions(
+                                      aspectRatio: 16 / 12,
+                                      autoPlay: true,
+                                      enableInfiniteScroll: false,
+                                      autoPlayCurve: Curves.fastOutSlowIn,
+                                      autoPlayAnimationDuration:
+                                          const Duration(milliseconds: 800),
+                                      viewportFraction: 1,
+                                      autoPlayInterval:
+                                          const Duration(seconds: 7),
+                                      enlargeCenterPage: true,
+                                      onPageChanged: (index, reason) {
+                                        _controller.currentSlide = index;
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Material(
+                                        color: Pallets.appBgColor,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(5),
+                                          ),
+                                        ),
+                                        child: IconButton(
+                                          icon: const Icon(
+                                            Icons.delete,
+                                            color: Pallets.primaryColor,
+                                          ),
+                                          padding: const EdgeInsets.all(2),
+                                          onPressed: () {
+                                            _controller.removeImage();
+                                          },
                                           color: Pallets.primaryColor,
                                         ),
-                                        padding: const EdgeInsets.all(2),
-                                        onPressed: () {
-                                          _controller.removeImage();
-                                        },
-                                        color: Pallets.primaryColor,
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    _controller.images.length < 4
-                                        ? Material(
-                                            color: Pallets.appBgColor,
-                                            shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(5),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      _controller.images.length < 4
+                                          ? Material(
+                                              color: Pallets.appBgColor,
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(5),
+                                                ),
                                               ),
-                                            ),
-                                            child: IconButton(
-                                              icon: const Icon(
-                                                Icons.add,
+                                              child: IconButton(
+                                                icon: const Icon(
+                                                  Icons.add,
+                                                  color: Pallets.primaryColor,
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.all(2),
+                                                onPressed: () {
+                                                  _selectImages();
+                                                },
                                                 color: Pallets.primaryColor,
                                               ),
-                                              padding: const EdgeInsets.all(2),
-                                              onPressed: () {
-                                                _selectImages();
-                                              },
-                                              color: Pallets.primaryColor,
-                                            ),
-                                          )
-                                        : const SizedBox.shrink(),
-                                  ],
-                                ),
-                              ],
+                                            )
+                                          : const SizedBox.shrink(),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CommonTextField(
-                    title: "Title",
-                    hintText: "Title",
-                    maxLines: null,
-                    controller: _controller.titleController,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CommonTextField(
-                    title: "Description",
-                    hintText: "Description",
-                    maxLines: 4,
-                    controller: _controller.descriptionController,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Obx(() => CommonDropDown(
-                        label: const Text(
-                          "Frontend",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: Pallets.primaryColor,
-                          ),
-                        ),
-                        onChanged: _controller.frontendTechnologies.isNotEmpty
-                            ? (value) {
-                                _controller.selectedFrontendTechnology.value =
-                                    value ?? "";
-                              }
-                            : null,
-                        items: _controller.frontendTechnologies
-                            .map((e) => DropdownMenuItem(
-                                value: e.name,
-                                child: Text(
-                                  e.name,
-                                )))
-                            .toList(),
-                        hintText: "Frontend Technology",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please select frontend technology";
-                          }
-                          return null;
-                        },
-                      )),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Obx(() => CommonDropDown(
-                        label: const Text(
-                          "Backend",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: Pallets.primaryColor,
-                          ),
-                        ),
-                        onChanged: _controller.backendTechnologies.isNotEmpty
-                            ? (value) {
-                                _controller.selectedBackendTechnology.value =
-                                    value ?? "";
-                              }
-                            : null,
-                        items: _controller.backendTechnologies
-                            .map((e) => DropdownMenuItem(
-                                value: e.name,
-                                child: Text(
-                                  e.name,
-                                )))
-                            .toList(),
-                        hintText: "Backend Technology",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please select backend technology";
-                          }
-                          return null;
-                        },
-                      )),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Obx(() => CommonDropDown(
-                        label: const Text(
-                          "Database",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: Pallets.primaryColor,
-                          ),
-                        ),
-                        onChanged: _controller.databaseTechnologies.isNotEmpty
-                            ? (value) {
-                                _controller.selectedDatabaseTechnology.value =
-                                    value ?? "";
-                              }
-                            : null,
-                        items: _controller.databaseTechnologies
-                            .map((e) => DropdownMenuItem(
-                                value: e.name,
-                                child: Text(
-                                  e.name,
-                                )))
-                            .toList(),
-                        hintText: "Database Technology",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please select database technology";
-                          }
-                          return null;
-                        },
-                      )),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Obx(() => CommonDropDown(
-                        label: const Text(
-                          "Category",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: Pallets.primaryColor,
-                          ),
-                        ),
-                        onChanged: _controller.categories.isNotEmpty
-                            ? (value) {
-                                _controller.selectedCategory.value =
-                                    value ?? "";
-                              }
-                            : null,
-                        items: _controller.categories
-                            .map((e) => DropdownMenuItem(
-                                value: e.name,
-                                child: Text(
-                                  e.name,
-                                )))
-                            .toList(),
-                        hintText: "Category",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please select category";
-                          }
-                          return null;
-                        },
-                      )),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  MaterialButton(
-                    onPressed: () {},
-                    color: Pallets.primaryColor,
-                    height: 52,
-                    minWidth: double.maxFinite,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    const SizedBox(
+                      height: 20,
                     ),
-                    child: const Text(
-                      'Submit',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: Pallets.scaffoldBgColor,
+                    CommonTextField(
+                      title: "Title",
+                      hintText: "Title",
+                      maxLines: null,
+                      controller: _controller.titleController,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CommonTextField(
+                      title: "Description",
+                      hintText: "Description",
+                      maxLines: 4,
+                      controller: _controller.descriptionController,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Obx(() => CommonDropDown(
+                          label: const Text(
+                            "Frontend",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Pallets.primaryColor,
+                            ),
+                          ),
+                          onChanged: _controller.frontendTechnologies.isNotEmpty
+                              ? (value) {
+                                  _controller.selectedFrontendTechnology.value =
+                                      value ?? "";
+                                }
+                              : null,
+                          items: _controller.frontendTechnologies
+                              .map((e) => DropdownMenuItem(
+                                  value: e.id.toString(),
+                                  child: Text(
+                                    e.name,
+                                  )))
+                              .toList(),
+                          value: _controller.selectedFrontendTechnology.value,
+                          hintText: "Frontend Technology",
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please select frontend technology";
+                            }
+                            return null;
+                          },
+                        )),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Obx(() => CommonDropDown(
+                          label: const Text(
+                            "Backend",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Pallets.primaryColor,
+                            ),
+                          ),
+                          onChanged: _controller.backendTechnologies.isNotEmpty
+                              ? (value) {
+                                  _controller.selectedBackendTechnology.value =
+                                      value ?? "";
+                                }
+                              : null,
+                          value: _controller.selectedBackendTechnology.value,
+                          items: _controller.backendTechnologies
+                              .map((e) => DropdownMenuItem(
+                                  value: e.id.toString(),
+                                  child: Text(
+                                    e.name,
+                                  )))
+                              .toList(),
+                          hintText: "Backend Technology",
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please select backend technology";
+                            }
+                            return null;
+                          },
+                        )),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Obx(() => CommonDropDown(
+                          label: const Text(
+                            "Database",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Pallets.primaryColor,
+                            ),
+                          ),
+                          onChanged: _controller.databaseTechnologies.isNotEmpty
+                              ? (value) {
+                                  _controller.selectedDatabaseTechnology.value =
+                                      value ?? "";
+                                }
+                              : null,
+                          value: _controller.selectedDatabaseTechnology.value,
+                          items: _controller.databaseTechnologies
+                              .map((e) => DropdownMenuItem(
+                                  value: e.id.toString(),
+                                  child: Text(
+                                    e.name,
+                                  )))
+                              .toList(),
+                          hintText: "Database Technology",
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please select database technology";
+                            }
+                            return null;
+                          },
+                        )),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Obx(() => CommonDropDown(
+                          label: const Text(
+                            "Category",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Pallets.primaryColor,
+                            ),
+                          ),
+                          onChanged: _controller.categories.isNotEmpty
+                              ? (value) {
+                                  _controller.selectedCategory.value =
+                                      value ?? "";
+                                }
+                              : null,
+                          value: _controller.selectedCategory.value,
+                          items: _controller.categories
+                              .map((e) => DropdownMenuItem(
+                                  value: e.id.toString(),
+                                  child: Text(
+                                    e.name,
+                                  )))
+                              .toList(),
+                          hintText: "Category",
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please select category";
+                            }
+                            return null;
+                          },
+                        )),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    MaterialButton(
+                      onPressed: () {},
+                      color: Pallets.primaryColor,
+                      height: 52,
+                      minWidth: double.maxFinite,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Text(
+                        'Submit',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: Pallets.scaffoldBgColor,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                ],
-              )),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                )),
+          ),
         ),
       ),
     );
   }
 
   Widget _buildMember(BuildContext context) {
+    final Project project = data['project'];
+
+    pull_to_refresh.RefreshController refreshController =
+        pull_to_refresh.RefreshController(
+      initialRefresh: false,
+    );
+    void onRefresh() async {
+      await Future.wait([
+        _controller.fetchTechnologies(),
+        _controller.fetchProject(projectId: project.id),
+      ]);
+      refreshController.refreshCompleted();
+    }
+
     return Stack(
       children: [
-        SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Pallets.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Pallets.primaryColor.withOpacity(0.1),
-                        blurRadius: 1,
-                        spreadRadius: 1.5,
+        Padding(
+          padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+          child: Obx(
+            () => pull_to_refresh.SmartRefresher(
+              enablePullDown: true,
+              controller: refreshController,
+              onRefresh: onRefresh,
+              header: const pull_to_refresh.ClassicHeader(
+                completeDuration: Duration(seconds: 1),
+              ),
+              child: ListView.builder(
+                  itemCount: _controller.members.length,
+                  itemBuilder: (context, index) {
+                    var member = _controller.members[index];
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Pallets.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Pallets.primaryColor.withOpacity(0.1),
+                            blurRadius: 1,
+                            spreadRadius: 1.5,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  padding: const EdgeInsets.all(12),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/images/ellipse_4.png',
-                        height: 45,
-                        width: 45,
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              "John Doe",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
+                      padding: const EdgeInsets.all(12),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          member.student.url.isNotEmpty
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: CachedNetworkImage(
+                                    imageUrl: member.student.url,
+                                    height: 50,
+                                    width: 50,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : Image.asset(
+                                  'assets/images/ellipse_4.png',
+                                  height: 45,
+                                  width: 45,
+                                ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  member.student.name,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Text(
+                                  member.student.enrollmentNo,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                )
+                              ],
                             ),
-                            Text(
-                              "206330307033",
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            )
-                          ],
-                        ),
+                          ),
+                          Text(
+                            member.student.branch.displayName,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 16,
+                          )
+                        ],
                       ),
-                      const Text(
-                        "CE",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 16,
-                      )
-                    ],
-                  ),
-                ),
-              ],
+                    );
+                  }),
             ),
           ),
         ),

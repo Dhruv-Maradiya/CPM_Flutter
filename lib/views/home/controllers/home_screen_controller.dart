@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
 import 'package:projectify/views/home/models/home_screen_model.dart';
 import 'package:projectify/views/home/providers/home_screen_provider.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomeScreenController extends GetxController {
   RxBool isNotifications = false.obs;
@@ -28,7 +27,20 @@ class HomeScreenController extends GetxController {
 
   fetch() async {
     isLoading.value = true;
-    var data = await HomeScreenProvider().fetch(null);
+
+    int? selectedCategory;
+
+    if (selectedCategoryIndex.value != 0) {
+      selectedCategory = homeScreenModel
+          ?.data.categories.categories[selectedCategoryIndex.value - 1].id;
+    }
+
+    dynamic params = {
+      "search": searchController.text.isEmpty ? null : searchController.text,
+      "categoryId": selectedCategory,
+    };
+
+    var data = await HomeScreenProvider().fetch(params);
     isLoading.value = false;
 
     if (data != null) {
