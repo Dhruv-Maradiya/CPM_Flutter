@@ -104,6 +104,9 @@ class HomeScreenWidget extends StatelessWidget {
                                             children: _buildFilters(),
                                           )),
                                     ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
                                     _buildProjects(
                                       onLoading: onLoading,
                                       refreshController: refreshController,

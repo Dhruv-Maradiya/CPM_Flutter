@@ -18,32 +18,33 @@ class ProjectCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => {
-        if (isRedirectToProjectDetails == true)
-          {
-            Get.toNamed(Routes.projectDetails, arguments: {"project": project}),
-          }
-        else
-          {
-            Get.toNamed(Routes.projectOperation,
-                arguments: {"project": project}),
-          }
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(17),
-          color: Pallets.scaffoldBgColor,
-          boxShadow: const [
-            BoxShadow(
-              offset: Offset(0, 2),
-              blurRadius: 4,
-              spreadRadius: 0,
-              color: Color.fromRGBO(0, 0, 0, 0.25),
-            ),
-          ],
-        ),
-        margin: const EdgeInsets.only(top: 20),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(17),
+        color: Pallets.scaffoldBgColor,
+        boxShadow: const [
+          BoxShadow(
+            offset: Offset(0, 2),
+            blurRadius: 4,
+            spreadRadius: 0,
+            color: Color.fromRGBO(0, 0, 0, 0.25),
+          ),
+        ],
+      ),
+      margin: const EdgeInsets.only(bottom: 20),
+      child: GestureDetector(
+        onTap: () => {
+          if (isRedirectToProjectDetails == true)
+            {
+              Get.toNamed(Routes.projectDetails,
+                  arguments: {"project": project}),
+            }
+          else
+            {
+              Get.toNamed(Routes.projectOperation,
+                  arguments: {"project": project}),
+            }
+        },
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 15,
@@ -70,6 +71,7 @@ class ProjectCardWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(
                       height: 15,

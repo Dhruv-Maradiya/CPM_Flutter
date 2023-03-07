@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -1052,8 +1054,33 @@ class ProjectOperationWidget extends StatelessWidget {
         );
         images.removeRange(total - 4 - 1, images.length);
       }
+
       for (var element in images) {
-        _controller.addImage(File(element.path));
+        bool isAlreadyExists = false;
+        final Uint8List bytes = await element.readAsBytes();
+        final String base64Image = base64Encode(bytes);
+        final int imageIndex = base64Image.length;
+        for (var image in _controller.images.value) {
+          if (image.file != null && image.file != null) {
+            final Uint8List bytes = await image.file!.readAsBytes();
+            final String base64Image = base64Encode(bytes);
+            final int index = base64Image.length;
+
+            if (imageIndex == index) {
+              isAlreadyExists = true;
+              Get.snackbar(
+                "Error",
+                "Image already exists",
+                backgroundColor: Pallets.errorColor,
+                snackPosition: SnackPosition.BOTTOM,
+              );
+              break;
+            }
+          }
+        }
+        if (!isAlreadyExists) {
+          _controller.addImage(File(element.path));
+        }
       }
     }
   }
