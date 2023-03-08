@@ -70,10 +70,11 @@ class ApiRequest {
 
   Future<ApiResponseModel> get() async {
     try {
-      var resp = await (await _dio()).get(
-        url,
-        queryParameters: queryParameters,
-      );
+      var resp = await (await _dio()).get(url,
+          queryParameters: queryParameters,
+          options: Options(headers: {
+            HttpHeaders.contentTypeHeader: "multipart/form-data",
+          }));
       if (resp.statusCode! < 400) {
         return ApiResponseModel(success: true, data: resp.data);
       } else {

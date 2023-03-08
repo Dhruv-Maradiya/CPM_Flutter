@@ -56,23 +56,23 @@ class ProfileWidget extends StatelessWidget {
                   Stack(
                     children: [
                       Obx(
-                        () =>
-                            _profileController.userProfile.value.url.isNotEmpty
-                                ? CachedNetworkImage(
-                                    imageUrl: _profileController
-                                        .userProfile.value.url,
-                                    height: 80,
-                                    width: 80,
-                                    placeholder: (context, url) =>
-                                        const CircularProgressIndicator(
-                                      color: Pallets.primaryColor,
-                                    ),
-                                  )
-                                : Image.asset(
-                                    'assets/images/ellipse_4.png',
-                                    height: 80,
-                                    width: 80,
-                                  ),
+                        () => _profileController
+                                .userProfile.value.image.isNotEmpty
+                            ? CachedNetworkImage(
+                                imageUrl:
+                                    _profileController.userProfile.value.url,
+                                height: 80,
+                                width: 80,
+                                placeholder: (context, url) =>
+                                    const CircularProgressIndicator(
+                                  color: Pallets.primaryColor,
+                                ),
+                              )
+                            : Image.asset(
+                                'assets/images/ellipse_4.png',
+                                height: 80,
+                                width: 80,
+                              ),
                       ),
                       Positioned(
                         bottom: 0,

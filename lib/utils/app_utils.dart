@@ -1,7 +1,5 @@
 import 'package:projectify/core/constants/pallets.dart';
 import 'package:projectify/preference/shared_preference.dart';
-import 'package:projectify/views/home/home_screen.dart';
-import 'package:projectify/views/sign_in_as_student/sign_in_as_student_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -11,7 +9,7 @@ class AppUtils {
   static Widget getFullScreenLoader({
     Indicator indicatorType = Indicator.circleStrokeSpin,
     Color backgroundColor = Colors.black45,
-    Color loaderColor = Colors.white,
+    Color loaderColor = Pallets.primaryColor,
   }) {
     return Container(
       color: backgroundColor,

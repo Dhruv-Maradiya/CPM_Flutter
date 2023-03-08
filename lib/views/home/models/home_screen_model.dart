@@ -223,6 +223,8 @@ class Category {
         "id": id,
         "name": name,
       };
+
+  static from(map) {}
 }
 
 class Group {

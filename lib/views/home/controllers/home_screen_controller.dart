@@ -14,24 +14,64 @@ class HomeScreenController extends GetxController {
 
   RxInt selectedCategoryIndex = 0.obs;
 
+  RxBool hasMoreProjects = false.obs;
+  RxInt totalProjects = 0.obs;
+  RxInt loadedProjects = 0.obs;
+
   @override
   void onInit() {
     super.onInit();
+
     fetch();
   }
 
-  Future<void> fetch() async {
+  fetch() async {
     isLoading.value = true;
-    var data = await HomeScreenProvider().fetch(null);
+
+    int? selectedCategory;
+
+    if (selectedCategoryIndex.value != 0) {
+      selectedCategory = homeScreenModel
+          ?.data.categories.categories[selectedCategoryIndex.value - 1].id;
+    }
+
+    dynamic params = {
+      "search": searchController.text.isEmpty ? null : searchController.text,
+      "categoryId": selectedCategory,
+    };
+
+    var data = await HomeScreenProvider().fetch(params);
     isLoading.value = false;
 
     if (data != null) {
       homeScreenModel = data;
       isSuccess.value = true;
+      totalProjects.value = homeScreenModel?.data.count ?? 0;
+      loadedProjects.value = homeScreenModel?.data.projects.length ?? 0;
     } else {
       isSuccess.value = false;
     }
 
     isNotifications.value = data?.data.isUnreadNotifications ?? false;
+  }
+
+  loadMoreProjects() async {
+    int skip = loadedProjects.value;
+    int take = 10;
+    var data = await HomeScreenProvider().fetch({
+      "skip": skip,
+      "take": take,
+    });
+    if (data != null) {
+      if (homeScreenModel?.data.projects.isEmpty == true) {
+        homeScreenModel?.data.projects.addAll(data.data.projects);
+      } else {
+        homeScreenModel = data;
+      }
+      totalProjects.value = homeScreenModel?.data.count ?? 0;
+      loadedProjects.value = homeScreenModel?.data.projects.length ?? 0;
+      hasMoreProjects.value = (homeScreenModel?.data.count ?? 0) >
+          (homeScreenModel?.data.projects.length ?? 0);
+    }
   }
 }

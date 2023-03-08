@@ -62,6 +62,7 @@ class CommonTextField extends StatelessWidget {
             suffixIcon: suffixIcons,
             focusColor: Pallets.primaryColor,
           ),
+          cursorColor: Pallets.primaryColor,
           keyboardType: keyboardType,
           textInputAction: textInputAction,
           readOnly: isReadOnly ?? false,
@@ -73,6 +74,5 @@ class CommonTextField extends StatelessWidget {
         ),
       ],
     );
-    ;
   }
 }

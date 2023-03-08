@@ -29,4 +29,7 @@ class Pallets {
 
   static const Color white = Color(0xFFFFFFFF);
   static const Color orange = Color(0xFFF67C15);
+
+  static const Color successColor = Color(0xFF00C853);
+  static const Color errorColor = Color(0xFFF44336);
 }

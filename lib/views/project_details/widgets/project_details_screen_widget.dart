@@ -153,12 +153,6 @@ class ProjectDetailsWidget extends StatelessWidget {
                                         ? ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(50),
-                                            // child: Image.network(
-                                            //   profilePicture,
-                                            //   width: 40,
-                                            //   height: 40,
-
-                                            // ),
                                             child: CachedNetworkImage(
                                               imageUrl: profilePicture,
                                               width: 40,
@@ -234,21 +228,26 @@ class ProjectDetailsWidget extends StatelessWidget {
                         const SizedBox(
                           height: 10,
                         ),
-                        const Text(
-                          'Guide:',
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFF4F4F4F),
-                            fontSize: 20,
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: project.projectGuideMapping
-                              .map((guide) => _buildGuideWidget(guide: guide))
-                              .toList(),
-                        ),
+                        project.projectGuideMapping.isNotEmpty
+                            ? const Text(
+                                'Guide:',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFF4F4F4F),
+                                  fontSize: 20,
+                                ),
+                              )
+                            : const SizedBox.shrink(),
+                        project.projectGuideMapping.isNotEmpty
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: project.projectGuideMapping
+                                    .map((guide) =>
+                                        _buildGuideWidget(guide: guide))
+                                    .toList(),
+                              )
+                            : const SizedBox.shrink(),
                       ],
                     ),
                   ),
