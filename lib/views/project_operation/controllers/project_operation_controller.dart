@@ -1,6 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:projectify/core/constants/pallets.dart';
+import 'package:projectify/core/constants/routes.dart';
+import 'package:projectify/preference/shared_preference.dart';
 import 'package:projectify/views/home/models/home_screen_model.dart';
 import 'package:projectify/views/project_operation/models/project_operation_tasks.dart';
 import 'package:projectify/views/project_operation/providers/project_operation_provider.dart';
@@ -53,6 +56,18 @@ class ProjectOperationController extends GetxController
   // members tab
   var members = <GroupParticipant>[].obs;
 
+  TextEditingController searchStudent = TextEditingController();
+  RxBool searchStudentCancellable = false.obs;
+
+  var inviteStudents = <Student>[].obs;
+  RxInt totalInviteStudents = 0.obs;
+  RxBool isInviteStudentsLoading = false.obs;
+  RxBool isInviteStudentsSuccess = false.obs;
+
+  RxBool isInvitationSending = false.obs;
+
+  var selectedStudents = <int>[].obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -69,6 +84,12 @@ class ProjectOperationController extends GetxController
     fetchTasks(projectId: project.id);
     fetchTechnologies();
     fetchProject(projectId: project.id);
+  }
+
+  @override
+  void onClose() {
+    tabController.dispose();
+    super.onClose();
   }
 
   Future<void> updateProject() async {
@@ -258,5 +279,101 @@ class ProjectOperationController extends GetxController
       _removedImages.add(currentImage.img?.id ?? 0);
     }
     images.removeAt(index);
+  }
+
+  Future<void> fetchInviteStudents({bool isNecessary = false}) async {
+    int skip = 0;
+    int take = 10;
+
+    int groupId = project.value!.group.id;
+
+    if (inviteStudents.isEmpty ||
+        searchStudent.text.isNotEmpty ||
+        isNecessary) {
+      isInviteStudentsLoading.value = true;
+      isInviteStudentsSuccess.value = false;
+      var data = await ProjectOperationProvider().fetchInviteStudents({
+        "groupId": groupId,
+        "take": take,
+        "skip": skip,
+        'search': searchStudent.text,
+      });
+
+      if (data != null) {
+        var studentsToRemain = inviteStudents.value.where((element) {
+          return selectedStudents.contains(element.id);
+        });
+        inviteStudents.value = data.students;
+        inviteStudents.value.addAll(studentsToRemain);
+        sortInviteStudents();
+        totalInviteStudents.value = data.count;
+        isInviteStudentsSuccess.value = true;
+      }
+      isInviteStudentsLoading.value = false;
+    }
+  }
+
+  Future<void> fetchMoreInviteStudents() async {
+    int skip = inviteStudents.length;
+    int take = 10;
+
+    int groupId = project.value!.group.id;
+
+    if (skip < totalInviteStudents.value) {
+      var data = await ProjectOperationProvider().fetchInviteStudents({
+        "groupId": groupId,
+        "take": take,
+        "skip": skip,
+        'search': searchStudent.text,
+      });
+
+      if (data != null) {
+        inviteStudents.value.addAll(data.students);
+        totalInviteStudents.value = data.count;
+      }
+    }
+  }
+
+  Future<void> invite() async {
+    isInvitationSending.value = true;
+
+    var user = await SharedPreferencesClass.getSharePreference();
+
+    if (user != null) {
+      var data = await ProjectOperationProvider().invite({
+        "groupId": project.value!.group.id,
+        "groupLeaderId": user.userId,
+        "members": selectedStudents.toList(),
+      });
+      if (data) {
+        selectedStudents.clear();
+        Get.back();
+        Get.snackbar(
+          "Success",
+          "Invitation sent successfully",
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+    } else {
+      Get.offAllNamed(Routes.home);
+      Get.snackbar("Unauthorized", "Please login again",
+          backgroundColor: Pallets.errorColor);
+    }
+    isInvitationSending.value = false;
+  }
+
+  void sortInviteStudents() {
+    // sort by if student is in selectedStudents
+    if (selectedStudents.isNotEmpty) {
+      inviteStudents.sort((a, b) {
+        return selectedStudents.contains(a.id)
+            ? selectedStudents.contains(b.id)
+                ? 0
+                : -1
+            : 1;
+      });
+    }
   }
 }

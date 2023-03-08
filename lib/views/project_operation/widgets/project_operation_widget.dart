@@ -111,6 +111,10 @@ class ProjectOperationWidget extends StatelessWidget {
   }
 
   Widget _buildTasks(BuildContext context) {
+    if (data == null) {
+      Get.back();
+      return const SizedBox.shrink();
+    }
     final Project project = data['project'];
     pull_to_refresh.RefreshController refreshController =
         pull_to_refresh.RefreshController(
@@ -733,7 +737,8 @@ class ProjectOperationWidget extends StatelessWidget {
                             _controller.updateProject();
                           } else {
                             Get.snackbar(
-                                "Error", "Please select at least one image");
+                                "Error", "Please select at least one image",
+                                backgroundColor: Pallets.errorColor);
                           }
                         }
                       },
@@ -806,11 +811,12 @@ class ProjectOperationWidget extends StatelessWidget {
                           ),
                         ],
                       ),
+                      margin: const EdgeInsets.only(bottom: 20),
                       padding: const EdgeInsets.all(12),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          member.student.url.isNotEmpty
+                          member.student.profilePicture.isNotEmpty
                               ? ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
                                   child: CachedNetworkImage(
@@ -829,7 +835,7 @@ class ProjectOperationWidget extends StatelessWidget {
                             width: 20,
                           ),
                           Expanded(
-                            flex: 3,
+                            flex: 5,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -839,6 +845,7 @@ class ProjectOperationWidget extends StatelessWidget {
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                   ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                                 Text(
                                   member.student.enrollmentNo,
@@ -850,11 +857,14 @@ class ProjectOperationWidget extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Text(
-                            member.student.branch.displayName,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              member.student.branch.displayName,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
                           const SizedBox(
@@ -870,6 +880,7 @@ class ProjectOperationWidget extends StatelessWidget {
         _buildAddButton(
           context,
           () {
+            _controller.fetchInviteStudents();
             _showBottomSheet(context);
           },
         ),
@@ -918,6 +929,16 @@ class ProjectOperationWidget extends StatelessWidget {
   }
 
   Future _showBottomSheet(BuildContext context) {
+    pull_to_refresh.RefreshController refreshController =
+        pull_to_refresh.RefreshController(
+      initialRefresh: false,
+    );
+    onLoading() async {
+      await _controller.fetchMoreInviteStudents();
+      refreshController.loadComplete();
+      _controller.inviteStudents.refresh();
+    }
+
     return showModalBottomSheet(
       context: context,
       backgroundColor: Pallets.scaffoldBgColor,
@@ -931,161 +952,307 @@ class ProjectOperationWidget extends StatelessWidget {
       ),
       builder: (context) => FractionallySizedBox(
         heightFactor: 0.8,
-        child: Container(
-          padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-          child: Stack(
-            children: [
-              Column(
+        child: Stack(
+          children: [
+            Container(
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+              child: Stack(
                 children: [
-                  const Material(
-                    elevation: 2.5,
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Pallets.primaryColor,
-                        ),
-                        fillColor: Pallets.searchBarColor,
-                        filled: true,
-                        hintText: 'Enrollment No.',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          borderSide: BorderSide.none,
-                        ),
-                        focusColor: Pallets.primaryColor,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          borderSide: BorderSide.none,
-                        ),
-                        disabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          borderSide: BorderSide.none,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          borderSide: BorderSide.none,
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                      cursorColor: Pallets.primaryColor,
-                      keyboardType: TextInputType.number,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: 20,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Card(
-                            color: Pallets.white,
-                            elevation: 1.5,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              side: const BorderSide(
-                                color: Pallets.primaryColor,
-                                width: .25,
-                              ),
-                            ),
-                            margin: const EdgeInsets.only(bottom: 20),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 10.0,
-                                horizontal: 10,
-                              ),
-                              child: Expanded(
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/ellipse_4.png',
-                                      height: 45,
-                                      width: 45,
-                                    ),
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
-                                    Expanded(
-                                      flex: 3,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: const [
-                                          Text(
-                                            "John Doe",
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                          Text(
-                                            "206330307033",
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400,
+                  Column(
+                    children: [
+                      Material(
+                        elevation: 2.5,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8)),
+                        child: Obx(() => TextField(
+                              decoration: InputDecoration(
+                                prefixIcon: const Icon(
+                                  Icons.search,
+                                  color: Pallets.primaryColor,
+                                ),
+                                fillColor: Pallets.searchBarColor,
+                                filled: true,
+                                hintText: 'Enrollment No.',
+                                border: const OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                  borderSide: BorderSide.none,
+                                ),
+                                suffixIcon:
+                                    _controller.searchStudentCancellable.value
+                                        ? InkWell(
+                                            onTap: () {
+                                              _controller.searchStudent.clear();
+                                              _controller
+                                                  .searchStudentCancellable
+                                                  .value = false;
+                                              _controller.fetchInviteStudents(
+                                                  isNecessary: true);
+                                            },
+                                            child: const Icon(
+                                              Icons.close,
+                                              color: Pallets.primaryColor,
                                             ),
                                           )
-                                        ],
-                                      ),
-                                    ),
-                                    Checkbox(
-                                      value: false,
-                                      onChanged: (value) {},
-                                    ),
-                                  ],
+                                        : null,
+                                focusColor: Pallets.primaryColor,
+                                enabledBorder: const OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                  borderSide: BorderSide.none,
+                                ),
+                                disabledBorder: const OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                  borderSide: BorderSide.none,
+                                ),
+                                focusedBorder: const OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                  borderSide: BorderSide.none,
+                                ),
+                                focusedErrorBorder: const OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                  borderSide: BorderSide.none,
                                 ),
                               ),
-                            ),
-                          );
-                        },
+                              onChanged: (value) {
+                                if (value.isNotEmpty) {
+                                  _controller.searchStudentCancellable.value =
+                                      true;
+                                } else {
+                                  _controller.searchStudentCancellable.value =
+                                      false;
+                                }
+                              },
+                              onTapOutside: (value) =>
+                                  FocusManager.instance.primaryFocus?.unfocus(),
+                              onSubmitted: (value) {
+                                _controller.fetchInviteStudents();
+                              },
+                              cursorColor: Pallets.primaryColor,
+                              keyboardType: TextInputType.number,
+                              controller: _controller.searchStudent,
+                            )),
                       ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Expanded(
+                        child: Obx(() => _controller
+                                .isInviteStudentsLoading.value
+                            ? const SizedBox(
+                                height: 50,
+                                width: 50,
+                                child: Center(
+                                    child: CircularProgressIndicator(
+                                  color: Pallets.primaryColor,
+                                )),
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: _controller.inviteStudents.isNotEmpty
+                                    ? Obx(() => pull_to_refresh.SmartRefresher(
+                                          controller: refreshController,
+                                          onLoading: onLoading,
+                                          enablePullUp: _controller
+                                                  .totalInviteStudents.value >
+                                              _controller.inviteStudents.length,
+                                          enablePullDown: false,
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: _controller
+                                                .inviteStudents.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              var student = _controller
+                                                  .inviteStudents[index];
+                                              return Card(
+                                                color: Pallets.white,
+                                                elevation: 1.5,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  side: const BorderSide(
+                                                    color: Pallets.primaryColor,
+                                                    width: .25,
+                                                  ),
+                                                ),
+                                                margin: const EdgeInsets.only(
+                                                    bottom: 20),
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                    vertical: 10.0,
+                                                    horizontal: 10,
+                                                  ),
+                                                  child: Expanded(
+                                                    child: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        student.profilePicture
+                                                                .isNotEmpty
+                                                            ? ClipRRect(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            50),
+                                                                child:
+                                                                    CachedNetworkImage(
+                                                                  imageUrl:
+                                                                      student
+                                                                          .url,
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                  height: 45,
+                                                                  width: 45,
+                                                                  placeholder: (context,
+                                                                          url) =>
+                                                                      const CircularProgressIndicator(),
+                                                                ))
+                                                            : Image.asset(
+                                                                'assets/images/ellipse_4.png',
+                                                                height: 45,
+                                                                width: 45,
+                                                              ),
+                                                        const SizedBox(
+                                                          width: 20,
+                                                        ),
+                                                        Expanded(
+                                                          flex: 3,
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                student.name,
+                                                                style:
+                                                                    const TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                student
+                                                                    .enrollmentNo,
+                                                                style:
+                                                                    const TextStyle(
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Obx(() => Checkbox(
+                                                              activeColor: Pallets
+                                                                  .primaryColor,
+                                                              value: _controller
+                                                                  .selectedStudents
+                                                                  .value
+                                                                  .contains(
+                                                                      student
+                                                                          .id),
+                                                              onChanged:
+                                                                  (value) {
+                                                                if (value !=
+                                                                    null) {
+                                                                  if (value) {
+                                                                    _controller
+                                                                        .selectedStudents
+                                                                        .add(student
+                                                                            .id);
+                                                                    _controller
+                                                                        .inviteStudents;
+                                                                    _controller
+                                                                        .sortInviteStudents();
+                                                                    _controller
+                                                                        .sortInviteStudents();
+                                                                    _controller
+                                                                        .inviteStudents
+                                                                        .refresh();
+                                                                  } else {
+                                                                    _controller
+                                                                        .selectedStudents
+                                                                        .removeWhere((element) =>
+                                                                            element ==
+                                                                            student.id);
+                                                                    _controller
+                                                                        .sortInviteStudents();
+                                                                    _controller
+                                                                        .inviteStudents
+                                                                        .refresh();
+                                                                  }
+                                                                }
+                                                              },
+                                                            )),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ))
+                                    : const Center(
+                                        child: Text(
+                                        'No students found',
+                                      )),
+                              )),
+                      ),
+                      const SizedBox(height: 50),
+                    ],
+                  ),
+                  Positioned(
+                    bottom: 15,
+                    left: 0,
+                    right: 0,
+                    child: MaterialButton(
+                      onPressed: () {
+                        if (_controller.selectedStudents.isNotEmpty) {
+                          _controller.invite();
+                        }
+                      },
+                      color: Pallets.primaryColor,
+                      height: 52,
+                      minWidth: double.maxFinite,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Obx(() => Text(
+                            _controller.selectedStudents.isEmpty
+                                ? 'Invite'
+                                : 'Invite (${_controller.selectedStudents.length})',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: Pallets.scaffoldBgColor,
+                            ),
+                          )),
                     ),
                   ),
-                  const SizedBox(height: 50),
                 ],
               ),
-              Positioned(
-                bottom: 15,
-                left: 0,
-                right: 0,
-                child: MaterialButton(
-                  onPressed: () {},
-                  color: Pallets.primaryColor,
-                  height: 52,
-                  minWidth: double.maxFinite,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Text(
-                    'Invite (2)',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: Pallets.scaffoldBgColor,
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
+            ),
+            Obx(
+              () => _controller.isInvitationSending.value
+                  ? AppUtils.getFullScreenLoader()
+                  : const SizedBox.shrink(),
+            ),
+          ],
         ),
       ),
     );

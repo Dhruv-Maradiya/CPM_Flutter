@@ -1,4 +1,5 @@
 import 'package:get/route_manager.dart';
+import 'package:projectify/core/constants/pallets.dart';
 import 'package:projectify/rest/model/base_model.dart';
 import 'package:projectify/rest/rest_client.dart';
 import 'package:projectify/rest/rest_constants.dart';
@@ -18,13 +19,11 @@ class SignInAsFacultyProvider {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(
-        apiErrorModel.name,
-        apiErrorModel.message,
-        isDismissible: true,
-        duration: const Duration(seconds: 3),
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+          isDismissible: true,
+          duration: const Duration(seconds: 3),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Pallets.errorColor);
       return null;
     }
   }

@@ -86,6 +86,8 @@ class HomeScreenWidget extends StatelessWidget {
                       cursorColor: Pallets.primaryColor,
                       keyboardType: TextInputType.text,
                       onSubmitted: (value) => _homeScreenController.fetch(),
+                      onTapOutside: (value) =>
+                          FocusManager.instance.primaryFocus?.unfocus(),
                     ),
                   ),
                   Obx(
@@ -155,7 +157,10 @@ class HomeScreenWidget extends StatelessWidget {
         _homeScreenController.selectedCategoryIndex.value;
     return [
       GestureDetector(
-        onTap: () => _homeScreenController.selectedCategoryIndex.value = 0,
+        onTap: () {
+          _homeScreenController.selectedCategoryIndex.value = 0;
+          _homeScreenController.fetch();
+        },
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),

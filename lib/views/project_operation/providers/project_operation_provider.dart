@@ -1,4 +1,5 @@
 import 'package:get/route_manager.dart';
+import 'package:projectify/core/constants/pallets.dart';
 import 'package:projectify/rest/model/base_model.dart';
 import 'package:projectify/rest/rest_client.dart';
 import 'package:projectify/rest/rest_constants.dart';
@@ -7,6 +8,8 @@ import 'package:projectify/views/home/models/home_screen_model.dart';
 import 'package:projectify/views/project_operation/models/project_operation_tasks.dart';
 import 'package:projectify/views/project_operation/models/project_model.dart';
 import 'package:projectify/views/project_operation/models/technology.dart';
+import 'package:projectify/views/project_operation/models/invite_students_model.dart'
+    as inviteStudentsModel;
 import 'package:projectify/views/project_operation/models/categories_modal.dart'
     as categories_modal;
 
@@ -22,13 +25,11 @@ class ProjectOperationProvider {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(
-        apiErrorModel.name,
-        apiErrorModel.message,
-        isDismissible: true,
-        duration: const Duration(seconds: 3),
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+          isDismissible: true,
+          duration: const Duration(seconds: 3),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Pallets.errorColor);
     }
     return null;
   }
@@ -44,13 +45,11 @@ class ProjectOperationProvider {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(
-        apiErrorModel.name,
-        apiErrorModel.message,
-        isDismissible: true,
-        duration: const Duration(seconds: 3),
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+          isDismissible: true,
+          duration: const Duration(seconds: 3),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Pallets.errorColor);
 
       return null;
     }
@@ -67,13 +66,11 @@ class ProjectOperationProvider {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(
-        apiErrorModel.name,
-        apiErrorModel.message,
-        isDismissible: true,
-        duration: const Duration(seconds: 3),
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+          isDismissible: true,
+          duration: const Duration(seconds: 3),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Pallets.errorColor);
 
       return null;
     }
@@ -90,13 +87,11 @@ class ProjectOperationProvider {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(
-        apiErrorModel.name,
-        apiErrorModel.message,
-        isDismissible: true,
-        duration: const Duration(seconds: 3),
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+          isDismissible: true,
+          duration: const Duration(seconds: 3),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Pallets.errorColor);
 
       return null;
     }
@@ -113,13 +108,11 @@ class ProjectOperationProvider {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(
-        apiErrorModel.name,
-        apiErrorModel.message,
-        isDismissible: true,
-        duration: const Duration(seconds: 3),
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+          isDismissible: true,
+          duration: const Duration(seconds: 3),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Pallets.errorColor);
 
       return null;
     }
@@ -136,13 +129,11 @@ class ProjectOperationProvider {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(
-        apiErrorModel.name,
-        apiErrorModel.message,
-        isDismissible: true,
-        duration: const Duration(seconds: 3),
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+          isDismissible: true,
+          duration: const Duration(seconds: 3),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Pallets.errorColor);
 
       return null;
     }
@@ -159,14 +150,58 @@ class ProjectOperationProvider {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);
 
+      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+          isDismissible: true,
+          duration: const Duration(seconds: 3),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Pallets.errorColor);
+    }
+    return null;
+  }
+
+  Future<inviteStudentsModel.Data?> fetchInviteStudents(dynamic params) async {
+    ApiRequest request = ApiRequest(
+        url: RestConstants.fetchInviteStudents, queryParameters: params);
+    ApiResponseModel response = await request.get();
+
+    if (response.success) {
+      return inviteStudentsModel.InviteStudentsModel.fromJson(response.data)
+          .data;
+    } else {
+      final ApiErrorModel apiErrorModel =
+          ApiErrorModel.fromJson(response.error);
+
       Get.snackbar(
         apiErrorModel.name,
         apiErrorModel.message,
         isDismissible: true,
         duration: const Duration(seconds: 3),
         snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Pallets.errorColor,
       );
     }
     return null;
+  }
+
+  Future<bool> invite(dynamic data) async {
+    ApiRequest request = ApiRequest(url: RestConstants.invite, data: data);
+    ApiResponseModel response = await request.post();
+
+    if (response.success) {
+      return true;
+    } else {
+      final ApiErrorModel apiErrorModel =
+          ApiErrorModel.fromJson(response.error);
+
+      Get.snackbar(
+        apiErrorModel.name,
+        apiErrorModel.message,
+        isDismissible: true,
+        duration: const Duration(seconds: 3),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Pallets.errorColor,
+      );
+    }
+    return false;
   }
 }

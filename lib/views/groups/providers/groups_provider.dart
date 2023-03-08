@@ -1,3 +1,4 @@
+import 'package:projectify/core/constants/pallets.dart';
 import 'package:projectify/views/groups/models/groups_model.dart';
 import 'package:get/get.dart';
 import 'package:projectify/rest/model/base_model.dart';
@@ -15,13 +16,11 @@ class GroupsProvider {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(
-        apiErrorModel.name,
-        apiErrorModel.message,
-        isDismissible: true,
-        duration: const Duration(seconds: 3),
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+          isDismissible: true,
+          duration: const Duration(seconds: 3),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Pallets.errorColor);
 
       return null;
     }

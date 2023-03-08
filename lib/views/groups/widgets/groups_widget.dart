@@ -143,48 +143,54 @@ class GroupsWidget extends StatelessWidget {
                                               const SizedBox(
                                                 width: 5,
                                               ),
-                                              Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    const Text(
-                                                      'Leader',
-                                                      style: TextStyle(
-                                                        fontSize: 13,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Pallets
-                                                            .primaryColor,
+                                              Expanded(
+                                                flex: 1,
+                                                child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      const Text(
+                                                        'Leader',
+                                                        style: TextStyle(
+                                                          fontSize: 13,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Pallets
+                                                              .primaryColor,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 3,
-                                                    ),
-                                                    Text(
-                                                      leader.student.name,
-                                                      style: const TextStyle(
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        color: Pallets
-                                                            .primaryColor,
+                                                      const SizedBox(
+                                                        height: 3,
                                                       ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 3,
-                                                    ),
-                                                    Text(
-                                                      leader
-                                                          .student.enrollmentNo,
-                                                      style: const TextStyle(
-                                                        fontSize: 9,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        color: Pallets
-                                                            .primaryColor,
+                                                      Text(
+                                                        leader.student.name,
+                                                        style: const TextStyle(
+                                                          fontSize: 11,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          color: Pallets
+                                                              .primaryColor,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ])
+                                                      const SizedBox(
+                                                        height: 3,
+                                                      ),
+                                                      Text(
+                                                        leader.student
+                                                            .enrollmentNo,
+                                                        style: const TextStyle(
+                                                          fontSize: 9,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          color: Pallets
+                                                              .primaryColor,
+                                                        ),
+                                                      ),
+                                                    ]),
+                                              )
                                             ],
                                           ),
                                         ),

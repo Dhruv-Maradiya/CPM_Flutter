@@ -31,6 +31,9 @@ class RestConstants {
 
   static String createProject = "$baseURL/v1/project";
 
+  static String invite = "$baseURL/v1/invitationForGroup";
+
+  static String fetchInviteStudents = "$baseURL/v1/student/findManyForInvite";
   // Technologies
   static String fetchFrontendTechnologies =
       "$baseURL/v1/frontendTechnology/findMany";
@@ -39,4 +42,11 @@ class RestConstants {
   static String fetchDatabaseTechnologies =
       "$baseURL/v1/databaseTechnology/findMany";
   static String fetchCategories = "$baseURL/v1/category/findMany";
+
+  static String receivedInvitations =
+      "$baseURL/v1/invitationForGroup/findManyByStudentReceived";
+  static String sentInvitations =
+      "$baseURL/v1/invitationForGroup/findManyByLeader";
+  static String updateInvitation =
+      "$baseURL/v1/invitationForGroup/updateStatus";
 }

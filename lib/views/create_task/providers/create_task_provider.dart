@@ -16,13 +16,11 @@ class CreateTaskProvider {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(
-        apiErrorModel.name,
-        apiErrorModel.message,
-        isDismissible: true,
-        duration: const Duration(seconds: 3),
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+          isDismissible: true,
+          duration: const Duration(seconds: 3),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Pallets.errorColor);
     }
     return null;
   }
@@ -37,13 +35,11 @@ class CreateTaskProvider {
       final ApiErrorModel apiErrorModel =
           ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(
-        apiErrorModel.name,
-        apiErrorModel.message,
-        isDismissible: true,
-        duration: const Duration(seconds: 3),
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+          isDismissible: true,
+          duration: const Duration(seconds: 3),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Pallets.errorColor);
     }
     return false;
   }

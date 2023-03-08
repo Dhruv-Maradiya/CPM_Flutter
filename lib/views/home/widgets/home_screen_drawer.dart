@@ -447,7 +447,7 @@ class HomeScreenDrawer extends StatelessWidget {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Image.asset(
-                                      'assets/images/group_icon.png',
+                                      'assets/images/icons8-invitation-60.png',
                                       height: 30,
                                       width: 30,
                                     ),
