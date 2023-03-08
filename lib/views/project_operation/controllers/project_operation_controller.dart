@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:projectify/views/home/models/home_screen_model.dart';
 import 'package:projectify/views/project_operation/models/project_operation_tasks.dart';
 import 'package:projectify/views/project_operation/providers/project_operation_provider.dart';
+import 'package:dio/dio.dart' as dio;
 
 class ProjectImages {
   ProjectImages({
@@ -15,7 +16,10 @@ class ProjectImages {
   final Media? img;
 }
 
-class ProjectOperationController extends GetxController {
+class ProjectOperationController extends GetxController
+    with GetSingleTickerProviderStateMixin {
+  late TabController tabController;
+
   RxBool isTasksLoading = false.obs;
   RxBool isTasksSuccess = false.obs;
   Rx<ProjectOperationTasksModel?> tasks = null.obs;
@@ -53,12 +57,51 @@ class ProjectOperationController extends GetxController {
   void onInit() {
     super.onInit();
 
+    tabController = TabController(
+      length: 3,
+      vsync: this,
+      initialIndex: 1,
+    );
+
     var data = Get.arguments;
     final Project project = data['project'];
 
     fetchTasks(projectId: project.id);
     fetchTechnologies();
     fetchProject(projectId: project.id);
+  }
+
+  Future<void> updateProject() async {
+    isProjectLoading.value = true;
+
+    final imagesToUpload = images.where((e) => e.file != null).toList();
+
+    final imagesFormData = await Future.wait(imagesToUpload.map((e) async {
+      return dio.MultipartFile.fromFile(e.file?.path ?? '',
+          filename: (e.file?.path ?? '').split('/').last);
+    }));
+    var formData = dio.FormData.fromMap({
+      "files": imagesFormData,
+      "id": project.value!.id,
+      'name': titleController.text,
+      'description': descriptionController.text,
+      'frontendTechnologyId': selectedFrontendTechnology.value,
+      'backendTechnologyId': selectedBackendTechnology.value,
+      'databaseTechnologyId': selectedDatabaseTechnology.value,
+      'categoryId': selectedCategory.value,
+      ...(_removedImages.isNotEmpty
+          ? {"removeImages": _removedImages.toString()}
+          : {}),
+    });
+
+    try {
+      var response =
+          await ProjectOperationProvider().updateProject(data: formData);
+      _removedImages.clear();
+      isProjectLoading.value = false;
+    } catch (e) {
+      isProjectLoading.value = false;
+    }
   }
 
   Future<void> fetchProject({
@@ -94,9 +137,11 @@ class ProjectOperationController extends GetxController {
       members.value = data.group.groupParticipants;
 
       images.clear();
+      _removedImages.clear();
       for (var element in data.media) {
         images.add(ProjectImages(img: element));
       }
+      isProjectSuccess.value = true;
     } else {
       titleController.clear();
       descriptionController.clear();
@@ -105,9 +150,10 @@ class ProjectOperationController extends GetxController {
       databaseTechnologies.clear();
       categories.clear();
       images.clear();
+      isProjectSuccess.value = false;
+      _removedImages.clear();
     }
-    isProjectLoading.value = true;
-    isProjectSuccess.value = false;
+    isProjectLoading.value = false;
     return;
   }
 

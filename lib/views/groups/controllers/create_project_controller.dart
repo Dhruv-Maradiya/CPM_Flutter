@@ -9,6 +9,9 @@ import 'package:projectify/views/project_operation/providers/project_operation_p
 
 class CreateProjectController extends GetxController {
   // Create project
+
+  RxBool isLoading = false.obs;
+
   final projectFormKey = GlobalKey<FormState>();
 
   var images = <File>[].obs;
@@ -37,6 +40,8 @@ class CreateProjectController extends GetxController {
     required int groupId,
     required int academicId,
   }) async {
+    isLoading.value = true;
+
     final imagesFormData = await Future.wait(images.map((e) async {
       return dio.MultipartFile.fromFile(e.path,
           filename: e.path.split('/').last);
@@ -55,6 +60,7 @@ class CreateProjectController extends GetxController {
 
     var response = await CreateProjectProvider().createProject(data: formData);
 
+    isLoading.value = false;
     return response;
   }
 

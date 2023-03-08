@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:projectify/core/constants/pallets.dart';
+import 'package:projectify/utils/app_utils.dart';
 import 'package:projectify/views/common/widgets/dropdown.dart';
 import 'package:projectify/views/common/widgets/text_field.dart';
 import 'package:projectify/views/home/models/home_screen_model.dart';
@@ -27,77 +28,85 @@ class ProjectOperationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        backgroundColor: Pallets.appBgColor,
-        drawer: HomeScreenDrawer(),
-        appBar: CustomAppBar(isMenubarToShow: true, title: ""),
-        body: SafeArea(
-          bottom: false,
-          child: Column(
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                  color: Pallets.appBgColor,
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Pallets.tabBarBottomBorderColor,
-                      width: 0.5,
+    return Stack(
+      children: [
+        Scaffold(
+          backgroundColor: Pallets.appBgColor,
+          drawer: HomeScreenDrawer(),
+          appBar: CustomAppBar(isMenubarToShow: true, title: ""),
+          body: SafeArea(
+            bottom: false,
+            child: Column(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Pallets.appBgColor,
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Pallets.tabBarBottomBorderColor,
+                        width: 0.5,
+                      ),
                     ),
                   ),
-                ),
-                child: const TabBar(
-                  tabs: [
-                    Tab(
-                      child: Text(
-                        "Tasks",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          color: Pallets.primaryColor,
+                  child: TabBar(
+                    controller: _controller.tabController,
+                    tabs: const [
+                      Tab(
+                        child: Text(
+                          "Tasks",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Pallets.primaryColor,
+                          ),
                         ),
                       ),
-                    ),
-                    Tab(
-                      child: Text(
-                        "Project",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          color: Pallets.primaryColor,
+                      Tab(
+                        child: Text(
+                          "Project",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Pallets.primaryColor,
+                          ),
                         ),
                       ),
-                    ),
-                    Tab(
-                      child: Text(
-                        "Member",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          color: Pallets.primaryColor,
+                      Tab(
+                        child: Text(
+                          "Member",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Pallets.primaryColor,
+                          ),
                         ),
-                      ),
-                    )
-                  ],
-                  indicatorColor: Pallets.primaryColor,
-                  indicatorWeight: 1,
+                      )
+                    ],
+                    indicatorColor: Pallets.primaryColor,
+                    indicatorWeight: 1,
+                  ),
                 ),
-              ),
-              Expanded(
-                child: TabBarView(
-                  // controller: DefaultTabController.of(context),
-                  children: [
-                    _buildTasks(context),
-                    _buildProject(context),
-                    _buildMember(context),
-                  ],
+                Expanded(
+                  child: TabBarView(
+                    controller: _controller.tabController,
+                    children: [
+                      _buildTasks(context),
+                      _buildProject(context),
+                      _buildMember(context),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
+        Obx(
+          () => _controller.isProjectLoading.value &&
+                  _controller.tabController.index == 1
+              ? AppUtils.getFullScreenLoader()
+              : const SizedBox.shrink(),
+        )
+      ],
     );
   }
 
@@ -235,83 +244,91 @@ class ProjectOperationWidget extends StatelessWidget {
                         header: const pull_to_refresh.ClassicHeader(
                           completeDuration: Duration(seconds: 1),
                         ),
-                        child: ListView.builder(
-                          itemCount: _controller.totalTasks.value,
-                          padding: const EdgeInsets.only(bottom: 20),
-                          itemBuilder: (context, index) {
-                            final task =
-                                _controller.tasks.value?.data.tasks[index];
-                            if (task == null) {
-                              return const SizedBox.shrink();
-                            }
-                            return Container(
-                              padding: const EdgeInsets.all(12),
-                              margin: const EdgeInsets.only(
-                                top: 15,
-                              ),
-                              decoration: BoxDecoration(
-                                color: task.status == "COMPLETED"
-                                    ? Pallets.taskCompletedBackgroundColor
-                                    : Pallets.white,
-                                borderRadius: BorderRadius.circular(10),
-                                border: task.status == "COMPLETED"
-                                    ? null
-                                    : Border.all(
-                                        width: 0.75,
-                                        color: Pallets.primaryColor,
-                                      ),
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                      color: Pallets.white,
-                                      shape: BoxShape.circle,
+                        child: (_controller
+                                    .tasks.value?.data.tasks.isNotEmpty ??
+                                true)
+                            ? ListView.builder(
+                                itemCount: _controller.totalTasks.value,
+                                padding: const EdgeInsets.only(bottom: 20),
+                                itemBuilder: (context, index) {
+                                  final task = _controller
+                                      .tasks.value?.data.tasks[index];
+                                  if (task == null) {
+                                    return const SizedBox.shrink();
+                                  }
+                                  return Container(
+                                    padding: const EdgeInsets.all(12),
+                                    margin: const EdgeInsets.only(
+                                      top: 15,
                                     ),
-                                    padding: const EdgeInsets.all(6),
-                                    height: 45,
-                                    width: 45,
-                                    child: const Icon(
-                                      Icons.check,
-                                      color: Pallets.primaryColor,
-                                      size: 28,
+                                    decoration: BoxDecoration(
+                                      color: task.status == "COMPLETED"
+                                          ? Pallets.taskCompletedBackgroundColor
+                                          : Pallets.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: task.status == "COMPLETED"
+                                          ? null
+                                          : Border.all(
+                                              width: 0.75,
+                                              color: Pallets.primaryColor,
+                                            ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        task.name,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                          color: Pallets.primaryColor,
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          decoration: const BoxDecoration(
+                                            color: Pallets.white,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          padding: const EdgeInsets.all(6),
+                                          height: 45,
+                                          width: 45,
+                                          child: const Icon(
+                                            Icons.check,
+                                            color: Pallets.primaryColor,
+                                            size: 28,
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        task.description,
-                                        style: const TextStyle(
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w400,
-                                          color: Pallets.primaryColor,
-                                          overflow: TextOverflow.ellipsis,
+                                        const SizedBox(
+                                          width: 20,
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              task.name,
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                                color: Pallets.primaryColor,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              task.description,
+                                              style: const TextStyle(
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w400,
+                                                color: Pallets.primaryColor,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              )
+                            : const Center(
+                                child: Text(
+                                "No Tasks created yet",
+                              )),
                       ),
                     ),
                   ),
@@ -531,20 +548,32 @@ class ProjectOperationWidget extends StatelessWidget {
                       height: 20,
                     ),
                     CommonTextField(
-                      title: "Title",
-                      hintText: "Title",
-                      maxLines: null,
-                      controller: _controller.titleController,
-                    ),
+                        title: "Title",
+                        hintText: "Title",
+                        maxLines: null,
+                        controller: _controller.titleController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Title is required";
+                          }
+                          return null;
+                        }),
                     const SizedBox(
                       height: 20,
                     ),
                     CommonTextField(
-                      title: "Description",
-                      hintText: "Description",
-                      maxLines: 4,
-                      controller: _controller.descriptionController,
-                    ),
+                        title: "Description",
+                        hintText: "Description",
+                        maxLines: 4,
+                        controller: _controller.descriptionController,
+                        validator: (value) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              value.length < 10) {
+                            return "Description is required and should be at least 10 characters long";
+                          }
+                          return null;
+                        }),
                     const SizedBox(
                       height: 20,
                     ),
@@ -570,7 +599,10 @@ class ProjectOperationWidget extends StatelessWidget {
                                     e.name,
                                   )))
                               .toList(),
-                          value: _controller.selectedFrontendTechnology.value,
+                          value: _controller
+                                  .selectedFrontendTechnology.value.isNotEmpty
+                              ? _controller.selectedFrontendTechnology.value
+                              : null,
                           hintText: "Frontend Technology",
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -597,7 +629,10 @@ class ProjectOperationWidget extends StatelessWidget {
                                       value ?? "";
                                 }
                               : null,
-                          value: _controller.selectedBackendTechnology.value,
+                          value: _controller
+                                  .selectedBackendTechnology.value.isNotEmpty
+                              ? _controller.selectedBackendTechnology.value
+                              : null,
                           items: _controller.backendTechnologies
                               .map((e) => DropdownMenuItem(
                                   value: e.id.toString(),
@@ -631,7 +666,10 @@ class ProjectOperationWidget extends StatelessWidget {
                                       value ?? "";
                                 }
                               : null,
-                          value: _controller.selectedDatabaseTechnology.value,
+                          value: _controller
+                                  .selectedDatabaseTechnology.value.isNotEmpty
+                              ? _controller.selectedDatabaseTechnology.value
+                              : null,
                           items: _controller.databaseTechnologies
                               .map((e) => DropdownMenuItem(
                                   value: e.id.toString(),
@@ -665,7 +703,9 @@ class ProjectOperationWidget extends StatelessWidget {
                                       value ?? "";
                                 }
                               : null,
-                          value: _controller.selectedCategory.value,
+                          value: _controller.selectedCategory.value.isNotEmpty
+                              ? _controller.selectedCategory.value
+                              : null,
                           items: _controller.categories
                               .map((e) => DropdownMenuItem(
                                   value: e.id.toString(),
@@ -685,7 +725,18 @@ class ProjectOperationWidget extends StatelessWidget {
                       height: 20,
                     ),
                     MaterialButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (_controller.projectFormKey.currentState!
+                            .validate()) {
+                          // validate images
+                          if (_controller.images.isNotEmpty) {
+                            _controller.updateProject();
+                          } else {
+                            Get.snackbar(
+                                "Error", "Please select at least one image");
+                          }
+                        }
+                      },
                       color: Pallets.primaryColor,
                       height: 52,
                       minWidth: double.maxFinite,
@@ -693,7 +744,7 @@ class ProjectOperationWidget extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: const Text(
-                        'Submit',
+                        'Update',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w700,

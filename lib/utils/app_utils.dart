@@ -9,7 +9,7 @@ class AppUtils {
   static Widget getFullScreenLoader({
     Indicator indicatorType = Indicator.circleStrokeSpin,
     Color backgroundColor = Colors.black45,
-    Color loaderColor = Colors.white,
+    Color loaderColor = Pallets.primaryColor,
   }) {
     return Container(
       color: backgroundColor,
