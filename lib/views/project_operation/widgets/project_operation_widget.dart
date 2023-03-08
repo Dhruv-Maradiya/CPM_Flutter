@@ -134,6 +134,20 @@ class ProjectOperationWidget extends StatelessWidget {
                 color: Pallets.primaryColor,
               ),
             );
+          } else if (!_controller.isTasksLoading.value &&
+              !_controller.isTasksSuccess.value) {
+            return Center(
+              child: InkWell(
+                onTap: () {
+                  _controller.fetchTasks(projectId: project.id);
+                },
+                child: const Icon(
+                  Icons.refresh,
+                  color: Pallets.primaryColor,
+                  size: 50,
+                ),
+              ),
+            );
           } else if (_controller.isTasksSuccess.value) {
             return Padding(
               padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
@@ -1031,8 +1045,8 @@ class ProjectOperationWidget extends StatelessWidget {
                                       false;
                                 }
                               },
-                              onTapOutside: (value) =>
-                                  FocusManager.instance.primaryFocus?.unfocus(),
+                              // onTapOutside: (value) =>
+                              //     FocusManager.instance.primaryFocus?.unfocus(),
                               onSubmitted: (value) {
                                 _controller.fetchInviteStudents();
                               },

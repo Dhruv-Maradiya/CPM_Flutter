@@ -37,28 +37,55 @@ class ProjectsWidget extends StatelessWidget {
               padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
               child: Obx(
                 () => _projectsController.isLoading.value == false
-                    ? pull_to_refresh.SmartRefresher(
-                        enablePullDown: true,
-                        enablePullUp: _projectsController.count.value >
-                            _projectsController.loadedProjects.value,
-                        controller: refreshController,
-                        onLoading: onLoading,
-                        onRefresh: () async {
-                          _projectsController.getProjects();
-                        },
-                        header: const pull_to_refresh.ClassicHeader(
-                          completeDuration: Duration(seconds: 1),
-                        ),
-                        child: ListView.builder(
-                          itemBuilder: ((context, index) => ProjectCardWidget(
-                                project: _projectsController.projects[index],
-                                isRedirectToProjectDetails: false,
-                              )),
-                          itemCount: _projectsController.loadedProjects.value,
-                          shrinkWrap: true,
-                          physics: const AlwaysScrollableScrollPhysics(),
-                        ),
-                      )
+                    ? _projectsController.isSuccess.value
+                        ? pull_to_refresh.SmartRefresher(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            enablePullDown: true,
+                            enablePullUp: _projectsController.count.value >
+                                _projectsController.loadedProjects.value,
+                            controller: refreshController,
+                            onLoading: onLoading,
+                            onRefresh: () async {
+                              _projectsController.getProjects();
+                            },
+                            header: const pull_to_refresh.ClassicHeader(
+                              completeDuration: Duration(seconds: 1),
+                            ),
+                            child: _projectsController.projects.isNotEmpty
+                                ? ListView.builder(
+                                    itemBuilder: ((context, index) =>
+                                        ProjectCardWidget(
+                                          project: _projectsController
+                                              .projects[index],
+                                          isRedirectToProjectDetails: false,
+                                        )),
+                                    itemCount: _projectsController
+                                        .loadedProjects.value,
+                                    shrinkWrap: true,
+                                  )
+                                : const Center(
+                                    child: Text(
+                                      "No projects found",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                          )
+                        : Expanded(
+                            child: Center(
+                              child: InkWell(
+                                onTap: () {
+                                  _projectsController.getProjects();
+                                },
+                                child: const Icon(
+                                  Icons.refresh,
+                                  color: Pallets.primaryColor,
+                                  size: 50,
+                                ),
+                              ),
+                            ),
+                          )
                     : const SizedBox.shrink(),
               ),
             ),

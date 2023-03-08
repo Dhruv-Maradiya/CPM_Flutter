@@ -14,12 +14,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      darkTheme: ThemeData.light(),
-      title: StringConstants.appName,
-      getPages: Routes.getPages,
-      home: const HomeScreen(),
+    return GestureDetector(
+      onTapDown: (_) {
+        // FocusScopeNode currentFocus = FocusScope.of(context);
+
+        // // if (!currentFocus.hasPrimaryFocus) {
+        // currentFocus.unfocus();
+        // // }
+
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        darkTheme: ThemeData.light(),
+        title: StringConstants.appName,
+        getPages: Routes.getPages,
+        home: const HomeScreen(),
+      ),
     );
   }
 }

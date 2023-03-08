@@ -38,56 +38,81 @@ class HomeScreenWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Material(
-                    elevation: 2.5,
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    child: TextField(
-                      controller: _homeScreenController.searchController,
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Pallets.primaryColor,
-                        ),
-                        fillColor: Pallets.searchBarColor,
-                        filled: true,
-                        hintText: 'Search',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
+                  SizedBox(
+                    height: 50,
+                    child: Material(
+                      elevation: 2.5,
+                      borderRadius: const BorderRadius.all(Radius.circular(8)),
+                      child: Obx(
+                        () => TextField(
+                          controller: _homeScreenController.searchController,
+                          decoration: InputDecoration(
+                            prefixIcon: const Icon(
+                              Icons.search,
+                              color: Pallets.primaryColor,
+                            ),
+                            suffixIcon:
+                                _homeScreenController.isCancellable.value
+                                    ? InkWell(
+                                        onTap: () {
+                                          _homeScreenController.searchController
+                                              .clear();
+                                          _homeScreenController
+                                              .isCancellable.value = false;
+                                          _homeScreenController.fetch();
+                                          FocusManager.instance.primaryFocus
+                                              ?.unfocus();
+                                        },
+                                        child: const Icon(
+                                          Icons.close,
+                                          color: Pallets.primaryColor,
+                                        ),
+                                      )
+                                    : null,
+                            fillColor: Pallets.searchBarColor,
+                            filled: true,
+                            hintText: 'Search',
+                            border: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                              borderSide: BorderSide.none,
+                            ),
+                            focusColor: Pallets.primaryColor,
+                            enabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                              borderSide: BorderSide.none,
+                            ),
+                            disabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                              borderSide: BorderSide.none,
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                              borderSide: BorderSide.none,
+                            ),
+                            focusedErrorBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                              borderSide: BorderSide.none,
+                            ),
                           ),
-                          borderSide: BorderSide.none,
-                        ),
-                        focusColor: Pallets.primaryColor,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          borderSide: BorderSide.none,
-                        ),
-                        disabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          borderSide: BorderSide.none,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          borderSide: BorderSide.none,
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          borderSide: BorderSide.none,
+                          cursorColor: Pallets.primaryColor,
+                          keyboardType: TextInputType.text,
+                          onSubmitted: (value) => _homeScreenController.fetch(),
+                          onChanged: (value) => _homeScreenController
+                              .isCancellable.value = value.isNotEmpty,
+                          // onTapOutside: (value) =>
+                          //     FocusManager.instance.primaryFocus?.unfocus(),
                         ),
                       ),
-                      cursorColor: Pallets.primaryColor,
-                      keyboardType: TextInputType.text,
-                      onSubmitted: (value) => _homeScreenController.fetch(),
-                      onTapOutside: (value) =>
-                          FocusManager.instance.primaryFocus?.unfocus(),
                     ),
                   ),
                   Obx(
@@ -220,37 +245,63 @@ class HomeScreenWidget extends StatelessWidget {
     if (_homeScreenController.homeScreenModel?.data == null) {
       return const SizedBox.shrink();
     }
+    if (!_homeScreenController.isLoading.value &&
+        !_homeScreenController.isSuccess.value) {
+      return Expanded(
+        child: SizedBox(
+          child: Center(
+            child: InkWell(
+              onTap: () {
+                _homeScreenController.fetch();
+              },
+              child: const Icon(
+                Icons.refresh,
+                color: Pallets.primaryColor,
+                size: 50,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
 
     return Expanded(
-      child: pull_to_refresh.SmartRefresher(
-        enablePullDown: true,
-        enablePullUp: _homeScreenController.hasMoreProjects.value,
-        controller: refreshController,
-        onLoading: onLoading,
-        onRefresh: () async {
-          _homeScreenController.fetch();
-        },
-        header: const pull_to_refresh.ClassicHeader(
-          completeDuration: Duration(seconds: 1),
+      child: Obx(
+        () => pull_to_refresh.SmartRefresher(
+          physics: const AlwaysScrollableScrollPhysics(),
+          enablePullDown: true,
+          enablePullUp: _homeScreenController.hasMoreProjects.value,
+          controller: refreshController,
+          onLoading: onLoading,
+          onRefresh: () async {
+            _homeScreenController.fetch();
+          },
+          header: const pull_to_refresh.ClassicHeader(
+            completeDuration: Duration(seconds: 1),
+          ),
+          child: _homeScreenController.loadedProjects.value > 0 &&
+                  !_homeScreenController.isLoading.value
+              ? ListView.builder(
+                  // physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: _homeScreenController.loadedProjects.value,
+                  itemBuilder: (context, index) {
+                    return ProjectCardWidget(
+                      project: _homeScreenController
+                          .homeScreenModel!.data.projects[index],
+                      isRedirectToProjectDetails: true,
+                    );
+                  },
+                )
+              : const Center(
+                  child: Text(
+                    "No projects found",
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
         ),
-        child: _homeScreenController.loadedProjects.value > 0 &&
-                !_homeScreenController.isLoading.value
-            ? ListView.builder(
-                // physics: const BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: _homeScreenController.loadedProjects.value,
-                itemBuilder: (context, index) {
-                  return ProjectCardWidget(
-                    project: _homeScreenController
-                        .homeScreenModel!.data.projects[index],
-                    isRedirectToProjectDetails: true,
-                  );
-                },
-              )
-            : const Center(
-                child: Text(
-                "No projects found",
-              )),
       ),
     );
   }

@@ -106,159 +106,164 @@ class InvitationsWidget extends StatelessWidget {
                                     color: Pallets.primaryColor,
                                   ),
                                 )
-                              : _controller.sentInvitations.isEmpty
-                                  ? const Center(
-                                      child: Text(
-                                        'No Invitations',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                        ),
+                              : !_controller.isSentInvitationSuccess.value
+                                  ? Center(
+                                      child: InkWell(
+                                          onTap: () {
+                                            _controller.fetchSentInvitations();
+                                          },
+                                          child: const Icon(
+                                            Icons.refresh,
+                                            color: Pallets.primaryColor,
+                                            size: 50,
+                                          )))
+                                  : pull_to_refresh.SmartRefresher(
+                                      physics:
+                                          const AlwaysScrollableScrollPhysics(),
+                                      controller: sentRefreshController,
+                                      onRefresh: onSentRefresh,
+                                      header:
+                                          const pull_to_refresh.ClassicHeader(
+                                        completeDuration: Duration(seconds: 1),
                                       ),
-                                    )
-                                  : !_controller.isSentInvitationSuccess.value
-                                      ? Center(
-                                          child: InkWell(
-                                              onTap: () {
-                                                _controller
-                                                    .fetchSentInvitations();
+                                      enablePullDown: true,
+                                      child: _controller
+                                              .sentInvitations.isNotEmpty
+                                          ? ListView.builder(
+                                              itemCount: _controller
+                                                  .sentInvitations.length,
+                                              itemBuilder: (context, index) {
+                                                var invitation = _controller
+                                                    .sentInvitations[index];
+                                                return Container(
+                                                  margin: const EdgeInsets.only(
+                                                    top: 10,
+                                                  ),
+                                                  child: Card(
+                                                    shape:
+                                                        const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(12),
+                                                      ),
+                                                      side: BorderSide(
+                                                        color: Pallets
+                                                            .primaryColor,
+                                                        width: .75,
+                                                      ),
+                                                    ),
+                                                    color: Pallets.white,
+                                                    elevation: 2,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        vertical: 10,
+                                                        horizontal: 12,
+                                                      ),
+                                                      child: Row(
+                                                        children: [
+                                                          const Material(
+                                                            shape: CircleBorder(
+                                                              side: BorderSide(
+                                                                color: Pallets
+                                                                    .primaryColor,
+                                                                width: 1,
+                                                              ),
+                                                            ),
+                                                            child: Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(
+                                                                          10.0),
+                                                              child: Icon(
+                                                                Icons
+                                                                    .person_add_alt_1,
+                                                                size: 20,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 20,
+                                                          ),
+                                                          Expanded(
+                                                            flex: 4,
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                  invitation
+                                                                      .member
+                                                                      .name,
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                  ),
+                                                                  maxLines: 1,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                ),
+                                                                const SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                Text(
+                                                                  invitation
+                                                                      .group
+                                                                      .name,
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    fontSize:
+                                                                        10,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          const Spacer(),
+                                                          Expanded(
+                                                            flex: 2,
+                                                            child: Text(
+                                                              invitation.status
+                                                                      .capitalize ??
+                                                                  "",
+                                                              style:
+                                                                  const TextStyle(
+                                                                color: Pallets
+                                                                    .primaryColor,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
                                               },
-                                              child: const Icon(
-                                                Icons.refresh,
-                                                color: Pallets.primaryColor,
-                                                size: 50,
-                                              )))
-                                      : pull_to_refresh.SmartRefresher(
-                                          controller: sentRefreshController,
-                                          onRefresh: onSentRefresh,
-                                          header: const pull_to_refresh
-                                              .ClassicHeader(
-                                            completeDuration:
-                                                Duration(seconds: 1),
-                                          ),
-                                          enablePullDown: true,
-                                          child: ListView.builder(
-                                            itemCount: _controller
-                                                .sentInvitations.length,
-                                            itemBuilder: (context, index) {
-                                              var invitation = _controller
-                                                  .sentInvitations[index];
-                                              return Container(
-                                                margin: const EdgeInsets.only(
-                                                  top: 10,
+                                            )
+                                          : const Center(
+                                              child: Text(
+                                                "No invitations found",
+                                                style: TextStyle(
+                                                  fontSize: 16,
                                                 ),
-                                                child: Card(
-                                                  shape:
-                                                      const RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(12),
-                                                    ),
-                                                    side: BorderSide(
-                                                      color:
-                                                          Pallets.primaryColor,
-                                                      width: .75,
-                                                    ),
-                                                  ),
-                                                  color: Pallets.white,
-                                                  elevation: 2,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                      vertical: 10,
-                                                      horizontal: 12,
-                                                    ),
-                                                    child: Row(
-                                                      children: [
-                                                        const Material(
-                                                          shape: CircleBorder(
-                                                            side: BorderSide(
-                                                              color: Pallets
-                                                                  .primaryColor,
-                                                              width: 1,
-                                                            ),
-                                                          ),
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10.0),
-                                                            child: Icon(
-                                                              Icons
-                                                                  .person_add_alt_1,
-                                                              size: 20,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 20,
-                                                        ),
-                                                        Expanded(
-                                                          flex: 4,
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                invitation
-                                                                    .member
-                                                                    .name,
-                                                                style:
-                                                                    const TextStyle(
-                                                                  fontSize: 16,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                ),
-                                                                maxLines: 1,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                              ),
-                                                              const SizedBox(
-                                                                height: 5,
-                                                              ),
-                                                              Text(
-                                                                invitation
-                                                                    .group.name,
-                                                                style:
-                                                                    const TextStyle(
-                                                                  fontSize: 10,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                ),
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        const Spacer(),
-                                                        Expanded(
-                                                          flex: 2,
-                                                          child: Text(
-                                                            invitation.status
-                                                                    .capitalize ??
-                                                                "",
-                                                            style:
-                                                                const TextStyle(
-                                                              color: Pallets
-                                                                  .primaryColor,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
+                                              ),
+                                            ),
+                                    ),
                         ),
                         // second tab bar view widget
                         Obx(
@@ -280,239 +285,232 @@ class InvitationsWidget extends StatelessWidget {
                                             color: Pallets.primaryColor,
                                             size: 50,
                                           )))
-                                  : _controller.receivedInvitations.isEmpty
-                                      ? const Center(
-                                          child: Text(
-                                            'No Invitations',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                            ),
-                                          ),
-                                        )
-                                      : pull_to_refresh.SmartRefresher(
-                                          controller: receiveRefreshController,
-                                          onRefresh: onReceiveRefresh,
-                                          header: const pull_to_refresh
-                                              .ClassicHeader(
-                                            completeDuration:
-                                                Duration(seconds: 1),
-                                          ),
-                                          enablePullDown: true,
-                                          child: ListView.builder(
-                                            itemCount: _controller
-                                                .receivedInvitations.length,
-                                            itemBuilder: (context, index) {
-                                              var invitation = _controller
-                                                  .receivedInvitations[index];
-                                              return Container(
-                                                margin: const EdgeInsets.only(
-                                                  top: 10,
-                                                ),
-                                                child: Card(
-                                                  shape:
-                                                      const RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(12),
-                                                    ),
-                                                    side: BorderSide(
-                                                      color:
-                                                          Pallets.primaryColor,
-                                                      width: .75,
-                                                    ),
-                                                  ),
-                                                  color: Pallets.white,
-                                                  elevation: 2,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                      vertical: 10,
-                                                      horizontal: 12,
-                                                    ),
-                                                    child: Row(
-                                                      children: [
-                                                        const Material(
-                                                          shape: CircleBorder(
-                                                            side: BorderSide(
-                                                              color: Pallets
-                                                                  .primaryColor,
-                                                              width: 1,
-                                                            ),
+                                  : pull_to_refresh.SmartRefresher(
+                                      physics:
+                                          const AlwaysScrollableScrollPhysics(),
+                                      controller: receiveRefreshController,
+                                      onRefresh: onReceiveRefresh,
+                                      header:
+                                          const pull_to_refresh.ClassicHeader(
+                                        completeDuration: Duration(seconds: 1),
+                                      ),
+                                      enablePullDown: true,
+                                      child:
+                                          _controller.receivedInvitations
+                                                  .isNotEmpty
+                                              ? ListView.builder(
+                                                  itemCount: _controller
+                                                      .receivedInvitations
+                                                      .length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    var invitation = _controller
+                                                            .receivedInvitations[
+                                                        index];
+                                                    return Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                        top: 10,
+                                                      ),
+                                                      child: Card(
+                                                        shape:
+                                                            const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                            Radius.circular(12),
                                                           ),
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    10.0),
-                                                            child: Icon(
-                                                              Icons
-                                                                  .person_add_alt_1,
-                                                              size: 20,
-                                                            ),
+                                                          side: BorderSide(
+                                                            color: Pallets
+                                                                .primaryColor,
+                                                            width: .75,
                                                           ),
                                                         ),
-                                                        const SizedBox(
-                                                          width: 20,
-                                                        ),
-                                                        Expanded(
-                                                          flex: 3,
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
+                                                        color: Pallets.white,
+                                                        elevation: 2,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                            vertical: 10,
+                                                            horizontal: 12,
+                                                          ),
+                                                          child: Row(
                                                             children: [
-                                                              Text(
-                                                                invitation
-                                                                    .group.name,
-                                                                style:
-                                                                    const TextStyle(
-                                                                  fontSize: 16,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                ),
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                              ),
-                                                              const SizedBox(
-                                                                height: 5,
-                                                              ),
-                                                              Text(
-                                                                invitation
-                                                                    .groupLeader
-                                                                    .name,
-                                                                maxLines: 1,
-                                                                style:
-                                                                    const TextStyle(
-                                                                  fontSize: 10,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                ),
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        const Spacer(),
-                                                        [
-                                                          "ACCEPTED",
-                                                          "REJECTED"
-                                                        ].contains(invitation
-                                                                .status)
-                                                            ? Expanded(
-                                                                flex: 2,
-                                                                child: Text(
-                                                                  invitation
-                                                                          .status
-                                                                          .capitalize ??
-                                                                      "",
-                                                                  style:
-                                                                      const TextStyle(
+                                                              const Material(
+                                                                shape:
+                                                                    CircleBorder(
+                                                                  side:
+                                                                      BorderSide(
                                                                     color: Pallets
                                                                         .primaryColor,
+                                                                    width: 1,
                                                                   ),
                                                                 ),
-                                                              )
-                                                            : Expanded(
+                                                                child: Padding(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              10.0),
+                                                                  child: Icon(
+                                                                    Icons
+                                                                        .person_add_alt_1,
+                                                                    size: 20,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 20,
+                                                              ),
+                                                              Expanded(
                                                                 flex: 3,
-                                                                child: Row(
+                                                                child: Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
                                                                   children: [
-                                                                    Material(
-                                                                      color: const Color
-                                                                              .fromARGB(
-                                                                          200,
-                                                                          189,
-                                                                          25,
-                                                                          25),
-                                                                      shape:
-                                                                          const CircleBorder(
-                                                                        side:
-                                                                            BorderSide(
-                                                                          color:
-                                                                              Colors.white,
-                                                                        ),
+                                                                    Text(
+                                                                      invitation
+                                                                          .group
+                                                                          .name,
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontWeight:
+                                                                            FontWeight.w600,
                                                                       ),
-                                                                      child:
-                                                                          Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.all(6.0),
-                                                                        child:
-                                                                            InkWell(
-                                                                          onTap:
-                                                                              () {
-                                                                            _controller.updateInvitation(
-                                                                                id: invitation.id,
-                                                                                status: "REJECTED");
-                                                                          },
-                                                                          child:
-                                                                              const Icon(
-                                                                            Icons.close,
-                                                                            color:
-                                                                                Pallets.primaryColor,
-                                                                            size:
-                                                                                30,
-                                                                          ),
-                                                                        ),
-                                                                      ),
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
                                                                     ),
                                                                     const SizedBox(
-                                                                      width: 10,
+                                                                      height: 5,
                                                                     ),
-                                                                    Material(
-                                                                      color: const Color
-                                                                              .fromARGB(
-                                                                          255,
-                                                                          76,
-                                                                          175,
-                                                                          0),
-                                                                      shape:
-                                                                          const CircleBorder(
-                                                                        side:
-                                                                            BorderSide(
-                                                                          color:
-                                                                              Colors.white,
-                                                                        ),
+                                                                    Text(
+                                                                      invitation
+                                                                          .groupLeader
+                                                                          .name,
+                                                                      maxLines:
+                                                                          1,
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            10,
+                                                                        fontWeight:
+                                                                            FontWeight.w400,
                                                                       ),
-                                                                      child:
-                                                                          Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.all(6.0),
-                                                                        child:
-                                                                            InkWell(
-                                                                          onTap:
-                                                                              () {
-                                                                            _controller.updateInvitation(
-                                                                                id: invitation.id,
-                                                                                status: "ACCEPTED");
-                                                                          },
-                                                                          child:
-                                                                              const Icon(
-                                                                            Icons.check,
-                                                                            color:
-                                                                                Pallets.primaryColor,
-                                                                            size:
-                                                                                30,
-                                                                          ),
-                                                                        ),
-                                                                      ),
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
                                                                     ),
                                                                   ],
                                                                 ),
                                                               ),
-                                                        const SizedBox(
-                                                          width: 10,
+                                                              const Spacer(),
+                                                              [
+                                                                "ACCEPTED",
+                                                                "REJECTED"
+                                                              ].contains(
+                                                                      invitation
+                                                                          .status)
+                                                                  ? Expanded(
+                                                                      flex: 2,
+                                                                      child:
+                                                                          Text(
+                                                                        invitation.status.capitalize ??
+                                                                            "",
+                                                                        style:
+                                                                            const TextStyle(
+                                                                          color:
+                                                                              Pallets.primaryColor,
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  : Expanded(
+                                                                      flex: 3,
+                                                                      child:
+                                                                          Row(
+                                                                        children: [
+                                                                          Material(
+                                                                            color: const Color.fromARGB(
+                                                                                200,
+                                                                                189,
+                                                                                25,
+                                                                                25),
+                                                                            shape:
+                                                                                const CircleBorder(
+                                                                              side: BorderSide(
+                                                                                color: Colors.white,
+                                                                              ),
+                                                                            ),
+                                                                            child:
+                                                                                Padding(
+                                                                              padding: const EdgeInsets.all(6.0),
+                                                                              child: InkWell(
+                                                                                onTap: () {
+                                                                                  _controller.updateInvitation(id: invitation.id, status: "REJECTED");
+                                                                                },
+                                                                                child: const Icon(
+                                                                                  Icons.close,
+                                                                                  color: Pallets.primaryColor,
+                                                                                  size: 30,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            width:
+                                                                                10,
+                                                                          ),
+                                                                          Material(
+                                                                            color: const Color.fromARGB(
+                                                                                255,
+                                                                                76,
+                                                                                175,
+                                                                                0),
+                                                                            shape:
+                                                                                const CircleBorder(
+                                                                              side: BorderSide(
+                                                                                color: Colors.white,
+                                                                              ),
+                                                                            ),
+                                                                            child:
+                                                                                Padding(
+                                                                              padding: const EdgeInsets.all(6.0),
+                                                                              child: InkWell(
+                                                                                onTap: () {
+                                                                                  _controller.updateInvitation(id: invitation.id, status: "ACCEPTED");
+                                                                                },
+                                                                                child: const Icon(
+                                                                                  Icons.check,
+                                                                                  color: Pallets.primaryColor,
+                                                                                  size: 30,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                              const SizedBox(
+                                                                width: 10,
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ],
+                                                      ),
+                                                    );
+                                                  },
+                                                )
+                                              : const Center(
+                                                  child: Text(
+                                                    "No invitations found",
+                                                    style: TextStyle(
+                                                      fontSize: 16,
                                                     ),
                                                   ),
                                                 ),
-                                              );
-                                            },
-                                          ),
-                                        ),
+                                    ),
                         ),
                       ],
                     ),

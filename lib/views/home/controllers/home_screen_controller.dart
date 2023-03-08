@@ -18,6 +18,8 @@ class HomeScreenController extends GetxController {
   RxInt totalProjects = 0.obs;
   RxInt loadedProjects = 0.obs;
 
+  RxBool isCancellable = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -38,6 +40,8 @@ class HomeScreenController extends GetxController {
     dynamic params = {
       "search": searchController.text.isEmpty ? null : searchController.text,
       "categoryId": selectedCategory,
+      "skip": 0,
+      "take": 5,
     };
 
     var data = await HomeScreenProvider().fetch(params);
@@ -48,6 +52,8 @@ class HomeScreenController extends GetxController {
       isSuccess.value = true;
       totalProjects.value = homeScreenModel?.data.count ?? 0;
       loadedProjects.value = homeScreenModel?.data.projects.length ?? 0;
+      hasMoreProjects.value = (homeScreenModel?.data.count ?? 0) >
+          (homeScreenModel?.data.projects.length ?? 0);
     } else {
       isSuccess.value = false;
     }
@@ -63,7 +69,7 @@ class HomeScreenController extends GetxController {
       "take": take,
     });
     if (data != null) {
-      if (homeScreenModel?.data.projects.isEmpty == true) {
+      if (homeScreenModel?.data.projects.isNotEmpty == true) {
         homeScreenModel?.data.projects.addAll(data.data.projects);
       } else {
         homeScreenModel = data;
