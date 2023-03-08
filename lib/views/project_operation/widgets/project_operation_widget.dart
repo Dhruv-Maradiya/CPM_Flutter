@@ -370,17 +370,23 @@ class ProjectOperationWidget extends StatelessWidget {
             ),
           ));
         }),
-        Obx(() => _controller.isTasksLoading.value == false &&
-                _controller.isTasksSuccess.value == true
-            ? _buildAddButton(
-                context,
-                () {
-                  Get.toNamed(Routes.createTask, arguments: {
-                    "project": project,
-                  });
-                },
-              )
-            : const SizedBox.shrink())
+        Obx(() {
+          if (_controller.isTasksLoading.value == false &&
+              _controller.isTasksSuccess.value == true &&
+              _controller.members.isNotEmpty &&
+              _controller.isLeader.value) {
+            return _buildAddButton(
+              context,
+              () {
+                Get.toNamed(Routes.createTask, arguments: {
+                  "project": project,
+                });
+              },
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        })
       ],
     );
   }
@@ -508,33 +514,12 @@ class ProjectOperationWidget extends StatelessWidget {
                                   const SizedBox(
                                     height: 10,
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Material(
-                                        color: Pallets.appBgColor,
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(5),
-                                          ),
-                                        ),
-                                        child: IconButton(
-                                          icon: const Icon(
-                                            Icons.delete,
-                                            color: Pallets.primaryColor,
-                                          ),
-                                          padding: const EdgeInsets.all(2),
-                                          onPressed: () {
-                                            _controller.removeImage();
-                                          },
-                                          color: Pallets.primaryColor,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      _controller.images.length < 4
-                                          ? Material(
+                                  _controller.isLeader.value
+                                      ? Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Material(
                                               color: Pallets.appBgColor,
                                               shape:
                                                   const RoundedRectangleBorder(
@@ -544,20 +529,50 @@ class ProjectOperationWidget extends StatelessWidget {
                                               ),
                                               child: IconButton(
                                                 icon: const Icon(
-                                                  Icons.add,
+                                                  Icons.delete,
                                                   color: Pallets.primaryColor,
                                                 ),
                                                 padding:
                                                     const EdgeInsets.all(2),
                                                 onPressed: () {
-                                                  _selectImages();
+                                                  _controller.removeImage();
                                                 },
                                                 color: Pallets.primaryColor,
                                               ),
-                                            )
-                                          : const SizedBox.shrink(),
-                                    ],
-                                  ),
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            _controller.images.length < 4
+                                                ? Material(
+                                                    color: Pallets.appBgColor,
+                                                    shape:
+                                                        const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(5),
+                                                      ),
+                                                    ),
+                                                    child: IconButton(
+                                                      icon: const Icon(
+                                                        Icons.add,
+                                                        color: Pallets
+                                                            .primaryColor,
+                                                      ),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              2),
+                                                      onPressed: () {
+                                                        _selectImages();
+                                                      },
+                                                      color:
+                                                          Pallets.primaryColor,
+                                                    ),
+                                                  )
+                                                : const SizedBox.shrink(),
+                                          ],
+                                        )
+                                      : const SizedBox.shrink(),
                                 ],
                               ),
                             ),
@@ -566,16 +581,19 @@ class ProjectOperationWidget extends StatelessWidget {
                       height: 20,
                     ),
                     CommonTextField(
-                        title: "Title",
-                        hintText: "Title",
-                        maxLines: null,
-                        controller: _controller.titleController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Title is required";
-                          }
-                          return null;
-                        }),
+                      title: "Title",
+                      hintText: "Title",
+                      maxLines: null,
+                      isReadOnly: !_controller.isLeader.value,
+                      controller: _controller.titleController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Title is required";
+                        }
+                        return null;
+                      },
+                      textInputAction: TextInputAction.next,
+                    ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -583,6 +601,7 @@ class ProjectOperationWidget extends StatelessWidget {
                         title: "Description",
                         hintText: "Description",
                         maxLines: 4,
+                        isReadOnly: !_controller.isLeader.value,
                         controller: _controller.descriptionController,
                         validator: (value) {
                           if (value == null ||
@@ -604,7 +623,9 @@ class ProjectOperationWidget extends StatelessWidget {
                               color: Pallets.primaryColor,
                             ),
                           ),
-                          onChanged: _controller.frontendTechnologies.isNotEmpty
+                          onChanged: _controller
+                                      .frontendTechnologies.isNotEmpty &&
+                                  _controller.isLeader.value
                               ? (value) {
                                   _controller.selectedFrontendTechnology.value =
                                       value ?? "";
@@ -641,7 +662,9 @@ class ProjectOperationWidget extends StatelessWidget {
                               color: Pallets.primaryColor,
                             ),
                           ),
-                          onChanged: _controller.backendTechnologies.isNotEmpty
+                          onChanged: _controller
+                                      .backendTechnologies.isNotEmpty &&
+                                  _controller.isLeader.value
                               ? (value) {
                                   _controller.selectedBackendTechnology.value =
                                       value ?? "";
@@ -678,7 +701,9 @@ class ProjectOperationWidget extends StatelessWidget {
                               color: Pallets.primaryColor,
                             ),
                           ),
-                          onChanged: _controller.databaseTechnologies.isNotEmpty
+                          onChanged: _controller
+                                      .databaseTechnologies.isNotEmpty &&
+                                  _controller.isLeader.value
                               ? (value) {
                                   _controller.selectedDatabaseTechnology.value =
                                       value ?? "";
@@ -715,7 +740,8 @@ class ProjectOperationWidget extends StatelessWidget {
                               color: Pallets.primaryColor,
                             ),
                           ),
-                          onChanged: _controller.categories.isNotEmpty
+                          onChanged: _controller.categories.isNotEmpty &&
+                                  _controller.isLeader.value
                               ? (value) {
                                   _controller.selectedCategory.value =
                                       value ?? "";
@@ -743,21 +769,24 @@ class ProjectOperationWidget extends StatelessWidget {
                       height: 20,
                     ),
                     MaterialButton(
-                      onPressed: () {
-                        if (_controller.projectFormKey.currentState!
-                            .validate()) {
-                          // validate images
-                          if (_controller.images.isNotEmpty) {
-                            _controller.updateProject();
-                          } else {
-                            Get.snackbar(
-                                "Error", "Please select at least one image",
-                                backgroundColor: Pallets.errorColor);
-                          }
-                        }
-                      },
+                      onPressed: _controller.isLeader.value
+                          ? () {
+                              if (_controller.projectFormKey.currentState!
+                                  .validate()) {
+                                // validate images
+                                if (_controller.images.isNotEmpty) {
+                                  _controller.updateProject();
+                                } else {
+                                  Get.snackbar("Error",
+                                      "Please select at least one image",
+                                      backgroundColor: Pallets.errorColor);
+                                }
+                              }
+                            }
+                          : null,
                       color: Pallets.primaryColor,
                       height: 52,
+                      disabledColor: Pallets.primaryColor.withOpacity(1),
                       minWidth: double.maxFinite,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -891,13 +920,17 @@ class ProjectOperationWidget extends StatelessWidget {
             ),
           ),
         ),
-        _buildAddButton(
-          context,
-          () {
-            _controller.fetchInviteStudents();
-            _showBottomSheet(context);
-          },
-        ),
+        Obx(
+          () => _controller.isLeader.value
+              ? _buildAddButton(
+                  context,
+                  () {
+                    _controller.fetchInviteStudents();
+                    _showBottomSheet(context);
+                  },
+                )
+              : const SizedBox.shrink(),
+        )
       ],
     );
   }
@@ -1149,6 +1182,9 @@ class ProjectOperationWidget extends StatelessWidget {
                                                             children: [
                                                               Text(
                                                                 student.name,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
                                                                 style:
                                                                     const TextStyle(
                                                                   fontSize: 16,

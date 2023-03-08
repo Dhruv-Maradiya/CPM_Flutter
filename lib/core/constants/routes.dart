@@ -11,9 +11,11 @@ import 'package:projectify/views/projects/projects_screen.dart';
 import 'package:projectify/views/sign_in_as_faculty/sign_in_as_faculty_screen.dart';
 import 'package:projectify/views/sign_in_as_student/sign_in_as_student_screen.dart';
 import 'package:projectify/views/groups/groups_screen.dart';
+import 'package:projectify/views/splash/splash_screen.dart';
 
 class Routes {
-  static const home = "/";
+  static const initial = "/";
+  static const home = "/home";
   static const projectDetails = "/projectDetails";
   static const studentSignIn = "/auth/signIn/student";
   static const facultySignIn = "/auth/signIn/faculty";
@@ -35,6 +37,10 @@ class Routes {
   static const categories = "/categories";
 
   static final getPages = [
+    GetPage(
+      name: Routes.initial,
+      page: () => SplashScreen(),
+    ),
     GetPage(
       name: Routes.home,
       page: () => const HomeScreen(),

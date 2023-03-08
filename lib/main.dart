@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:projectify/core/constants/string_constants.dart';
 import 'package:get/route_manager.dart';
 import 'package:projectify/core/constants/routes.dart';
+import 'package:projectify/views/splash/splash_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         darkTheme: ThemeData.light(),
         title: StringConstants.appName,
         getPages: Routes.getPages,
-        home: const HomeScreen(),
+        initialRoute: Routes.initial,
       ),
     );
   }

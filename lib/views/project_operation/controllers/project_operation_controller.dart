@@ -68,8 +68,10 @@ class ProjectOperationController extends GetxController
 
   var selectedStudents = <int>[].obs;
 
+  late final UserReturn user;
+  RxBool isLeader = false.obs;
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
 
     tabController = TabController(
@@ -80,6 +82,11 @@ class ProjectOperationController extends GetxController
 
     var data = Get.arguments;
     final Project project = data['project'];
+
+    var userData = await SharedPreferencesClass.getSharePreference();
+    if (userData != null) {
+      user = userData;
+    }
 
     fetchTasks(projectId: project.id);
     fetchTechnologies();
@@ -156,6 +163,11 @@ class ProjectOperationController extends GetxController
 
       // members.value = [data.members];
       members.value = data.group.groupParticipants;
+
+      var leader = data.group.groupParticipants
+          .where((element) => element.role == 'LEADER')
+          .first;
+      isLeader.value = leader.student.id == user.userId;
 
       images.clear();
       _removedImages.clear();
