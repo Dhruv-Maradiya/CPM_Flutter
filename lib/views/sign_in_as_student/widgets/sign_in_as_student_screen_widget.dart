@@ -252,32 +252,32 @@ class SignInAsStudentScreenWidget extends StatelessWidget {
                               const SizedBox(
                                 height: 10,
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text(
-                                    "Sign in as faculty. ",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      color: Pallets.primaryColor,
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      Get.toNamed(Routes.facultySignIn);
-                                    },
-                                    child: const Text(
-                                      "Sign in",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700,
-                                        color: Pallets.textRedColor,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              // Row(
+                              //   mainAxisAlignment: MainAxisAlignment.center,
+                              //   children: [
+                              //     const Text(
+                              //       "Sign in as faculty. ",
+                              //       style: TextStyle(
+                              //         fontSize: 14,
+                              //         fontWeight: FontWeight.w700,
+                              //         color: Pallets.primaryColor,
+                              //       ),
+                              //     ),
+                              //     InkWell(
+                              //       onTap: () {
+                              //         Get.toNamed(Routes.facultySignIn);
+                              //       },
+                              //       child: const Text(
+                              //         "Sign in",
+                              //         style: TextStyle(
+                              //           fontSize: 14,
+                              //           fontWeight: FontWeight.w700,
+                              //           color: Pallets.textRedColor,
+                              //         ),
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
                             ],
                           ),
                         ),

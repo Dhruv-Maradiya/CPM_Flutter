@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:projectify/core/constants/pallets.dart';
 import 'package:projectify/core/extensions/valid_email.dart';
 import 'package:projectify/utils/app_utils.dart';
@@ -56,38 +59,54 @@ class ProfileWidget extends StatelessWidget {
                   Stack(
                     children: [
                       Obx(
-                        () => _profileController
-                                .userProfile.value.image.isNotEmpty
-                            ? CachedNetworkImage(
-                                imageUrl:
-                                    _profileController.userProfile.value.url,
+                        () => _profileController.isImagePicked.value &&
+                                _profileController.image != null
+                            ? SizedBox(
                                 height: 80,
                                 width: 80,
-                                placeholder: (context, url) =>
-                                    const CircularProgressIndicator(
-                                  color: Pallets.primaryColor,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: Image.file(_profileController.image!),
                                 ),
                               )
-                            : Image.asset(
-                                'assets/images/ellipse_4.png',
-                                height: 80,
-                                width: 80,
-                              ),
+                            : _profileController
+                                    .userProfile.value.image.isNotEmpty
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(100),
+                                    child: CachedNetworkImage(
+                                      imageUrl: _profileController
+                                          .userProfile.value.url,
+                                      height: 80,
+                                      width: 80,
+                                      placeholder: (context, url) =>
+                                          const CircularProgressIndicator(
+                                        color: Pallets.primaryColor,
+                                      ),
+                                    ),
+                                  )
+                                : Image.asset(
+                                    'assets/images/ellipse_4.png',
+                                    height: 80,
+                                    width: 80,
+                                  ),
                       ),
                       Positioned(
                         bottom: 0,
                         right: 0,
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Pallets.primaryColor,
-                            shape: BoxShape.circle,
-                          ),
-                          padding: const EdgeInsets.all(4),
-                          child: Image.asset(
-                            'assets/images/add_photo_4.png',
-                            height: 15,
-                            width: 15,
-                            color: Pallets.white,
+                        child: InkWell(
+                          onTap: () => _selectImages(),
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              color: Pallets.primaryColor,
+                              shape: BoxShape.circle,
+                            ),
+                            padding: const EdgeInsets.all(4),
+                            child: Image.asset(
+                              'assets/images/add_photo_4.png',
+                              height: 20,
+                              width: 20,
+                              color: Pallets.white,
+                            ),
                           ),
                         ),
                       )
@@ -660,6 +679,14 @@ class ProfileWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void _selectImages() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      _profileController.addImage(File(image.path));
+    }
   }
 }
 
