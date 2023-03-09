@@ -249,107 +249,105 @@ class ProjectOperationWidget extends StatelessWidget {
                   // const SizedBox(
                   //   height: 10,
                   // ),
-                  Obx(
-                    () => Expanded(
-                      child: pull_to_refresh.SmartRefresher(
-                        enablePullDown: true,
-                        enablePullUp: _controller.hasMoreTasks.value,
-                        controller: refreshController,
-                        onLoading: onLoading,
-                        onRefresh: () async {
-                          _controller.fetchTasks(projectId: project.id);
-                        },
-                        header: const pull_to_refresh.ClassicHeader(
-                          completeDuration: Duration(seconds: 1),
-                        ),
-                        child: (_controller
-                                    .tasks.value?.data.tasks.isNotEmpty ??
-                                true)
-                            ? ListView.builder(
-                                itemCount: _controller.totalTasks.value,
-                                padding: const EdgeInsets.only(bottom: 20),
-                                itemBuilder: (context, index) {
-                                  final task = _controller
-                                      .tasks.value?.data.tasks[index];
-                                  if (task == null) {
-                                    return const SizedBox.shrink();
-                                  }
-                                  return Container(
-                                    padding: const EdgeInsets.all(12),
-                                    margin: const EdgeInsets.only(
-                                      top: 15,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: task.status == "COMPLETED"
-                                          ? Pallets.taskCompletedBackgroundColor
-                                          : Pallets.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: task.status == "COMPLETED"
-                                          ? null
-                                          : Border.all(
-                                              width: 0.75,
+                  Expanded(
+                      child: Obx(
+                    () => pull_to_refresh.SmartRefresher(
+                      enablePullDown: true,
+                      enablePullUp: _controller.hasMoreTasks.value,
+                      controller: refreshController,
+                      onLoading: onLoading,
+                      onRefresh: () async {
+                        _controller.fetchTasks(projectId: project.id);
+                      },
+                      header: const pull_to_refresh.ClassicHeader(
+                        completeDuration: Duration(seconds: 1),
+                      ),
+                      child: (_controller.tasks.value?.data.tasks.isNotEmpty ??
+                              true)
+                          ? ListView.builder(
+                              itemCount: _controller.totalTasks.value,
+                              padding: const EdgeInsets.only(bottom: 20),
+                              itemBuilder: (context, index) {
+                                final task =
+                                    _controller.tasks.value?.data.tasks[index];
+                                if (task == null) {
+                                  return const SizedBox.shrink();
+                                }
+                                return Container(
+                                  padding: const EdgeInsets.all(12),
+                                  margin: const EdgeInsets.only(
+                                    top: 15,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: task.status == "COMPLETED"
+                                        ? Pallets.taskCompletedBackgroundColor
+                                        : Pallets.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: task.status == "COMPLETED"
+                                        ? null
+                                        : Border.all(
+                                            width: 0.75,
+                                            color: Pallets.primaryColor,
+                                          ),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        decoration: const BoxDecoration(
+                                          color: Pallets.white,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        padding: const EdgeInsets.all(6),
+                                        height: 45,
+                                        width: 45,
+                                        child: const Icon(
+                                          Icons.check,
+                                          color: Pallets.primaryColor,
+                                          size: 28,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            task.name,
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
                                               color: Pallets.primaryColor,
                                             ),
-                                    ),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          decoration: const BoxDecoration(
-                                            color: Pallets.white,
-                                            shape: BoxShape.circle,
                                           ),
-                                          padding: const EdgeInsets.all(6),
-                                          height: 45,
-                                          width: 45,
-                                          child: const Icon(
-                                            Icons.check,
-                                            color: Pallets.primaryColor,
-                                            size: 28,
+                                          const SizedBox(
+                                            height: 5,
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          width: 20,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              task.name,
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                                color: Pallets.primaryColor,
-                                              ),
+                                          Text(
+                                            task.description,
+                                            style: const TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w400,
+                                              color: Pallets.primaryColor,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              task.description,
-                                              style: const TextStyle(
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w400,
-                                                color: Pallets.primaryColor,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              )
-                            : const Center(
-                                child: Text(
-                                "No Tasks created yet",
-                              )),
-                      ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            )
+                          : const Center(
+                              child: Text(
+                              "No Tasks created yet",
+                            )),
                     ),
-                  ),
+                  )),
                 ],
               ),
             );
@@ -1092,176 +1090,172 @@ class ProjectOperationWidget extends StatelessWidget {
                         height: 20,
                       ),
                       Expanded(
-                        child: Obx(() => _controller
-                                .isInviteStudentsLoading.value
-                            ? const SizedBox(
-                                height: 50,
-                                width: 50,
-                                child: Center(
-                                    child: CircularProgressIndicator(
-                                  color: Pallets.primaryColor,
-                                )),
-                              )
-                            : Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: _controller.inviteStudents.isNotEmpty
-                                    ? Obx(() => pull_to_refresh.SmartRefresher(
-                                          controller: refreshController,
-                                          onLoading: onLoading,
-                                          enablePullUp: _controller
-                                                  .totalInviteStudents.value >
-                                              _controller.inviteStudents.length,
-                                          enablePullDown: false,
-                                          child: ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: _controller
-                                                .inviteStudents.length,
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              var student = _controller
-                                                  .inviteStudents[index];
-                                              return Card(
-                                                color: Pallets.white,
-                                                elevation: 1.5,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  side: const BorderSide(
-                                                    color: Pallets.primaryColor,
-                                                    width: .25,
-                                                  ),
-                                                ),
-                                                margin: const EdgeInsets.only(
-                                                    bottom: 20),
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                    vertical: 10.0,
-                                                    horizontal: 10,
-                                                  ),
-                                                  child: Expanded(
-                                                    child: Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        student.profilePicture
-                                                                .isNotEmpty
-                                                            ? ClipRRect(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            50),
-                                                                child:
-                                                                    CachedNetworkImage(
-                                                                  imageUrl:
-                                                                      student
-                                                                          .url,
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                  height: 45,
-                                                                  width: 45,
-                                                                  placeholder: (context,
-                                                                          url) =>
-                                                                      const CircularProgressIndicator(),
-                                                                ))
-                                                            : Image.asset(
-                                                                'assets/images/ellipse_4.png',
-                                                                height: 45,
-                                                                width: 45,
-                                                              ),
-                                                        const SizedBox(
-                                                          width: 20,
+                        child:
+                            Obx(() => _controller.isInviteStudentsLoading.value
+                                ? const SizedBox(
+                                    height: 50,
+                                    width: 50,
+                                    child: Center(
+                                        child: CircularProgressIndicator(
+                                      color: Pallets.primaryColor,
+                                    )),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: _controller.inviteStudents.isNotEmpty
+                                        ? Obx(
+                                            () =>
+                                                pull_to_refresh.SmartRefresher(
+                                                  controller: refreshController,
+                                                  onLoading: onLoading,
+                                                  enablePullUp: _controller
+                                                          .totalInviteStudents
+                                                          .value >
+                                                      _controller.inviteStudents
+                                                          .length,
+                                                  enablePullDown: false,
+                                                  child: ListView.builder(
+                                                    shrinkWrap: true,
+                                                    itemCount: _controller
+                                                        .inviteStudents.length,
+                                                    itemBuilder:
+                                                        (BuildContext context,
+                                                            int index) {
+                                                      var student = _controller
+                                                              .inviteStudents[
+                                                          index];
+                                                      return Card(
+                                                        color: Pallets.white,
+                                                        elevation: 1.5,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8),
+                                                          side:
+                                                              const BorderSide(
+                                                            color: Pallets
+                                                                .primaryColor,
+                                                            width: .25,
+                                                          ),
                                                         ),
-                                                        Expanded(
-                                                          flex: 3,
-                                                          child: Column(
+                                                        margin: const EdgeInsets
+                                                            .only(bottom: 20),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                            vertical: 10.0,
+                                                            horizontal: 10,
+                                                          ),
+                                                          child: Row(
                                                             crossAxisAlignment:
                                                                 CrossAxisAlignment
-                                                                    .start,
+                                                                    .center,
                                                             children: [
-                                                              Text(
-                                                                student.name,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                style:
-                                                                    const TextStyle(
-                                                                  fontSize: 16,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
+                                                              student.profilePicture
+                                                                      .isNotEmpty
+                                                                  ? ClipRRect(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              50),
+                                                                      child:
+                                                                          CachedNetworkImage(
+                                                                        imageUrl:
+                                                                            student.url,
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                        height:
+                                                                            45,
+                                                                        width:
+                                                                            45,
+                                                                        placeholder:
+                                                                            (context, url) =>
+                                                                                const CircularProgressIndicator(),
+                                                                      ))
+                                                                  : Image.asset(
+                                                                      'assets/images/ellipse_4.png',
+                                                                      height:
+                                                                          45,
+                                                                      width: 45,
+                                                                    ),
+                                                              const SizedBox(
+                                                                width: 20,
+                                                              ),
+                                                              Expanded(
+                                                                flex: 3,
+                                                                child: Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    Text(
+                                                                      student
+                                                                          .name,
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontWeight:
+                                                                            FontWeight.w600,
+                                                                      ),
+                                                                    ),
+                                                                    Text(
+                                                                      student
+                                                                          .enrollmentNo,
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                        fontWeight:
+                                                                            FontWeight.w400,
+                                                                      ),
+                                                                    )
+                                                                  ],
                                                                 ),
                                                               ),
-                                                              Text(
-                                                                student
-                                                                    .enrollmentNo,
-                                                                style:
-                                                                    const TextStyle(
-                                                                  fontSize: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                ),
-                                                              )
+                                                              Obx(
+                                                                  () =>
+                                                                      Checkbox(
+                                                                        activeColor:
+                                                                            Pallets.primaryColor,
+                                                                        value: _controller
+                                                                            .selectedStudents
+                                                                            .value
+                                                                            .contains(student.id),
+                                                                        onChanged:
+                                                                            (value) {
+                                                                          if (value !=
+                                                                              null) {
+                                                                            if (value) {
+                                                                              _controller.selectedStudents.add(student.id);
+                                                                              _controller.inviteStudents;
+                                                                              _controller.sortInviteStudents();
+                                                                              _controller.sortInviteStudents();
+                                                                              _controller.inviteStudents.refresh();
+                                                                            } else {
+                                                                              _controller.selectedStudents.removeWhere((element) => element == student.id);
+                                                                              _controller.sortInviteStudents();
+                                                                              _controller.inviteStudents.refresh();
+                                                                            }
+                                                                          }
+                                                                        },
+                                                                      )),
                                                             ],
                                                           ),
                                                         ),
-                                                        Obx(() => Checkbox(
-                                                              activeColor: Pallets
-                                                                  .primaryColor,
-                                                              value: _controller
-                                                                  .selectedStudents
-                                                                  .value
-                                                                  .contains(
-                                                                      student
-                                                                          .id),
-                                                              onChanged:
-                                                                  (value) {
-                                                                if (value !=
-                                                                    null) {
-                                                                  if (value) {
-                                                                    _controller
-                                                                        .selectedStudents
-                                                                        .add(student
-                                                                            .id);
-                                                                    _controller
-                                                                        .inviteStudents;
-                                                                    _controller
-                                                                        .sortInviteStudents();
-                                                                    _controller
-                                                                        .sortInviteStudents();
-                                                                    _controller
-                                                                        .inviteStudents
-                                                                        .refresh();
-                                                                  } else {
-                                                                    _controller
-                                                                        .selectedStudents
-                                                                        .removeWhere((element) =>
-                                                                            element ==
-                                                                            student.id);
-                                                                    _controller
-                                                                        .sortInviteStudents();
-                                                                    _controller
-                                                                        .inviteStudents
-                                                                        .refresh();
-                                                                  }
-                                                                }
-                                                              },
-                                                            )),
-                                                      ],
-                                                    ),
+                                                      );
+                                                    },
                                                   ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ))
-                                    : const Center(
-                                        child: Text(
-                                        'No students found',
-                                      )),
-                              )),
+                                                ))
+                                        : const Center(
+                                            child: Text(
+                                            'No students found',
+                                          )),
+                                  )),
                       ),
                       const SizedBox(height: 50),
                     ],
