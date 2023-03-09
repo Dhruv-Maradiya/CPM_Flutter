@@ -126,8 +126,12 @@ class CreateTaskWidget extends StatelessWidget {
                                                 .map((e) => DropdownMenuItem(
                                                       value: e.student.id
                                                           .toString(),
-                                                      child:
-                                                          Text(e.student.name),
+                                                      child: Text(
+                                                        e.student.name,
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
                                                     ))
                                                 .toList() ??
                                             []
@@ -206,8 +210,18 @@ class CreateTaskWidget extends StatelessWidget {
                                 var date = await _selectDate(
                                     context,
                                     _createTaskController
-                                        .selectedStartDate.value);
+                                        .selectedStartDate.value,
+                                    null);
                                 if (date != null) {
+                                  if (date.isAfter(_createTaskController
+                                      .selectedEndDate.value)) {
+                                    _createTaskController
+                                        .selectedEndDate.value = date;
+                                    _createTaskController
+                                            .endDateController.text =
+                                        "${date.day}/${date.month}/${date.year}";
+                                  }
+
                                   _createTaskController
                                       .selectedStartDate.value = date;
                                   _createTaskController
@@ -236,13 +250,19 @@ class CreateTaskWidget extends StatelessWidget {
                               onTap: () async {
                                 var date = await _selectDate(
                                     context,
+                                    _createTaskController.selectedEndDate.value,
                                     _createTaskController
-                                        .selectedEndDate.value);
+                                        .selectedStartDate.value);
+
                                 if (date != null) {
-                                  _createTaskController.selectedEndDate.value =
-                                      date;
-                                  _createTaskController.endDateController.text =
-                                      "${date.day}/${date.month}/${date.year}";
+                                  if (date.isAfter(_createTaskController
+                                      .selectedStartDate.value)) {
+                                    _createTaskController
+                                        .selectedEndDate.value = date;
+                                    _createTaskController
+                                            .endDateController.text =
+                                        "${date.day}/${date.month}/${date.year}";
+                                  }
                                 }
                               },
                             ),
@@ -340,12 +360,13 @@ class CreateTaskWidget extends StatelessWidget {
     );
   }
 
-  Future<DateTime?> _selectDate(BuildContext context, date) async {
+  Future<DateTime?> _selectDate(
+      BuildContext context, date, DateTime? firstDate) async {
     DateTime now = DateTime.now();
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: date,
-      firstDate: now,
+      firstDate: firstDate ?? now,
       lastDate: DateTime(now.year + 2),
     );
     return picked;

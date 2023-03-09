@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:projectify/preference/shared_preference.dart';
@@ -55,6 +57,9 @@ class ProfileController extends GetxController {
   RxBool isLoading = false.obs;
 
   Rx<UserType> type = UserType.none.obs;
+
+  File? image;
+  RxBool isImagePicked = false.obs;
 
   @override
   void onInit() async {
@@ -118,20 +123,38 @@ class ProfileController extends GetxController {
         );
       }
     }
+    image = null;
+    isImagePicked.value = false;
     isLoading.value = false;
   }
 
   void updateProfile() async {
     isLoading.value = true;
     if (userProfile.value.type == UserType.student) {
-      var data = await ProfileProvider().updateStudentProfile(
-        data: {
+      var data;
+      if (image != null) {
+        var body = await dio.MultipartFile.fromFile(image!.path,
+            filename: image!.path.split('/').last);
+        var formData = dio.FormData.fromMap({
+          "file": body,
           "id": userProfile.value.id,
           "name": name.text,
           "email": email.text,
           ...password.text.isEmpty ? {} : {"password": password.text.isEmpty},
-        },
-      );
+        });
+        data = await ProfileProvider().updateStudentProfile(
+          data: formData,
+        );
+      } else {
+        data = await ProfileProvider().updateStudentProfile(
+          data: {
+            "id": userProfile.value.id,
+            "name": name.text,
+            "email": email.text,
+            ...password.text.isEmpty ? {} : {"password": password.text.isEmpty},
+          },
+        );
+      }
       if (data != null) {
         name.text = data.data.name;
         email.text = data.data.email;
@@ -177,5 +200,11 @@ class ProfileController extends GetxController {
       }
     }
     isLoading.value = false;
+  }
+
+  void addImage(File img) async {
+    image = img;
+    isImagePicked.value = true;
+    isImagePicked.refresh();
   }
 }

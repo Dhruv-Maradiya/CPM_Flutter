@@ -149,7 +149,7 @@ class ProjectDetailsWidget extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    profilePicture.isNotEmpty
+                                    member.student.profilePicture.isNotEmpty
                                         ? ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(50),
@@ -280,14 +280,9 @@ class ProjectDetailsWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          guide.faculty.url.isNotEmpty
+          guide.faculty.profilePicture.isNotEmpty
               ? ClipRRect(
                   borderRadius: BorderRadius.circular(50),
-                  // child: Image.network(
-                  //   guide.faculty.url,
-                  //   width: 40,
-                  //   height: 40,
-                  // ),
                   child: CachedNetworkImage(
                     imageUrl: guide.faculty.url,
                     width: 40,
@@ -378,11 +373,6 @@ class ProjectDetailsWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Image.network(
-          //   technology.logoUrl,
-          //   width: 40,
-          //   height: 40,
-          // ),
           CachedNetworkImage(
             imageUrl: technology.logoUrl,
             width: 40,

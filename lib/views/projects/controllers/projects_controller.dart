@@ -7,7 +7,9 @@ class ProjectsController extends GetxController {
   List<Project> projects = [];
   RxInt count = 0.obs;
   RxInt loadedProjects = 0.obs;
+
   RxBool isLoading = false.obs;
+  RxBool isSuccess = false.obs;
 
   @override
   void onInit() {
@@ -17,6 +19,7 @@ class ProjectsController extends GetxController {
 
   void getProjects() async {
     isLoading.value = true;
+    isSuccess.value = false;
     var user = await SharedPreferencesClass.getSharePreference();
 
     if (user == null) {
@@ -26,10 +29,17 @@ class ProjectsController extends GetxController {
     var data = await ProjectsProvider().getProjects({
       "studentId": user.userId,
     });
+
+    if (data != null) {
+      projects = data.data.projects;
+      count.value = data.data.count;
+      loadedProjects.value = projects.length;
+
+      isSuccess.value = true;
+    } else {
+      isSuccess.value = false;
+    }
     isLoading.value = false;
-    projects = data?.data.projects ?? [];
-    count.value = data?.data.count ?? 0;
-    loadedProjects.value = projects.length;
   }
 
   loadMoreProjects() async {

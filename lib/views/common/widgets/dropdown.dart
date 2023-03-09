@@ -64,6 +64,8 @@ class CommonDropDown extends StatelessWidget {
           hint: Text(hintText),
           items: items,
           validator: validator,
+          isDense: true,
+          isExpanded: true,
         ),
       ],
     );
