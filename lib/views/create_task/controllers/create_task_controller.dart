@@ -15,10 +15,10 @@ class CreateTaskController extends GetxController {
 
   TextEditingController startDateController = TextEditingController(
       text:
-          "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
+          "${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}");
   TextEditingController endDateController = TextEditingController(
       text:
-          "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
+          "${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}");
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -58,7 +58,7 @@ class CreateTaskController extends GetxController {
     isGroupLoading.value = false;
   }
 
-  void createTask({required int projectId}) async {
+  void createTask({required int projectId, required callback}) async {
     isSuccess.value = false;
 
     var user = await SharedPreferencesClass.getSharePreference();
@@ -70,8 +70,8 @@ class CreateTaskController extends GetxController {
         "name": titleController.text,
         "description": descriptionController.text,
         "priority": selectedPriority ?? 5,
-        "startDate": startDateController.text,
-        "endDate": endDateController.text,
+        "startTime": startDateController.text,
+        "endTime": endDateController.text,
         "status": selectedStatus,
         "assignedToParticipantId": selectedMember,
         "projectId": projectId,
@@ -80,6 +80,8 @@ class CreateTaskController extends GetxController {
       if (data == true) {
         isSuccess.value = true;
         isSubmitting.value = false;
+
+        await callback(projectId: projectId);
 
         Get.back();
         Get.snackbar(

@@ -178,7 +178,7 @@ class ProfileWidget extends StatelessWidget {
                                     ),
                                     decoration: InputDecoration(
                                       counterText: '',
-                                      hintText: 'Type Here...',
+                                      hintText: 'Ex: 206330307033',
                                       fillColor: Pallets.textFieldBgColor,
                                       filled: true,
                                       enabledBorder: OutlineInputBorder(
@@ -245,7 +245,7 @@ class ProfileWidget extends StatelessWidget {
                                     },
                                     decoration: InputDecoration(
                                       counterText: '',
-                                      hintText: 'Type Here...',
+                                      hintText: 'Ex: Dhruv Maradiya',
                                       fillColor: Pallets.textFieldBgColor,
                                       filled: true,
                                       enabledBorder: OutlineInputBorder(
@@ -376,7 +376,7 @@ class ProfileWidget extends StatelessWidget {
                                     },
                                     decoration: InputDecoration(
                                       counterText: '',
-                                      hintText: 'Type Here...',
+                                      hintText: 'Ex: dhruv@gmail.com',
                                       fillColor: Pallets.textFieldBgColor,
                                       filled: true,
                                       enabledBorder: OutlineInputBorder(

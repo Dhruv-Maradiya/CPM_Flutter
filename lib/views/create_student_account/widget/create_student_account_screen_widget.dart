@@ -96,7 +96,7 @@ class CreateStudentAccountScreenWidget extends StatelessWidget {
                                     createStudentAccountController.enrollmentNo,
                                 decoration: InputDecoration(
                                   counterText: "",
-                                  hintText: "Enrollment No.",
+                                  hintText: "Ex: 206330307033",
                                   focusColor: Pallets.scaffoldBgColor,
                                   disabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
@@ -133,7 +133,7 @@ class CreateStudentAccountScreenWidget extends StatelessWidget {
                                 controller:
                                     createStudentAccountController.phone,
                                 decoration: InputDecoration(
-                                  hintText: "Mobile Number",
+                                  hintText: "Ex: 9909909090",
                                   contentPadding: EdgeInsets.zero,
                                   prefixIcon: Container(
                                     margin: const EdgeInsets.only(
@@ -216,7 +216,7 @@ class CreateStudentAccountScreenWidget extends StatelessWidget {
                               TextFormField(
                                 controller: createStudentAccountController.name,
                                 decoration: InputDecoration(
-                                  hintText: "Name",
+                                  hintText: "Ex: Dhruv Maradiya",
                                   focusColor: Pallets.scaffoldBgColor,
                                   disabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
@@ -283,7 +283,7 @@ class CreateStudentAccountScreenWidget extends StatelessWidget {
                                 controller:
                                     createStudentAccountController.email,
                                 decoration: InputDecoration(
-                                  hintText: "Email",
+                                  hintText: "Ex: dhruv@gmail.com",
                                   focusColor: Pallets.scaffoldBgColor,
                                   disabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
@@ -364,7 +364,7 @@ class CreateStudentAccountScreenWidget extends StatelessWidget {
                                               createStudentAccountController
                                                   .sem,
                                           decoration: InputDecoration(
-                                            hintText: "Sem",
+                                            hintText: "Ex: 6",
                                             focusColor: Pallets.scaffoldBgColor,
                                             disabledBorder: OutlineInputBorder(
                                                 borderRadius:
@@ -405,6 +405,12 @@ class CreateStudentAccountScreenWidget extends StatelessWidget {
                                               isValid = false;
                                             }
 
+                                            if (int.parse(value) > 8) {
+                                              isValid = false;
+                                              msg =
+                                                  "Sem can not be more than 8.";
+                                            }
+
                                             return isValid ? null : msg;
                                           },
                                         ),
@@ -431,7 +437,7 @@ class CreateStudentAccountScreenWidget extends StatelessWidget {
                                     controller:
                                         createStudentAccountController.password,
                                     decoration: InputDecoration(
-                                      hintText: "Password",
+                                      hintText: "Enter your password",
                                       focusColor: Pallets.scaffoldBgColor,
                                       disabledBorder: OutlineInputBorder(
                                           borderRadius:

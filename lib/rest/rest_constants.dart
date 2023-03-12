@@ -1,6 +1,6 @@
 class RestConstants {
   static String baseURL = "http://193.168.195.86:3002/api";
-  // static String baseURL = "http://192.168.1.11:3002/api";
+  // static String baseURL = "http://192.168.1.4:3002/api";
   static String public = "http://193.168.195.86:3002/public";
   // static String baseURL = "http://192.168.1.15:3002/api";
   // static String baseURL = "https://mypredict11.com";
@@ -24,6 +24,7 @@ class RestConstants {
   static String facultyProfileUpdate = "$baseURL/v1/faculty";
 
   static String projectTasksFetch = "$baseURL/v1/task/findManyByProject";
+  static String tasksUpdate = "$baseURL/v1/task";
   static String projectTasksCreate = "$baseURL/v1/task";
 
   static String fetchGroup = "$baseURL/v1/group/find";

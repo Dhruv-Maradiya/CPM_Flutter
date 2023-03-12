@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         darkTheme: ThemeData.light(),
         title: StringConstants.appName,
         getPages: Routes.getPages,
-        initialRoute: Routes.initial,
+        initialRoute: Routes.home,
       ),
     );
   }

@@ -15,165 +15,261 @@ import 'package:projectify/views/project_operation/models/categories_modal.dart'
 
 class ProjectOperationProvider {
   Future<Project?> updateProject({required data}) async {
-    ApiRequest request =
-        ApiRequest(url: RestConstants.createProject, data: data);
-    ApiResponseModel response = await request.put();
+    try {
+      ApiRequest request =
+          ApiRequest(url: RestConstants.createProject, data: data);
+      ApiResponseModel response = await request.put();
 
-    if (response.success) {
-      return CreateProjectModel.fromJson(response.data).data.project;
-    } else {
-      final ApiErrorModel apiErrorModel =
-          ApiErrorModel.fromJson(response.error);
+      if (response.success) {
+        return CreateProjectModel.fromJson(response.data).data.project;
+      } else {
+        final ApiErrorModel apiErrorModel =
+            ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
-          isDismissible: true,
-          duration: const Duration(seconds: 3),
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Pallets.errorColor);
+        Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+            isDismissible: true,
+            duration: const Duration(seconds: 3),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Pallets.errorColor);
+      }
+      return null;
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Something went wrong",
+        isDismissible: true,
+        duration: const Duration(seconds: 3),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Pallets.errorColor,
+      );
     }
     return null;
   }
 
   Future<ProjectOperationProjectModel?> fetchProject(dynamic params) async {
-    ApiRequest request =
-        ApiRequest(url: RestConstants.findOneProject, queryParameters: params);
-    ApiResponseModel response = await request.get();
+    try {
+      ApiRequest request = ApiRequest(
+          url: RestConstants.findOneProject, queryParameters: params);
+      ApiResponseModel response = await request.get();
 
-    if (response.success) {
-      return ProjectOperationProjectModel.fromJson(response.data);
-    } else {
-      final ApiErrorModel apiErrorModel =
-          ApiErrorModel.fromJson(response.error);
+      if (response.success) {
+        return ProjectOperationProjectModel.fromJson(response.data);
+      } else {
+        final ApiErrorModel apiErrorModel =
+            ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
-          isDismissible: true,
-          duration: const Duration(seconds: 3),
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Pallets.errorColor);
+        Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+            isDismissible: true,
+            duration: const Duration(seconds: 3),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Pallets.errorColor);
 
-      return null;
+        return null;
+      }
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Something went wrong",
+        isDismissible: true,
+        duration: const Duration(seconds: 3),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Pallets.errorColor,
+      );
     }
+    return null;
   }
 
   Future<ProjectOperationTasksModel?> fetchTasks(dynamic params) async {
-    ApiRequest request = ApiRequest(
-        url: RestConstants.projectTasksFetch, queryParameters: params);
-    ApiResponseModel response = await request.get();
+    try {
+      ApiRequest request = ApiRequest(
+          url: RestConstants.projectTasksFetch, queryParameters: params);
+      ApiResponseModel response = await request.get();
 
-    if (response.success) {
-      return ProjectOperationTasksModel.fromJson(response.data);
-    } else {
-      final ApiErrorModel apiErrorModel =
-          ApiErrorModel.fromJson(response.error);
+      if (response.success) {
+        return ProjectOperationTasksModel.fromJson(response.data);
+      } else {
+        final ApiErrorModel apiErrorModel =
+            ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
-          isDismissible: true,
-          duration: const Duration(seconds: 3),
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Pallets.errorColor);
+        Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+            isDismissible: true,
+            duration: const Duration(seconds: 3),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Pallets.errorColor);
 
-      return null;
+        return null;
+      }
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Something went wrong",
+        isDismissible: true,
+        duration: const Duration(seconds: 3),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Pallets.errorColor,
+      );
     }
+    return null;
   }
 
   Future<Technologies?> fetchFrontendTechnologies() async {
-    ApiRequest request =
-        ApiRequest(url: RestConstants.fetchFrontendTechnologies);
-    ApiResponseModel response = await request.get();
+    try {
+      ApiRequest request =
+          ApiRequest(url: RestConstants.fetchFrontendTechnologies);
+      ApiResponseModel response = await request.get();
 
-    if (response.success) {
-      return Technologies.fromJson(response.data, "frontendTechnologies");
-    } else {
-      final ApiErrorModel apiErrorModel =
-          ApiErrorModel.fromJson(response.error);
+      if (response.success) {
+        return Technologies.fromJson(response.data, "frontendTechnologies");
+      } else {
+        final ApiErrorModel apiErrorModel =
+            ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
-          isDismissible: true,
-          duration: const Duration(seconds: 3),
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Pallets.errorColor);
+        Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+            isDismissible: true,
+            duration: const Duration(seconds: 3),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Pallets.errorColor);
 
-      return null;
+        return null;
+      }
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Something went wrong",
+        isDismissible: true,
+        duration: const Duration(seconds: 3),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Pallets.errorColor,
+      );
     }
+    return null;
   }
 
   Future<Technologies?> fetchBackendTechnologies() async {
-    ApiRequest request =
-        ApiRequest(url: RestConstants.fetchBackendTechnologies);
-    ApiResponseModel response = await request.get();
+    try {
+      ApiRequest request =
+          ApiRequest(url: RestConstants.fetchBackendTechnologies);
+      ApiResponseModel response = await request.get();
 
-    if (response.success) {
-      return Technologies.fromJson(response.data, "backendTechnologies");
-    } else {
-      final ApiErrorModel apiErrorModel =
-          ApiErrorModel.fromJson(response.error);
+      if (response.success) {
+        return Technologies.fromJson(response.data, "backendTechnologies");
+      } else {
+        final ApiErrorModel apiErrorModel =
+            ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
-          isDismissible: true,
-          duration: const Duration(seconds: 3),
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Pallets.errorColor);
+        Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+            isDismissible: true,
+            duration: const Duration(seconds: 3),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Pallets.errorColor);
 
-      return null;
+        return null;
+      }
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Something went wrong",
+        isDismissible: true,
+        duration: const Duration(seconds: 3),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Pallets.errorColor,
+      );
     }
+    return null;
   }
 
   Future<Technologies?> fetchDatabaseTechnologies() async {
-    ApiRequest request =
-        ApiRequest(url: RestConstants.fetchDatabaseTechnologies);
-    ApiResponseModel response = await request.get();
+    try {
+      ApiRequest request =
+          ApiRequest(url: RestConstants.fetchDatabaseTechnologies);
+      ApiResponseModel response = await request.get();
 
-    if (response.success) {
-      return Technologies.fromJson(response.data, "databaseTechnologies");
-    } else {
-      final ApiErrorModel apiErrorModel =
-          ApiErrorModel.fromJson(response.error);
+      if (response.success) {
+        return Technologies.fromJson(response.data, "databaseTechnologies");
+      } else {
+        final ApiErrorModel apiErrorModel =
+            ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
-          isDismissible: true,
-          duration: const Duration(seconds: 3),
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Pallets.errorColor);
+        Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+            isDismissible: true,
+            duration: const Duration(seconds: 3),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Pallets.errorColor);
 
-      return null;
+        return null;
+      }
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Something went wrong",
+        isDismissible: true,
+        duration: const Duration(seconds: 3),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Pallets.errorColor,
+      );
     }
+    return null;
   }
 
   Future<categories_modal.Categories?> fetchCategories() async {
-    ApiRequest request = ApiRequest(url: RestConstants.fetchCategories);
+    try {
+      ApiRequest request = ApiRequest(url: RestConstants.fetchCategories);
 
-    ApiResponseModel response = await request.get();
+      ApiResponseModel response = await request.get();
 
-    if (response.success) {
-      return categories_modal.Categories.fromJson(response.data);
-    } else {
-      final ApiErrorModel apiErrorModel =
-          ApiErrorModel.fromJson(response.error);
+      if (response.success) {
+        return categories_modal.Categories.fromJson(response.data);
+      } else {
+        final ApiErrorModel apiErrorModel =
+            ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
-          isDismissible: true,
-          duration: const Duration(seconds: 3),
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Pallets.errorColor);
+        Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+            isDismissible: true,
+            duration: const Duration(seconds: 3),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Pallets.errorColor);
+      }
+      return null;
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Something went wrong",
+        isDismissible: true,
+        duration: const Duration(seconds: 3),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Pallets.errorColor,
+      );
     }
     return null;
   }
 
   Future<inviteStudentsModel.Data?> fetchInviteStudents(dynamic params) async {
-    ApiRequest request = ApiRequest(
-        url: RestConstants.fetchInviteStudents, queryParameters: params);
-    ApiResponseModel response = await request.get();
+    try {
+      ApiRequest request = ApiRequest(
+          url: RestConstants.fetchInviteStudents, queryParameters: params);
+      ApiResponseModel response = await request.get();
 
-    if (response.success) {
-      return inviteStudentsModel.InviteStudentsModel.fromJson(response.data)
-          .data;
-    } else {
-      final ApiErrorModel apiErrorModel =
-          ApiErrorModel.fromJson(response.error);
+      if (response.success) {
+        return inviteStudentsModel.InviteStudentsModel.fromJson(response.data)
+            .data;
+      } else {
+        final ApiErrorModel apiErrorModel =
+            ApiErrorModel.fromJson(response.error);
 
+        Get.snackbar(
+          apiErrorModel.name,
+          apiErrorModel.message,
+          isDismissible: true,
+          duration: const Duration(seconds: 3),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Pallets.errorColor,
+        );
+      }
+      return null;
+    } catch (e) {
       Get.snackbar(
-        apiErrorModel.name,
-        apiErrorModel.message,
+        "Error",
+        "Something went wrong",
         isDismissible: true,
         duration: const Duration(seconds: 3),
         snackPosition: SnackPosition.BOTTOM,
@@ -184,24 +280,36 @@ class ProjectOperationProvider {
   }
 
   Future<bool> invite(dynamic data) async {
-    ApiRequest request = ApiRequest(url: RestConstants.invite, data: data);
-    ApiResponseModel response = await request.post();
+    try {
+      ApiRequest request = ApiRequest(url: RestConstants.invite, data: data);
+      ApiResponseModel response = await request.post();
 
-    if (response.success) {
-      return true;
-    } else {
-      final ApiErrorModel apiErrorModel =
-          ApiErrorModel.fromJson(response.error);
+      if (response.success) {
+        return true;
+      } else {
+        final ApiErrorModel apiErrorModel =
+            ApiErrorModel.fromJson(response.error);
 
+        Get.snackbar(
+          apiErrorModel.name,
+          apiErrorModel.message,
+          isDismissible: true,
+          duration: const Duration(seconds: 3),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Pallets.errorColor,
+        );
+      }
+      return false;
+    } catch (e) {
       Get.snackbar(
-        apiErrorModel.name,
-        apiErrorModel.message,
+        "Error",
+        "Something went wrong",
         isDismissible: true,
         duration: const Duration(seconds: 3),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Pallets.errorColor,
       );
+      return false;
     }
-    return false;
   }
 }

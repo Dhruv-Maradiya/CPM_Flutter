@@ -215,7 +215,7 @@ class CreateProject extends StatelessWidget {
                             ),
                             CommonTextField(
                               title: "Title",
-                              hintText: "Title",
+                              hintText: "Ex: Projectify",
                               maxLines: null,
                               controller: _controller.titleController,
                               validator: (value) {
@@ -231,7 +231,8 @@ class CreateProject extends StatelessWidget {
                             ),
                             CommonTextField(
                               title: "Description",
-                              hintText: "Description",
+                              hintText:
+                                  "Ex: Projectify is a project about managing projects and task distribution system.",
                               maxLines: 4,
                               controller: _controller.descriptionController,
                               validator: (value) {

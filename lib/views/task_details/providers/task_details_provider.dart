@@ -1,42 +1,39 @@
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
 import 'package:projectify/core/constants/pallets.dart';
 import 'package:projectify/rest/model/base_model.dart';
 import 'package:projectify/rest/rest_client.dart';
 import 'package:projectify/rest/rest_constants.dart';
-import 'package:projectify/views/sign_in_as_faculty/models/sign_in_as_faculty_model.dart';
-import 'package:flutter/material.dart';
 
-class SignInAsFacultyProvider {
-  Future<FacultySignInModel?> signInAsFaculty(
-      data, BuildContext context) async {
+class TaskDetailsProvider {
+  Future<bool> update(dynamic data) async {
     try {
       ApiRequest request =
-          ApiRequest(url: RestConstants.facultySignIn, data: data);
-      ApiResponseModel response = await request.post();
+          ApiRequest(url: RestConstants.tasksUpdate, data: data);
+      ApiResponseModel response = await request.put();
 
       if (response.success) {
-        return FacultySignInModel.fromJson(response.data);
+        return true;
       } else {
         final ApiErrorModel apiErrorModel =
             ApiErrorModel.fromJson(response.error);
-
         Get.snackbar(apiErrorModel.name, apiErrorModel.message,
             isDismissible: true,
             duration: const Duration(seconds: 3),
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Pallets.errorColor);
-        return null;
+
+        return false;
       }
     } catch (e) {
       Get.snackbar(
         "Error",
-        "Something went wrong",
-        isDismissible: true,
-        duration: const Duration(seconds: 3),
+        e.toString(),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Pallets.errorColor,
+        isDismissible: true,
+        duration: const Duration(seconds: 3),
       );
-      return null;
+      return false;
     }
   }
 }

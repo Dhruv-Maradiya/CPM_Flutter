@@ -7,22 +7,34 @@ import 'package:projectify/rest/rest_constants.dart';
 
 class GroupsProvider {
   Future<GroupsModel?> fetchMyGroups() async {
-    ApiRequest request = ApiRequest(url: RestConstants.fetchMyGroup);
-    ApiResponseModel response = await request.get();
+    try {
+      ApiRequest request = ApiRequest(url: RestConstants.fetchMyGroup);
+      ApiResponseModel response = await request.get();
 
-    if (response.success) {
-      return GroupsModel.fromJson(response.data);
-    } else {
-      final ApiErrorModel apiErrorModel =
-          ApiErrorModel.fromJson(response.error);
+      if (response.success) {
+        return GroupsModel.fromJson(response.data);
+      } else {
+        final ApiErrorModel apiErrorModel =
+            ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
-          isDismissible: true,
-          duration: const Duration(seconds: 3),
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Pallets.errorColor);
+        Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+            isDismissible: true,
+            duration: const Duration(seconds: 3),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Pallets.errorColor);
 
-      return null;
+        return null;
+      }
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Something went wrong",
+        isDismissible: true,
+        duration: const Duration(seconds: 3),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Pallets.errorColor,
+      );
     }
+    return null;
   }
 }

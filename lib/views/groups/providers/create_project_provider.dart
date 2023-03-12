@@ -8,21 +8,33 @@ import 'package:projectify/views/groups/models/create_project_model.dart';
 
 class CreateProjectProvider {
   Future<Project?> createProject({required data}) async {
-    ApiRequest request =
-        ApiRequest(url: RestConstants.createProject, data: data);
-    ApiResponseModel response = await request.post();
+    try {
+      ApiRequest request =
+          ApiRequest(url: RestConstants.createProject, data: data);
+      ApiResponseModel response = await request.post();
 
-    if (response.success) {
-      return CreateProjectModel.fromJson(response.data).data.project;
-    } else {
-      final ApiErrorModel apiErrorModel =
-          ApiErrorModel.fromJson(response.error);
+      if (response.success) {
+        return CreateProjectModel.fromJson(response.data).data.project;
+      } else {
+        final ApiErrorModel apiErrorModel =
+            ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
-          isDismissible: true,
-          duration: const Duration(seconds: 3),
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Pallets.errorColor);
+        Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+            isDismissible: true,
+            duration: const Duration(seconds: 3),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Pallets.errorColor);
+      }
+      return null;
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Something went wrong",
+        isDismissible: true,
+        duration: const Duration(seconds: 3),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Pallets.errorColor,
+      );
     }
     return null;
   }
