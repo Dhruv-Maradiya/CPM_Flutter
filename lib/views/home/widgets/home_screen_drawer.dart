@@ -80,7 +80,10 @@ class HomeScreenDrawer extends StatelessWidget {
                       ),
                     ),
                     child: ListTile(
-                      onTap: () => Get.toNamed(Routes.home),
+                      onTap: () {
+                        Scaffold.of(context).closeDrawer();
+                        Get.toNamed(Routes.home);
+                      },
                       leading: Container(
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
@@ -119,7 +122,10 @@ class HomeScreenDrawer extends StatelessWidget {
                       ),
                     ),
                     child: ListTile(
-                      onTap: () => Get.toNamed(Routes.projects),
+                      onTap: () {
+                        Scaffold.of(context).closeDrawer();
+                        Get.toNamed(Routes.projects);
+                      },
                       leading: Container(
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
@@ -158,7 +164,10 @@ class HomeScreenDrawer extends StatelessWidget {
                       ),
                     ),
                     child: ListTile(
-                      onTap: () => Get.toNamed(Routes.groups),
+                      onTap: () {
+                        Scaffold.of(context).closeDrawer();
+                        Get.toNamed(Routes.groups);
+                      },
                       leading: Container(
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
@@ -438,7 +447,10 @@ class HomeScreenDrawer extends StatelessWidget {
                                 ),
                               ),
                               child: ListTile(
-                                onTap: () => Get.toNamed(Routes.invitations),
+                                onTap: () {
+                                  Scaffold.of(context).closeDrawer();
+                                  Get.toNamed(Routes.invitations);
+                                },
                                 leading: Container(
                                   decoration: const BoxDecoration(
                                     shape: BoxShape.circle,

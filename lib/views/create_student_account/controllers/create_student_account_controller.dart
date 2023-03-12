@@ -1,3 +1,4 @@
+import 'package:projectify/core/constants/pallets.dart';
 import 'package:projectify/preference/shared_preference.dart';
 import 'package:projectify/views/create_student_account/models/get_branches_model.dart'
     as GetBranchesModel;
@@ -41,22 +42,35 @@ class CreateStudentAccountController extends GetxController {
   }
 
   void submit(BuildContext context) async {
-    isLoading.value = true;
+    try {
+      isLoading.value = true;
 
-    var data = (await CreateStudentProvider().createStudent({
-      "enrollmentNo": enrollmentNo.text,
-      "name": name.text,
-      "password": password.text,
-      "semester": int.parse(sem.text),
-      "branchId": selectedBranch,
-      "email": email.text,
-      "number": phone.text,
-    }, context))!
-        .data;
-    isLoading.value = false;
-    SharedPreferencesClass.addSharePreference(
-        data.student.id, UserType.faculty, data.token);
-    Get.offAllNamed(Routes.home)
-        ?.then((value) => Get.delete<HomeScreenController>());
+      var data = await CreateStudentProvider().createStudent({
+        "enrollmentNo": enrollmentNo.text,
+        "name": name.text,
+        "password": password.text,
+        "semester": int.parse(sem.text),
+        "branchId": selectedBranch,
+        "email": email.text,
+        "number": phone.text,
+      }, context);
+      isLoading.value = false;
+
+      if (data != null) {
+        var res = data.data;
+        SharedPreferencesClass.addSharePreference(
+            res.student.id, UserType.faculty, res.token);
+        Get.offAllNamed(Routes.home)
+            ?.then((value) => Get.delete<HomeScreenController>());
+      }
+    } catch (e) {
+      isLoading.value = false;
+      Get.snackbar(
+        "Error",
+        e.toString(),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+      );
+    }
   }
 }

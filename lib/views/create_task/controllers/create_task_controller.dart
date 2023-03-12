@@ -58,7 +58,7 @@ class CreateTaskController extends GetxController {
     isGroupLoading.value = false;
   }
 
-  void createTask({required int projectId}) async {
+  void createTask({required int projectId, required callback}) async {
     isSuccess.value = false;
 
     var user = await SharedPreferencesClass.getSharePreference();
@@ -80,6 +80,8 @@ class CreateTaskController extends GetxController {
       if (data == true) {
         isSuccess.value = true;
         isSubmitting.value = false;
+
+        await callback(projectId: projectId);
 
         Get.back();
         Get.snackbar(

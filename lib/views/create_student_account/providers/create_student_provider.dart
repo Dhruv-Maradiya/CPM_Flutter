@@ -10,36 +10,61 @@ import 'package:flutter/material.dart';
 
 class CreateStudentProvider {
   Future<StudentCreateModel?> createStudent(data, BuildContext context) async {
-    ApiRequest request =
-        ApiRequest(url: RestConstants.studentSignUp, data: data);
-    ApiResponseModel response = await request.post();
-    if (response.success) {
-      return StudentCreateModel.fromJson(response.data);
-    } else {
-      final ApiErrorModel apiErrorModel =
-          ApiErrorModel.fromJson(response.error);
+    try {
+      ApiRequest request =
+          ApiRequest(url: RestConstants.studentSignUp, data: data);
+      ApiResponseModel response = await request.post();
+      if (response.success) {
+        return StudentCreateModel.fromJson(response.data);
+      } else {
+        final ApiErrorModel apiErrorModel =
+            ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
-          isDismissible: true,
-          duration: const Duration(seconds: 3),
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Pallets.errorColor);
+        Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+            isDismissible: true,
+            duration: const Duration(seconds: 3),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Pallets.errorColor);
+      }
+      return null;
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Something went wrong",
+        isDismissible: true,
+        duration: const Duration(seconds: 3),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Pallets.errorColor,
+      );
     }
     return null;
   }
 
   Future<List<getBranchesModel.Branch>?>? getBranches() async {
-    ApiRequest request = ApiRequest(url: RestConstants.branchFindMany);
-    ApiResponseModel response = await request.get();
+    try {
+      ApiRequest request = ApiRequest(url: RestConstants.branchFindMany);
+      ApiResponseModel response = await request.get();
 
-    if (response.success) {
-      var data = getBranchesModel.GetBranchesModel.fromJson(response.data).data;
-      return data.branches;
-    } else {
-      final ApiErrorModel apiErrorModel =
-          ApiErrorModel.fromJson(response.error);
+      if (response.success) {
+        var data =
+            getBranchesModel.GetBranchesModel.fromJson(response.data).data;
+        return data.branches;
+      } else {
+        final ApiErrorModel apiErrorModel =
+            ApiErrorModel.fromJson(response.error);
 
-      return null;
+        return null;
+      }
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Something went wrong",
+        isDismissible: true,
+        duration: const Duration(seconds: 3),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Pallets.errorColor,
+      );
     }
+    return null;
   }
 }

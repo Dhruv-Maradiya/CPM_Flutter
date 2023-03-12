@@ -45,7 +45,7 @@ class SelectBranchDropDownState extends StatelessWidget {
             ? null
             : onChanged,
         items: items,
-        hintText: "Branch",
+        hintText: "Ex: CE",
         validator: validator,
         label: const Text(
           "Branch Name",

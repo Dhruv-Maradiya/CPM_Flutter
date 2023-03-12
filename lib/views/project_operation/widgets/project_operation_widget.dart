@@ -302,41 +302,74 @@ class ProjectOperationWidget extends StatelessWidget {
                                         padding: const EdgeInsets.all(6),
                                         height: 45,
                                         width: 45,
-                                        child: const Icon(
-                                          Icons.check,
-                                          color: Pallets.primaryColor,
-                                          size: 28,
-                                        ),
+                                        child: task.status == "COMPLETED"
+                                            ? const Icon(
+                                                Icons.check,
+                                                color: Pallets.primaryColor,
+                                                size: 28,
+                                              )
+                                            : task.status == "PENDING"
+                                                ? Image.asset(
+                                                    "assets/images/pending_task.png",
+                                                    height: 45,
+                                                    width: 45,
+                                                  )
+                                                : task.status == "IN_PROGRESS"
+                                                    ? Image.asset(
+                                                        "assets/images/task_in_progress.png",
+                                                        height: 45,
+                                                        width: 45,
+                                                      )
+                                                    : task.status == "DELAYED"
+                                                        ? Image.asset(
+                                                            "assets/images/task_delayed.png",
+                                                            height: 45,
+                                                            width: 45,
+                                                          )
+                                                        : null,
                                       ),
                                       const SizedBox(
                                         width: 20,
                                       ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            task.name,
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                              color: Pallets.primaryColor,
+                                      Expanded(
+                                        flex: 7,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              task.name,
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                                color: Pallets.primaryColor,
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          Text(
-                                            task.description,
-                                            style: const TextStyle(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w400,
-                                              color: Pallets.primaryColor,
-                                              overflow: TextOverflow.ellipsis,
+                                            const SizedBox(
+                                              height: 5,
                                             ),
-                                          ),
-                                        ],
+                                            Text(
+                                              task.description,
+                                              style: const TextStyle(
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w400,
+                                                color: Pallets.primaryColor,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
+                                      const Spacer(),
+                                      Expanded(
+                                        flex: 3,
+                                        child: Text(
+                                          task.status == "IN_PROGRESS"
+                                              ? "In Progress"
+                                              : task.status.capitalize
+                                                  .toString(),
+                                        ),
+                                      )
                                     ],
                                   ),
                                 );
@@ -378,6 +411,7 @@ class ProjectOperationWidget extends StatelessWidget {
               () {
                 Get.toNamed(Routes.createTask, arguments: {
                   "project": project,
+                  "callback": _controller.fetchTasks,
                 });
               },
             );
@@ -580,13 +614,13 @@ class ProjectOperationWidget extends StatelessWidget {
                     ),
                     CommonTextField(
                       title: "Title",
-                      hintText: "Title",
+                      hintText: "Ex: Projectify",
                       maxLines: null,
                       isReadOnly: !_controller.isLeader.value,
                       controller: _controller.titleController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Title is required";
+                          return "";
                         }
                         return null;
                       },
@@ -597,7 +631,8 @@ class ProjectOperationWidget extends StatelessWidget {
                     ),
                     CommonTextField(
                         title: "Description",
-                        hintText: "Description",
+                        hintText:
+                            "Ex: Projectify is a project about managing projects and task distribution system.",
                         maxLines: 4,
                         isReadOnly: !_controller.isLeader.value,
                         controller: _controller.descriptionController,

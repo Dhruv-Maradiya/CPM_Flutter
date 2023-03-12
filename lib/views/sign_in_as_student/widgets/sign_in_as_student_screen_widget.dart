@@ -92,7 +92,7 @@ class SignInAsStudentScreenWidget extends StatelessWidget {
                                 },
                                 decoration: InputDecoration(
                                   counterText: '',
-                                  hintText: 'Type Here...',
+                                  hintText: 'Ex: 206330307033',
                                   fillColor: Pallets.textFieldBgColor,
                                   filled: true,
                                   suffixIcon: Image.asset(
@@ -156,7 +156,7 @@ class SignInAsStudentScreenWidget extends StatelessWidget {
                                   decoration: InputDecoration(
                                     fillColor: Pallets.textFieldBgColor,
                                     filled: true,
-                                    hintText: 'Type Here...',
+                                    hintText: 'Enter your password',
                                     suffixIcon: InkWell(
                                       onTap: () {
                                         signInAsStudentController

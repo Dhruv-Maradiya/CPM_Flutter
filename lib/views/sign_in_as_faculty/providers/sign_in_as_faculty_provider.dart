@@ -9,21 +9,33 @@ import 'package:flutter/material.dart';
 class SignInAsFacultyProvider {
   Future<FacultySignInModel?> signInAsFaculty(
       data, BuildContext context) async {
-    ApiRequest request =
-        ApiRequest(url: RestConstants.facultySignIn, data: data);
-    ApiResponseModel response = await request.post();
+    try {
+      ApiRequest request =
+          ApiRequest(url: RestConstants.facultySignIn, data: data);
+      ApiResponseModel response = await request.post();
 
-    if (response.success) {
-      return FacultySignInModel.fromJson(response.data);
-    } else {
-      final ApiErrorModel apiErrorModel =
-          ApiErrorModel.fromJson(response.error);
+      if (response.success) {
+        return FacultySignInModel.fromJson(response.data);
+      } else {
+        final ApiErrorModel apiErrorModel =
+            ApiErrorModel.fromJson(response.error);
 
-      Get.snackbar(apiErrorModel.name, apiErrorModel.message,
-          isDismissible: true,
-          duration: const Duration(seconds: 3),
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Pallets.errorColor);
+        Get.snackbar(apiErrorModel.name, apiErrorModel.message,
+            isDismissible: true,
+            duration: const Duration(seconds: 3),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Pallets.errorColor);
+        return null;
+      }
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Something went wrong",
+        isDismissible: true,
+        duration: const Duration(seconds: 3),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Pallets.errorColor,
+      );
       return null;
     }
   }
