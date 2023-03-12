@@ -229,14 +229,14 @@ class CreateTaskWidget extends StatelessWidget {
                                             .selectedEndDate.value = date;
                                         _createTaskController
                                                 .endDateController.text =
-                                            "${date.day}/${date.month}/${date.year}";
+                                            "${date.month}/${date.day}/${date.year}";
                                       }
 
                                       _createTaskController
                                           .selectedStartDate.value = date;
                                       _createTaskController
                                               .startDateController.text =
-                                          "${date.day}/${date.month}/${date.year}";
+                                          "${date.month}/${date.day}/${date.year}";
                                     }
                                   },
                                 ),
@@ -272,7 +272,7 @@ class CreateTaskWidget extends StatelessWidget {
                                             .selectedEndDate.value = date;
                                         _createTaskController
                                                 .endDateController.text =
-                                            "${date.day}/${date.month}/${date.year}";
+                                            "${date.month}/${date.day}/${date.year}";
                                       }
                                     }
                                   },

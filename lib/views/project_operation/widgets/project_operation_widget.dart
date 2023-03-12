@@ -16,6 +16,7 @@ import 'package:projectify/views/home/widgets/home_screen_drawer.dart';
 import 'package:projectify/core/constants/routes.dart';
 import 'package:projectify/views/project_operation/controllers/project_operation_controller.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart' as pull_to_refresh;
+import 'package:projectify/preference/shared_preference.dart';
 
 // ignore: must_be_immutable
 class ProjectOperationWidget extends StatelessWidget {
@@ -273,104 +274,123 @@ class ProjectOperationWidget extends StatelessWidget {
                                 if (task == null) {
                                   return const SizedBox.shrink();
                                 }
-                                return Container(
-                                  padding: const EdgeInsets.all(12),
-                                  margin: const EdgeInsets.only(
-                                    top: 15,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: task.status == "COMPLETED"
-                                        ? Pallets.taskCompletedBackgroundColor
-                                        : Pallets.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: task.status == "COMPLETED"
-                                        ? null
-                                        : Border.all(
-                                            width: 0.75,
-                                            color: Pallets.primaryColor,
+                                return InkWell(
+                                  onTap: () async {
+                                    var user = await SharedPreferencesClass
+                                        .getSharePreference();
+
+                                    Get.toNamed(Routes.taskDetails, arguments: {
+                                      'task': task,
+                                      "isEditable":
+                                          task.assignedToParticipant.id ==
+                                              (user?.userId ?? 0)
+                                    })?.then((value) {
+                                      if (value == "Refresh") {
+                                        _controller.fetchTasks(
+                                            projectId: project.id);
+                                      }
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(12),
+                                    margin: const EdgeInsets.only(
+                                      top: 15,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: task.status == "COMPLETED"
+                                          ? Pallets.taskCompletedBackgroundColor
+                                          : Pallets.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: task.status == "COMPLETED"
+                                          ? null
+                                          : Border.all(
+                                              width: 0.75,
+                                              color: Pallets.primaryColor,
+                                            ),
+                                    ),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          decoration: const BoxDecoration(
+                                            color: Pallets.white,
+                                            shape: BoxShape.circle,
                                           ),
-                                  ),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        decoration: const BoxDecoration(
-                                          color: Pallets.white,
-                                          shape: BoxShape.circle,
+                                          padding: const EdgeInsets.all(6),
+                                          height: 45,
+                                          width: 45,
+                                          child: task.status == "COMPLETED"
+                                              ? const Icon(
+                                                  Icons.check,
+                                                  color: Pallets.primaryColor,
+                                                  size: 28,
+                                                )
+                                              : task.status == "PENDING"
+                                                  ? Image.asset(
+                                                      "assets/images/pending_task.png",
+                                                      height: 45,
+                                                      width: 45,
+                                                    )
+                                                  : task.status == "IN_PROGRESS"
+                                                      ? Image.asset(
+                                                          "assets/images/task_in_progress.png",
+                                                          height: 45,
+                                                          width: 45,
+                                                        )
+                                                      : task.status == "DELAYED"
+                                                          ? Image.asset(
+                                                              "assets/images/task_delayed.png",
+                                                              height: 45,
+                                                              width: 45,
+                                                            )
+                                                          : null,
                                         ),
-                                        padding: const EdgeInsets.all(6),
-                                        height: 45,
-                                        width: 45,
-                                        child: task.status == "COMPLETED"
-                                            ? const Icon(
-                                                Icons.check,
-                                                color: Pallets.primaryColor,
-                                                size: 28,
-                                              )
-                                            : task.status == "PENDING"
-                                                ? Image.asset(
-                                                    "assets/images/pending_task.png",
-                                                    height: 45,
-                                                    width: 45,
-                                                  )
-                                                : task.status == "IN_PROGRESS"
-                                                    ? Image.asset(
-                                                        "assets/images/task_in_progress.png",
-                                                        height: 45,
-                                                        width: 45,
-                                                      )
-                                                    : task.status == "DELAYED"
-                                                        ? Image.asset(
-                                                            "assets/images/task_delayed.png",
-                                                            height: 45,
-                                                            width: 45,
-                                                          )
-                                                        : null,
-                                      ),
-                                      const SizedBox(
-                                        width: 20,
-                                      ),
-                                      Expanded(
-                                        flex: 7,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              task.name,
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                                color: Pallets.primaryColor,
+                                        const SizedBox(
+                                          width: 20,
+                                        ),
+                                        Expanded(
+                                          flex: 7,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                task.name,
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Pallets.primaryColor,
+                                                ),
                                               ),
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              task.description,
-                                              style: const TextStyle(
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w400,
-                                                color: Pallets.primaryColor,
-                                                overflow: TextOverflow.ellipsis,
+                                              const SizedBox(
+                                                height: 5,
                                               ),
-                                            ),
-                                          ],
+                                              Text(
+                                                task.description,
+                                                style: const TextStyle(
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Pallets.primaryColor,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      const Spacer(),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Text(
-                                          task.status == "IN_PROGRESS"
-                                              ? "In Progress"
-                                              : task.status.capitalize
-                                                  .toString(),
-                                        ),
-                                      )
-                                    ],
+                                        const Spacer(),
+                                        Expanded(
+                                          flex: 3,
+                                          child: Text(
+                                            task.status == "IN_PROGRESS"
+                                                ? "In Progress"
+                                                : task.status.capitalize
+                                                    .toString(),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 );
                               },

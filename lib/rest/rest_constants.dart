@@ -24,6 +24,7 @@ class RestConstants {
   static String facultyProfileUpdate = "$baseURL/v1/faculty";
 
   static String projectTasksFetch = "$baseURL/v1/task/findManyByProject";
+  static String tasksUpdate = "$baseURL/v1/task";
   static String projectTasksCreate = "$baseURL/v1/task";
 
   static String fetchGroup = "$baseURL/v1/group/find";

@@ -11,6 +11,7 @@ class CommonDropDown extends StatelessWidget {
     required this.validator,
     required this.label,
     this.value,
+    this.bgColor,
   });
 
   void Function(String?)? onChanged;
@@ -19,6 +20,7 @@ class CommonDropDown extends StatelessWidget {
   String? Function(String?)? validator;
   Widget label;
   String? value;
+  Color? bgColor;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class CommonDropDown extends StatelessWidget {
         DropdownButtonFormField<String>(
           decoration: InputDecoration(
             filled: true,
-            fillColor: Pallets.textFieldBgColor,
+            fillColor: bgColor ?? Pallets.textFieldBgColor,
             disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: const BorderSide(
