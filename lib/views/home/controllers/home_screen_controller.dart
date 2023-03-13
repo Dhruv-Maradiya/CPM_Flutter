@@ -63,7 +63,7 @@ class HomeScreenController extends GetxController {
 
   loadMoreProjects() async {
     int skip = loadedProjects.value;
-    int take = 10;
+    int take = 5;
     int? selectedCategory;
 
     if (selectedCategoryIndex.value != 0) {

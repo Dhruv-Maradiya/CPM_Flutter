@@ -640,7 +640,7 @@ class ProjectOperationWidget extends StatelessWidget {
                       controller: _controller.titleController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "";
+                          return "Title is required";
                         }
                         return null;
                       },
