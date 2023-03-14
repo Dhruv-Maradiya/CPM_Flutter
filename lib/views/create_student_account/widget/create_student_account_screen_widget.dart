@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:projectify/core/extensions/valid_email.dart';
 import 'package:get/get.dart';
 import 'package:projectify/core/constants/routes.dart';
+import 'package:projectify/views/terms_and_condition/terms_and_condition.dart';
 
 // ignore: must_be_immutable
 class CreateStudentAccountScreenWidget extends StatelessWidget {
@@ -569,28 +570,66 @@ class CreateStudentAccountScreenWidget extends StatelessWidget {
 
                                     return isValid ? null : msg;
                                   }),
-                              const SizedBox(
-                                height: 40,
+                              Row(
+                                children: [
+                                  Obx(
+                                    () => Checkbox(
+                                      value: createStudentAccountController
+                                          .isTermsAndConditionAccepted.value,
+                                      onChanged: (value) {
+                                        createStudentAccountController
+                                            .isTermsAndConditionAccepted
+                                            .value = value ?? false;
+                                      },
+                                      activeColor: Pallets.primaryColor,
+                                      focusColor: Pallets.primaryColor,
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () =>
+                                        Get.to(() => TermsAndCondition()),
+                                    child: const Text(
+                                      'I agree to the Terms and Conditions',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: Pallets.primaryColor,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              MaterialButton(
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    createStudentAccountController
-                                        .submit(context);
-                                  }
-                                },
-                                color: Pallets.primaryColor,
-                                height: 52,
-                                minWidth: double.maxFinite,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: const Text(
-                                  'Sign Up',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700,
-                                    color: Pallets.scaffoldBgColor,
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Obx(
+                                () => MaterialButton(
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate() &&
+                                        createStudentAccountController
+                                            .isTermsAndConditionAccepted
+                                            .value) {
+                                      createStudentAccountController
+                                          .submit(context);
+                                    }
+                                  },
+                                  color: createStudentAccountController
+                                          .isTermsAndConditionAccepted.value
+                                      ? Pallets.primaryColor
+                                      : Pallets.primaryColor.withOpacity(0.3),
+                                  height: 52,
+                                  minWidth: double.maxFinite,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: const Text(
+                                    'Sign Up',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                      color: Pallets.scaffoldBgColor,
+                                    ),
                                   ),
                                 ),
                               ),
