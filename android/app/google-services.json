@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "409943329305",
+    "project_id": "projectify-94548",
+    "storage_bucket": "projectify-94548.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:409943329305:android:de5d7e5eb8007ef52cf888",
+        "android_client_info": {
+          "package_name": "com.inventionhill.projectify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "409943329305-v7ju022t8dosbir5kneq6g56926tuo72.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUwQGgcoOMnlUB9ObxMwSlFFyKnfpMosE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "409943329305-v7ju022t8dosbir5kneq6g56926tuo72.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
