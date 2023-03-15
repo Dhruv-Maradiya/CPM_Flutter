@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -10,10 +9,7 @@ class MainController extends GetxController {
   void onInit() async {
     super.onInit();
 
-    WidgetsFlutterBinding.ensureInitialized();
-
-    // Firebase
-    await Firebase.initializeApp();
+    setupRemoteConfig();
   }
 
   // Firebase Remote Config Method

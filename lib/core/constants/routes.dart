@@ -49,7 +49,7 @@ class Routes {
     ),
     GetPage(
       name: Routes.home,
-      page: () => const HomeScreen(),
+      page: () => HomeScreen(),
     ),
     GetPage(
       name: Routes.projectDetails,

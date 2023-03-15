@@ -47,6 +47,10 @@ class HomeScreenWidget extends StatelessWidget {
                         () => TextField(
                           controller: _homeScreenController.searchController,
                           decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 15,
+                            ),
                             prefixIcon: const Icon(
                               Icons.search,
                               color: Pallets.primaryColor,
@@ -105,6 +109,7 @@ class HomeScreenWidget extends StatelessWidget {
                             ),
                           ),
                           cursorColor: Pallets.primaryColor,
+                          textAlignVertical: TextAlignVertical.center,
                           keyboardType: TextInputType.text,
                           onSubmitted: (value) => _homeScreenController.fetch(),
                           onChanged: (value) => _homeScreenController

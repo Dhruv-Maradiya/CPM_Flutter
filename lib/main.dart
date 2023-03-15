@@ -1,19 +1,19 @@
-import 'package:projectify/main_controller.dart';
-import 'package:projectify/views/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:projectify/core/constants/string_constants.dart';
 import 'package:get/get.dart';
 import 'package:projectify/core/constants/routes.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Firebase
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
-
-  final _controller = Get.put(MainController());
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,8 @@ class MyApp extends StatelessWidget {
         darkTheme: ThemeData.light(),
         title: StringConstants.appName,
         getPages: Routes.getPages,
-        builder: (context, child) => const HomeScreen(),
+        initialRoute: Routes.home,
+        // builder: (context, child) => const HomeScreen(),
       ),
     );
   }
