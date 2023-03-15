@@ -50,4 +50,9 @@ class RestConstants {
       "$baseURL/v1/invitationForGroup/findManyByLeader";
   static String updateInvitation =
       "$baseURL/v1/invitationForGroup/updateStatus";
+
+  static String privacyPolicyUrl =
+      "https://www.freeprivacypolicy.com/live/c3f7a259-39cb-4058-a03e-5a3fc871f9e7";
+  static String termsAndConditionsUrl =
+      "https://www.termsandconditionsgenerator.com/live.php?token=qQF16U4Q56ERMcqRP6mSFHQjZ8eqGr84";
 }
