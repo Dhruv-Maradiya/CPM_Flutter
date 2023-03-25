@@ -1,4 +1,3 @@
-
 class StringConstants {
-  static const String appName = 'College Project Manager';
+  static const String appName = 'Projectify';
 }

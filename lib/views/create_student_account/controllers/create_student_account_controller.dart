@@ -24,6 +24,7 @@ class CreateStudentAccountController extends GetxController {
   final TextEditingController confirmPassword = TextEditingController();
   final TextEditingController phone = TextEditingController();
   final TextEditingController sem = TextEditingController();
+  RxBool isTermsAndConditionAccepted = false.obs;
 
   @override
   // ignore: unnecessary_overrides

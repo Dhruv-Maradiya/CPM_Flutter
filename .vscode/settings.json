@@ -4,7 +4,8 @@
     "Getx",
     "overscroll",
     "Projectify",
-    "RGBO"
+    "RGBO",
+    "Upgrader"
   ],
   "java.configuration.updateBuildConfiguration": "interactive"
 }

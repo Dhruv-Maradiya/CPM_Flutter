@@ -63,10 +63,18 @@ class HomeScreenController extends GetxController {
 
   loadMoreProjects() async {
     int skip = loadedProjects.value;
-    int take = 10;
+    int take = 5;
+    int? selectedCategory;
+
+    if (selectedCategoryIndex.value != 0) {
+      selectedCategory = homeScreenModel
+          ?.data.categories.categories[selectedCategoryIndex.value - 1].id;
+    }
     var data = await HomeScreenProvider().fetch({
       "skip": skip,
       "take": take,
+      "search": searchController.text.isEmpty ? null : searchController.text,
+      "categoryId": selectedCategory,
     });
     if (data != null) {
       if (homeScreenModel?.data.projects.isNotEmpty == true) {

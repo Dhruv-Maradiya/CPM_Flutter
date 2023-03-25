@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:projectify/core/constants/pallets.dart';
 import 'package:projectify/preference/shared_preference.dart';
 import 'package:projectify/views/profile/providers/profile_provider.dart';
 
@@ -151,7 +152,7 @@ class ProfileController extends GetxController {
             "id": userProfile.value.id,
             "name": name.text,
             "email": email.text,
-            ...password.text.isEmpty ? {} : {"password": password.text.isEmpty},
+            ...password.text.isEmpty ? {} : {"password": password.text},
           },
         );
       }
@@ -173,6 +174,13 @@ class ProfileController extends GetxController {
           branchName: data.data.branch.displayName,
           type: UserType.student,
           url: data.data.url,
+        );
+        Get.snackbar(
+          "Success",
+          "Profile Updated Successfully",
+          backgroundColor: Pallets.successColor,
+          isDismissible: true,
+          snackPosition: SnackPosition.BOTTOM,
         );
       }
     } else if (userProfile.value.type == UserType.faculty) {
