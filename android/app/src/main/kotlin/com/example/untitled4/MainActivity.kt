@@ -1,4 +1,4 @@
-package com.example.projectify
+package com.inventionhill.projectify
 
 import io.flutter.embedding.android.FlutterActivity
 

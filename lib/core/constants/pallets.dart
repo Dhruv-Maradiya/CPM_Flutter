@@ -31,5 +31,5 @@ class Pallets {
   static const Color orange = Color(0xFFF67C15);
 
   static const Color successColor = Color(0xFF00C853);
-  static const Color errorColor = Color.fromARGB(1, 251, 3, 3);
+  static const Color errorColor = Color(0xFFe6291a);
 }
